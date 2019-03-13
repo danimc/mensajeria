@@ -11,6 +11,9 @@ class Mensajeria extends CI_Controller {
 		$this->load->model('m_mensajeria',"",TRUE);
 		$this->load->model('m_correos',"",TRUE);
 
+		$ci = get_instance();	
+		$this->ftp_ruta = $ci->config->item("f_ruta");
+		$this->dir = $ci->config->item("oficios");
 	}
 
 	public function index()
@@ -32,23 +35,37 @@ class Mensajeria extends CI_Controller {
 		$this->load->view('_footer1');
 	}
 
-		function levantar_incidente()
+		function nueva_mensajeria()
 	{
-		$reportante = $_POST['codigo'];
-		$usuarioIncidente = $_POST['usrIncidente'];
-	    $notificacion = 1;
-		$titulo = $_POST['incidente'];
-		$descripcion = $_POST['descripcion'];
-		$categoria = $_POST['categoria'];
-		$prioridad = $_POST['prioridad'];
-		$estatus = '1';	
+		$oficio = $_POST['oficio'];
+		echo $oficio;
+		if($_FILES['documento']['name'] != "")
+		{
+			$this->load->library('image_lib');
+			
+			$ext = explode('.',$_FILES['documento']['name']);
 
-		$this->m_mensajeria->nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad);
-		$idIncidente = $this->db->insert_id();
+			$ext = $ext[count($ext) - 1];
+			
+			move_uploaded_file($_FILES['documento']['tmp_name'], $this->ftp_ruta . 'src/oficios/doc_'. md5($oficio) .'.' . $ext);			
+	
+			$config_image['image_library'] = 'gd2';
+
+			$config_image['source_image'] = $this->ftp_ruta . 'mensajeria/src/oficios/doc_'. md5($oficio) .'.'. $ext;
+			$config_image['maintain_ratio'] = true;
+			$config_image['quality'] = 98;
+			$this->image_lib->initialize($config_image);
+			$this->image_lib->resize(); 
+			return $ext;
+		} 
+		
+
+		//$this->m_mensajeria->nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad);
+		//$idIncidente = $this->db->insert_id();
 
 		//$this->m_mensajeria->noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion);
 
-		redirect('ticket/correo_ticket_levantado/'. $idIncidente);
+		//redirect('ticket/correo_ticket_levantado/'. $idIncidente);
 	}
 
 	function lista_tickets_cerrados()

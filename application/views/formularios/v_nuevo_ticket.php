@@ -15,7 +15,7 @@
                 <br>
     </div>
 
-        <form enctype="multipart/form-data" role="form" action="<?base_url()?>index.php?/mensa/levantar_incidente" method="post" id="form_newsletter">
+        <form enctype="multipart/form-data" role="form" action="<?base_url()?>index.php?/mensajeria/nueva_mensajeria" method="post" id="form_newsletter">
     <!-- Main content -->
  <section class="page-content fade-in-up">
         <div class="row">
@@ -30,14 +30,14 @@
                                 <label class="col-sm-5 col-form-label">Numero de Oficio:</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-addon">A.G./</span>
-                                    <input class="form-control form-control-solid" type="text" placeholder="1801/2019">
+                                    <input class="form-control form-control-solid" name="oficio" type="text" placeholder="1801/2019">
                                 </div>
                             </div>
 
                             <div class="form-group mb-4 row">
                                 <label class="col-sm-5 col-form-label">Subir Archivo:</label>
                                 <div class="col-sm-6">
-                                <input type="file" class="form-control form-control-solid" name="file" />
+                                <input type="file" class="form-control form-control-solid" name="documento" />
                                 </div>
                             </div>
                         </div>
@@ -116,20 +116,6 @@
 
 </section>
 
- <div class="modal fade" id="cerrar" role="dialog">
-        <div class="modal-dialog col-md">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div class="icon" align="center">
-                <i class="fa fa-spinner fa-spin" style="font-size:80px;"></i>
-              </div>  
-
-              <h4 align="center">Generando Ticket de Servicio...</h4>
-              </div>
-            
-          </div>
-        </div>
-      </div>
 
 <!-- /.content -->
 
