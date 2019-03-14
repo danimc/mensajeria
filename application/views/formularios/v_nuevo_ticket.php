@@ -26,18 +26,40 @@
                     </div>
                     <div class="ibox-body">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label class="col-sm-5 col-form-label">Numero de Oficio:</label>
+                            <div class="col-sm-4">
+                                <label class="col-sm-12 col-form-label">Numero de Oficio:</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-addon">A.G./</span>
                                     <input class="form-control form-control-solid" name="oficio" type="text" placeholder="1801/2019">
                                 </div>
                             </div>
 
-                            <div class="form-group mb-4 row">
-                                <label class="col-sm-5 col-form-label">Subir Archivo:</label>
-                                <div class="col-sm-6">
+                            <div class="form-group col-sm-7 mb-4 row">
+                                <label class="col-sm-12 col-form-label">Subir Archivo:</label>
+                                <div class="col-sm-12">
                                 <input type="file" class="form-control form-control-solid" name="documento" />
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-12 col-form-label">Dirigido a:</label>
+                                <div class="input-group mb-3">
+                                    <select name="dependencia" id="dependencia" class="form-control select2_demo_1">
+                                        <option value="0">Seleccione para que dependencia va el original </option>
+                                        <? foreach ($centros as $centro) {?>
+                                        <option value="<?=$centro->id?>"><?=$centro->nombre?></option>
+                                        <? }?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label class="col-sm-12 col-form-label">Con Copia para:</label>
+                                <div class="input-group mb-3">
+                                     <select name="ccp[]" id="ccp" class="form-control select2_demo_1" multiple="true">
+                                        <option value="0">Seleccione los Destinatarios de las copias </option>
+                                        <? foreach ($centros as $centro) {?>
+                                        <option value="<?=$centro->id?>"><?=$centro->nombre?></option>
+                                        <? }?>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +140,7 @@
 
 
 <!-- /.content -->
-
+ <script src="<?=base_url()?>src/assets/js/scripts/form-plugins.js"></script>
 <!-- /.content-wrapper -->
     <script>
         $(function() {

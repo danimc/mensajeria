@@ -17,6 +17,11 @@ class m_mensajeria extends CI_Model {
 
     }
 
+      function obt_centros()
+    {
+        return $this->db->get('b_dependencias')->result();
+    }
+
     function obt_asignados(){
 
         $this->db->where("rol", 1);

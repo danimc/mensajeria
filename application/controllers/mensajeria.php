@@ -28,6 +28,7 @@ class Mensajeria extends CI_Controller {
 		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
 		$datos['reportante'] = $this->m_mensajeria->obt_lista_usuarios();
 		$datos['categorias'] = $this->m_mensajeria->obt_categorias();
+		$datos['centros'] = $this->m_mensajeria->obt_centros();
 
 		$this->load->view('_encabezado1');
 		$this->load->view('_menuLateral1');
@@ -37,9 +38,13 @@ class Mensajeria extends CI_Controller {
 
 		function nueva_mensajeria()
 	{
-		$codigo = $this->session->userdata("codigo");	
+
+		$ccp = $_POST["ccp"];
+		die(var_dump($ccp));
+		/*$codigo = $this->session->userdata("codigo");	
 		$oficio = $_POST['oficio'];
 		$siglas = $this->m_mensajeria->obt_abreviatura($codigo);
+		
 		if($_FILES['documento']['name'] != "")
 		{
 			$this->load->library('image_lib');			
@@ -56,8 +61,9 @@ class Mensajeria extends CI_Controller {
 			$this->image_lib->resize(); 
 			return $ext;
 		} 
+		*/
 		
-
+	
 		//$this->m_mensajeria->nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad);
 		//$idIncidente = $this->db->insert_id();
 

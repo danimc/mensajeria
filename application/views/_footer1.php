@@ -25,7 +25,7 @@
     <script src="<?=base_url()?>src/assets/vendors/jquery-idletimer/dist/idle-timer.min.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/toastr/toastr.min.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="<?=base_url()?>src/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="<?=base_url()?>src/assets/vendors/select2/dist/js/select2.full.min.js"></script>
     <!-- PAGE LEVEL PLUGINS-->
     <script src="<?=base_url()?>src/assets/vendors/chart.js/dist/Chart.min.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
@@ -35,7 +35,7 @@
     <!-- CORE SCRIPTS-->
     <script src="<?=base_url()?>src/assets/js/app.min.js"></script>
     <!-- PAGE LEVEL SCRIPTS-->
-    <script src="<?=base_url()?>src/assets/js/scripts/dashboard_visitors.js"></script>
+
     <script src="<?=base_url()?>src/assets/vendors/dataTables/datatables.min.js"></script>
 
     </body>
