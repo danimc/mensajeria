@@ -24,7 +24,7 @@ class Mensajeria extends CI_Controller {
 
 	function nueva_copia()
 	{
-		 $codigo = $this->session->userdata("codigo");	
+		$codigo = $this->session->userdata("codigo");	
 		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
 		$datos['reportante'] = $this->m_mensajeria->obt_lista_usuarios();
 		$datos['categorias'] = $this->m_mensajeria->obt_categorias();
@@ -37,21 +37,19 @@ class Mensajeria extends CI_Controller {
 
 		function nueva_mensajeria()
 	{
+		$codigo = $this->session->userdata("codigo");	
 		$oficio = $_POST['oficio'];
-		echo $oficio;
+		$siglas = $this->m_mensajeria->obt_abreviatura($codigo);
 		if($_FILES['documento']['name'] != "")
 		{
-			$this->load->library('image_lib');
-			
+			$this->load->library('image_lib');			
 			$ext = explode('.',$_FILES['documento']['name']);
-
 			$ext = $ext[count($ext) - 1];
-			
-			move_uploaded_file($_FILES['documento']['tmp_name'], $this->ftp_ruta . 'src/oficios/doc_'. md5($oficio) .'.' . $ext);			
-	
+			$numOficio = explode('/', $oficio);
+			$pdf = $siglas->abreviatura . $numOficio[count($numOficio) - 2] .'-'. $numOficio[count($numOficio) - 1];			
+			move_uploaded_file($_FILES['documento']['tmp_name'], $this->ftp_ruta . 'src/oficios/' . $pdf .'.' . $ext);	
 			$config_image['image_library'] = 'gd2';
-
-			$config_image['source_image'] = $this->ftp_ruta . 'mensajeria/src/oficios/doc_'. md5($oficio) .'.'. $ext;
+			$config_image['source_image'] = $this->ftp_ruta . 'src/oficios/doc_'. $pdf .'.'. $ext;
 			$config_image['maintain_ratio'] = true;
 			$config_image['quality'] = 98;
 			$this->image_lib->initialize($config_image);

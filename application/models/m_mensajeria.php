@@ -23,6 +23,19 @@ class m_mensajeria extends CI_Model {
         return $this->db->get("usuario")->result();
     }
 
+    function obt_abreviatura($codigo)
+    {
+        $qry = '';
+
+        $qry = "SELECT abreviatura FROM crm.dependencias
+                INNER JOIN usuario
+                where 
+                usuario.dependencia = id_dependencia
+                and codigo = '$codigo'";
+
+        return $this->db->query($qry)->row();
+    }
+
     function estatus()
     {
         $this->db->where('id !=', 2);
