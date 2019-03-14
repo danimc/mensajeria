@@ -40,11 +40,11 @@ class Mensajeria extends CI_Controller {
 	{
 
 		$ccp = $_POST["ccp"];
-		die(var_dump($ccp));
-		/*$codigo = $this->session->userdata("codigo");	
+		$codigo = $this->session->userdata("codigo");	
 		$oficio = $_POST['oficio'];
 		$siglas = $this->m_mensajeria->obt_abreviatura($codigo);
-		
+		$nPdf = '';
+		$dependenciaEnvia = $siglas->id_dependencia;
 		if($_FILES['documento']['name'] != "")
 		{
 			$this->load->library('image_lib');			
@@ -60,11 +60,11 @@ class Mensajeria extends CI_Controller {
 			$this->image_lib->initialize($config_image);
 			$this->image_lib->resize(); 
 			return $ext;
+
+			$nPdf = $pdf .'.' . $ext;
 		} 
-		*/
 		
-	
-		//$this->m_mensajeria->nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad);
+	    $this->m_mensajeria->nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad);
 		//$idIncidente = $this->db->insert_id();
 
 		//$this->m_mensajeria->noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion);
