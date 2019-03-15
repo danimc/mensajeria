@@ -81,9 +81,16 @@ class Mensajeria extends CI_Controller {
 			);
 
 	    $this->m_mensajeria->nueva_mensajeria($delivery);
-		//$idIncidente = $this->db->insert_id();
+		$idIncidente = $this->db->insert_id();
 
-		//$this->m_mensajeria->noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion);
+		for($i = 0; $i < count($ccp); $i++) {
+			$copias = array(
+				'oficio' 		=> $idIncidente,
+				'receptor'		=> $ccp[$i]				
+			);
+
+			$this->m_mensajeria->guardar_copias($copias);
+		}
 
 		//redirect('ticket/correo_ticket_levantado/'. $idIncidente);
 	}

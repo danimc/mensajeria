@@ -54,6 +54,11 @@ class m_mensajeria extends CI_Model {
         $this->db->insert("m_delivery", $delivery);
     }
 
+    function guardar_copias($copias)
+    {        
+        $this->db->insert("m_envio_copias", $copias);
+    }
+
     function seguimiento_ticket($folio)
     {
         $qry = "";
