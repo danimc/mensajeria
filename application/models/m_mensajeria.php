@@ -49,25 +49,9 @@ class m_mensajeria extends CI_Model {
         return $this->db->get("situacion_ticket")->result();
     }
 
-    function nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad)
-    {
-        $fecha = $this->fecha_actual();
-        $hora = $this->hora_actual();
-
-        $this->fecha_inicio = $fecha;
-        $this->hora_inicio = $hora;
-        $this->usr_reportante = $reportante;
-        $this->usr_incidente = $usuarioIncidente;
-        $this->categoria = $categoria;
-        $this->titulo = $titulo;
-        $this->descripcion = $descripcion;
-        $this->estatus = $estatus;
-        $this->prioridad = $prioridad;
-
-        $this->db->insert("ticket", $this);
-
-       
-
+    function nueva_mensajeria($delivery)
+    {        
+        $this->db->insert("m_delivery", $delivery);
     }
 
     function seguimiento_ticket($folio)

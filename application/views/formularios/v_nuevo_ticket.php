@@ -43,7 +43,7 @@
                             <div class="col-sm-12">
                                 <label class="col-sm-12 col-form-label">Dirigido a:</label>
                                 <div class="input-group mb-3">
-                                    <select name="dependencia" id="dependencia" class="form-control select2_demo_1">
+                                    <select name="receptor" id="receptor" class="form-control select2_demo_1">
                                         <option value="0">Seleccione para que dependencia va el original </option>
                                         <? foreach ($centros as $centro) {?>
                                         <option value="<?=$centro->id?>"><?=$centro->nombre?></option>

@@ -60,7 +60,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     <div class="page-wrapper">
         <header class="header">
             <div class="page-brand">
-                <a href="/oagmvc">
+                <a href="/mensajeria">
                     <span class="brand">sistematización</span>
                     <span class="brand-mini">OAG</span>
                 </a>

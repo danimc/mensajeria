@@ -39,12 +39,16 @@ class Mensajeria extends CI_Controller {
 		function nueva_mensajeria()
 	{
 
-		$ccp = $_POST["ccp"];
-		$codigo = $this->session->userdata("codigo");	
-		$oficio = $_POST['oficio'];
-		$siglas = $this->m_mensajeria->obt_abreviatura($codigo);
-		$nPdf = '';
-		$dependenciaEnvia = $siglas->id_dependencia;
+		$ccp 				= $_POST["ccp"];
+		$receptor 			= $_POST['receptor'];
+		$codigo 			= $this->session->userdata("codigo");	
+		$oficio 			= $_POST['oficio'];
+		$siglas 			= $this->m_mensajeria->obt_abreviatura($codigo);
+		$dependenciaEnvia 	= $siglas->id_dependencia;
+		$estatus 			= 1;
+		$nPdf 				= '';			//variable que guarda la direccion del PDF si este es cargado.
+
+		########## SCRIPT PARA SUBIR LOS PDF ###########################
 		if($_FILES['documento']['name'] != "")
 		{
 			$this->load->library('image_lib');			
@@ -59,12 +63,24 @@ class Mensajeria extends CI_Controller {
 			$config_image['quality'] = 98;
 			$this->image_lib->initialize($config_image);
 			$this->image_lib->resize(); 
-			return $ext;
+			//return $ext;
 
 			$nPdf = $pdf .'.' . $ext;
 		} 
-		
-	    $this->m_mensajeria->nuevo_incidente($reportante, $usuarioIncidente, $titulo, $descripcion, $categoria, $estatus, $prioridad);
+		######### FIN DEL SCRIPT#####################################
+
+		$delivery = array(
+			'oficio' 		=> $oficio,
+			'usr_envia' 	=> $codigo,
+			'dependencia'	=> $dependenciaEnvia,
+			'receptor'		=> $receptor,
+			'estatus'		=> $estatus,
+			'dir_oficio'	=> $nPdf,
+			'fecha_alta'	=> $this->m_mensajeria->fecha_actual(),
+			'hora_alta'		=> $this->m_mensajeria->hora_actual(),
+			);
+
+	    $this->m_mensajeria->nueva_mensajeria($delivery);
 		//$idIncidente = $this->db->insert_id();
 
 		//$this->m_mensajeria->noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion);

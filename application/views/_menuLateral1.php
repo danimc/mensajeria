@@ -14,7 +14,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
                     </li>                    
                     <li>
                         <a href="<?=base_url()?>index.php?/ticket/nuevo_ticket"><i class="sidebar-item-icon ti-ticket"></i>
-                            <span class="nav-label">Nuevo Ticket</span></a>
+                            <span class="nav-label">Alta Mensajeria</span></a>
                     </li>
                     <li>
                         <a href="<?php echo base_url();?>index.php?/ticket/lista_tickets"><i class="sidebar-item-icon fa fa-barcode"></i> <span>Lista de Tickets</span></a>
