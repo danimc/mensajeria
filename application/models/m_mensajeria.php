@@ -28,6 +28,12 @@ class m_mensajeria extends CI_Model {
         return $this->db->get("usuario")->result();
     }
 
+    function verifica_oficio($oficio)
+    {
+        $this->db->where("oficio", $oficio);
+        return $this->db->get("m_delivery")->num_rows();
+    }
+
     function obt_abreviatura($codigo)
     {
         $qry = '';
@@ -222,28 +228,24 @@ class m_mensajeria extends CI_Model {
 
     //***********************TABLAS **********************
 
-    function lista_tickets_administrador()
+    function lista_mensajes_administrador()
     {
         $qry = '';
         $qry = "SELECT 
-                folio
-                ,fecha_inicio
-                ,hora_inicio
-                ,us.usuario
-                ,titulo
-                ,categoria_ticket.categoria
-                ,est.id as id_situacion
-                ,est.situacion
-                ,fecha_asignado
-                ,hora_asignado
-                ,asignado.usuario usr_asignado
-                ,ticket.estatus
-                from ticket
-                LEFT JOIN  usuario us on us.codigo = ticket.usr_incidente
-                LEFT JOIN categoria_ticket on categoria_ticket.id_cat = ticket.categoria
-                LEFT JOIN situacion_ticket est on est.id = ticket.estatus
-                LEFT JOIN usuario asignado on ticket.usr_asignado = asignado.codigo
-                ORDER BY folio DESC";
+                d.id_delivery as folio,
+                d.oficio,
+                us.usuario,
+                dep.nombre_dependencia,
+                r.nombre as receptor,
+                d.estatus,
+                d.dir_oficio as pdf,
+                d.fecha_alta,
+                d.hora_alta
+                FROM crm.m_delivery d
+                LEFT JOIN  usuario us on us.codigo = d.usr_envia
+                LEFT JOIN dependencias dep on dep.id_dependencia = d.dependencia
+                LEFT JOIN b_dependencias r on r.id = d.receptor
+                                ORDER BY folio DESC";
                
                 return $this->db->query($qry)->result();
     }

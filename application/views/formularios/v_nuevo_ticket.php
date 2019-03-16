@@ -15,7 +15,7 @@
                 <br>
     </div>
 
-        <form enctype="multipart/form-data" role="form" action="<?base_url()?>index.php?/mensajeria/nueva_mensajeria" method="post" id="form_newsletter">
+        <form enctype="multipart/form-data" role="form" action="<?base_url()?>index.php?/mensajeria/verifica_registroOficio" method="post" id="form_newsletter">
     <!-- Main content -->
  <section class="page-content fade-in-up">
         <div class="row">

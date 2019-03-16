@@ -36,6 +36,23 @@ class Mensajeria extends CI_Controller {
 		$this->load->view('_footer1');
 	}
 
+	function verifica_registroOficio()
+	{
+		$oficio = $_POST['oficio'];
+		$verificador = $this->m_mensajeria->verifica_oficio($oficio);
+		echo $oficio . 'esta' . $verificador;
+
+		if ($verificador == 0 ) {
+			echo "registrando";
+			$this->nueva_mensajeria();
+		}
+		else{
+			echo "No se puede registrar el mismo numero de Oficio";
+		}
+
+
+	}
+
 		function nueva_mensajeria()
 	{
 
@@ -92,61 +109,25 @@ class Mensajeria extends CI_Controller {
 			$this->m_mensajeria->guardar_copias($copias);
 		}
 
-		//redirect('ticket/correo_ticket_levantado/'. $idIncidente);
+		redirect('mensajeria/seguimiento/'. $idIncidente);
 	}
 
-	function lista_tickets_cerrados()
-	{
-		$codigo = $this->session->userdata("codigo");
-		$rol = $this->session->userdata("rol");
-		$folio = $this->uri->segment(3);
-		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
-		$datos['folio'] = $folio;
-		$datos['titulo'] = "CERRADOS";
-
-				$datos['tickets'] = $this->m_mensajeria->lista_tickets_administrador_cerrados();
-				$this->load->view('_encabezado1');
-				$this->load->view('_menuLateral1');
-				$this->load->view('listas/l_tickets_admin', $datos);
-				$this->load->view('_footer1');
-
-				
-	}
-
-		function lista_tickets_abiertos()
-	{
-		$codigo = $this->session->userdata("codigo");
-		$rol = $this->session->userdata("rol");
-		$folio = $this->uri->segment(3);
-		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
-		$datos['folio'] = $folio;
-		$datos['titulo'] = "ATENDIENDO";
-
-				$datos['tickets'] = $this->m_mensajeria->lista_tickets_administrador_abiertos();
-				$this->load->view('_encabezado1');
-				$this->load->view('_menuLateral1');
-				$this->load->view('listas/l_tickets_admin', $datos);
-				$this->load->view('_footer1');
-				
-	}
-
-	function lista_tickets()
+	function lista_mensajes()
 	{	
 		
 		$codigo = $this->session->userdata("codigo");
 		$rol = $this->session->userdata("rol");
-		$folio = $this->uri->segment(3);
+		//$folio = $this->uri->segment(3);
 		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
-		$datos['folio'] = $folio;
-		$datos['titulo'] = "COMPLETA";
+		//$datos['folio'] = $folio;
 
 		switch ($rol) {
 			case 1:
 				
-				$datos['tickets'] = $this->m_mensajeria->lista_tickets_administrador();
+				$datos['mensajes'] = $this->m_mensajeria->lista_mensajes_administrador();
 				$this->load->view('_encabezado1');
 				$this->load->view('_menuLateral1');
-				$this->load->view('listas/l_tickets_admin', $datos);
+				$this->load->view('listas/l_delivery_admi', $datos);
 				$this->load->view('_footer1');
 
 				break;
