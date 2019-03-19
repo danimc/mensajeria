@@ -1,11 +1,11 @@
 <?
-$estados = $this->m_ticket->estatus();
+$estados = $this->m_mensajeria->estatus();
 ?>
 
  <div class="content-wrapper">
   <!-- Content Header (Page header) -->
  <div class="page-heading">
-                <h1 class="page-title">Lista de Tickets: <?=$titulo?></h1>
+                <h1 class="page-title"></h1>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="index-2.html"><i class="la la-home font-20"></i></a>
@@ -22,7 +22,7 @@ $estados = $this->m_ticket->estatus();
 
     <div class="ibox">
                     <div class="ibox-body">
-                        <h5 class="font-strong mb-4">TICKETS</h5>
+                        <h5 class="font-strong mb-4">MENSAJES</h5>
                         <div class="flexbox mb-4">
                             <div class="flexbox">
                                 <label class="mb-0 mr-2">Filtrar por:</label>
@@ -48,10 +48,10 @@ $estados = $this->m_ticket->estatus();
                                 <thead class="thead-default thead-lg">
                                     <tr role="row">
                                       <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 36.3167px;" aria-sort="ascending" aria-label="# Folio: activate to sort column descending">
-                                        # Folio
+                                        #
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 103.017px;" aria-label="Order ID: activate to sort column ascending">
-                                       Fecha Reporte
+                                       Fecha Registro
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 134px;" aria-label="Estatus: activate to sort column ascending">
                                       Estatus
@@ -60,9 +60,9 @@ $estados = $this->m_ticket->estatus();
                                        Usuario
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 99.15px;" aria-label="Incidente: activate to sort column ascending">
-                                      Incidente</th>
+                                      Dependencia</th>
                                       <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 113.117px;" aria-label="Categoria: activate to sort column ascending">
-                                        Categoria
+                                        Remitente
                                       </th>
 
                                       <th class="no-sort sorting_disabled" rowspan="1" colspan="1" style="width: 33.8667px;" aria-label="">
@@ -72,19 +72,22 @@ $estados = $this->m_ticket->estatus();
                                 </thead>
                                 
                                 <tbody>
-                                  <? foreach ($tickets as $ticket) 
+                                  <? foreach ($mensajes as $ticket) 
                                    {
-                                    $fecha = $this->m_ticket->fecha_text_f($ticket->fecha_inicio);
-                                    $estatus = $this->m_ticket->etiqueta($ticket->id_situacion);
+                                    $fecha = $this->m_mensajeria->fecha_text_f($ticket->fecha_alta);
+                                    $estatus = $this->m_mensajeria->etiqueta($ticket->estatus);
                                     ?>
                                     <tr class="">
                                       <td ><?=$ticket->folio?></td>
-                                      <td  data-toggle = "tooltip" title="Hora de reporte: <?=$ticket->hora_inicio?>"><?=$fecha?></td>
+                                      <td  data-toggle = "tooltip" title="Hora de Registro: <?=$ticket->hora_alta?>"><?=$fecha?></td>
                                       <td data-toggle="tooltip"><?=$estatus?></td>
                                       <td ><?=$ticket->usuario?></td>
-                                      <td ><?=$ticket->titulo?></td>
-                                      <td ><?=$ticket->categoria?></td>
-                                      <td width="10" align="center"><a class="btn btn-primary " href="<?=base_url()?>index.php?/ticket/seguimiento/<?=$ticket->folio?>"  title="Información y seguimiento del Ticket de servicio"><i class="fa fa-info"></i> </a>
+                                      <td ><?=$ticket->nombre_dependencia?></td>
+                                      <td ><?=$ticket->receptor?></td>
+                                      <td align="center">
+                                        <a class="btn btn-sm btn-danger" href="<?=base_url()?>src/oficios/<?=$ticket->pdf?>" data-toggle = "tooltip"  title="Ver Oficio"><i class="fa  fa-file-pdf-o"></i> </a>
+
+                                        <a class="btn btn-sm btn-info " href="<?=base_url()?>index.php?/mensajeria/seguimiento/<?=$ticket->folio?>" data-toggle = "tooltip"  title="Seguimiento"><i class="fa fa-info"></i> </a>
                                       </td>
                                     </tr>
                                   <?
