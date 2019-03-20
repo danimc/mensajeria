@@ -1,7 +1,3 @@
-<?
-$estados = $this->m_mensajeria->estatus();
-?>
-
  <div class="content-wrapper">
   <!-- Content Header (Page header) -->
  <div class="page-heading">

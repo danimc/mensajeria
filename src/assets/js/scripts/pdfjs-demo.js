@@ -1,5 +1,5 @@
 $(function(){
-        var url = '//cdn.mozilla.net/pdfjs/tracemonkey.pdf';
+        var url = 'https://www.iieg.gob.mx/contenido/Municipios/SanPedroTlaquepaque.pdf';
 
         var pdfDoc = null,
                 pageNum = 1,
