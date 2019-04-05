@@ -1,5 +1,5 @@
-$(function(){
-        var url = 'https://www.iieg.gob.mx/contenido/Municipios/SanPedroTlaquepaque.pdf';
+function ver_pdf(pdf){
+        var url = 'src/oficios/'+ pdf;
 
         var pdfDoc = null,
                 pageNum = 1,
@@ -143,4 +143,4 @@ $(function(){
             // Initial/first page rendering
             renderPage(pageNum, scale);
         });
-});
+    };

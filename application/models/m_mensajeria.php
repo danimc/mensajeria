@@ -47,6 +47,21 @@ class m_mensajeria extends CI_Model {
         return $this->db->query($qry)->row();
     }
 
+    function obt_dependencias_ccp($folio)
+    {
+        $qry = '';
+
+        $qry = "SELECT 
+                d.nombre
+                ,fecha_envio
+                ,hora_envio
+                FROM crm.m_envio_copias
+                LEFT JOIN b_dependencias d ON d.id = receptor 
+                WHERE oficio = $folio";
+
+        return $this->db->query($qry)->result();
+    }
+
     function estatus()
     {
         $this->db->where('id !=', 2);
@@ -70,28 +85,20 @@ class m_mensajeria extends CI_Model {
         $qry = "";
 
         $qry = "SELECT 
-                folio
-                ,fecha_inicio
-                ,hora_inicio
-                ,us.usuario
-                ,dependencias.nombre_dependencia
-                ,us.extension
-                ,us.correo
-                ,titulo
-                ,categoria_ticket.categoria
-                ,ticket.categoria as id_categoria
-                ,ticket.descripcion
-                ,asignado.usuario as asignado
-                ,est.id as situacion
-                ,fecha_cierre
-                ,hora_cierre
-                from ticket
-                LEFT JOIN  usuario us on us.codigo = ticket.usr_incidente
-                LEFT JOIN usuario asignado on asignado.codigo = ticket.usr_asignado
-                LEFT JOIN categoria_ticket on categoria_ticket.id_cat = ticket.categoria
-                LEFT JOIN situacion_ticket est on est.id = ticket.estatus
-                LEFT JOIN dependencias on  us.dependencia = dependencias.id_dependencia
-                WHERE ticket.folio = '$folio'";
+                d.id_delivery as folio,
+                d.oficio,
+                us.usuario,
+                dep.nombre_dependencia,
+                r.nombre as receptor,
+                d.estatus,
+                d.dir_oficio as pdf,
+                d.fecha_alta,
+                d.hora_alta
+                FROM crm.m_delivery d
+                LEFT JOIN  usuario us on us.codigo = d.usr_envia
+                LEFT JOIN dependencias dep on dep.id_dependencia = d.dependencia
+                LEFT JOIN b_dependencias r on r.id = d.receptor
+                WHERE d.id_delivery = '$folio'";
 
         return $this->db->query($qry)->row();
     }
@@ -134,14 +141,14 @@ class m_mensajeria extends CI_Model {
     {
         $this->db->set('categoria', $categoria);
         $this->db->where('folio', $folio);
-        $this->db->update('ticket');
+        $this->db->update('m_delivery');
     }
 
     function cambiar_estatus($folio, $estatus)
     {
         $this->db->set('estatus', $estatus);
-        $this->db->where('folio', $folio);
-        $this->db->update('ticket');
+        $this->db->where('id_delivery', $folio);
+        $this->db->update('m_delivery');
     }
 
     function cerrar_ticket($folio, $fecha, $hora)
@@ -198,6 +205,22 @@ class m_mensajeria extends CI_Model {
         $this->db->insert('h_ticket', $this);
     }
 
+    function copias_enviadas($folio, $fecha, $hora)
+    {
+        $this->fecha_envio = $fecha;
+        $this->hora_envio = $hora;
+
+        $this->db->where('oficio', $folio);
+        $this->db->update('m_envio_copias', $this);
+    }
+
+    function obtPDF($oficio)
+    {
+        $this->db->select('dir_oficio');
+        $this->db->where('id_delivery', $oficio);
+        return $this->db->get('m_delivery')->row();
+    }
+
     function notificacion()
     {
         
@@ -245,7 +268,7 @@ class m_mensajeria extends CI_Model {
                 LEFT JOIN  usuario us on us.codigo = d.usr_envia
                 LEFT JOIN dependencias dep on dep.id_dependencia = d.dependencia
                 LEFT JOIN b_dependencias r on r.id = d.receptor
-                                ORDER BY folio DESC";
+                ORDER BY folio DESC";
                
                 return $this->db->query($qry)->result();
     }
@@ -491,15 +514,15 @@ class m_mensajeria extends CI_Model {
             return $esta;
         }
         if($estatus == 2){
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-pink badge-pill mb-2"><i class="fa fa-user-plus"></i> Asignado</span>';
+            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-pink badge-pill mb-2"><i class="fa fa-user-plus"></i> Validado</span>';
             return $esta;
         }
           if($estatus == 3){
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-info badge-pill mb-2"><i class="fa fa-spinner"></i> En Proceso</span>';
+            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-info badge-pill mb-2"><i class="fa fa-spinner"></i> enviado</span>';
             return $esta;
         }
           if($estatus == 4){
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-success badge-pill mb-2"><i class="fa fa-check-circle"></i> Resuelto</span>';
+            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-success badge-pill mb-2"><i class="fa fa-check-circle"></i> Recibido </span>';
             return $esta;
         }
             if($estatus == 5){

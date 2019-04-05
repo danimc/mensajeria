@@ -279,7 +279,7 @@ class Ticket extends CI_Controller {
 		$msg = $this->load->view('correos/c_nuevoTicket', $datos, true);
 
 		$this->load->library('email');
-		$this->email->from('incidenciasoag@gmail.com', 'incidenciasOAG');
+		$this->email->from('', 'incidenciasOAG');
 		$this->email->to($infoCorreo->correo);
 		$this->email->cc('incidenciasoag@gmail.com');
 		//$this->email->bcc('them@their-example.com');

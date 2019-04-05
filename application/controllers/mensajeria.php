@@ -82,7 +82,7 @@ class Mensajeria extends CI_Controller {
 			$this->image_lib->resize(); 
 			//return $ext;
 
-			$nPdf = $pdf .'.' . $ext;
+			$nPdf ='"'. $pdf .'.' . $ext . '"';
 		} 
 		######### FIN DEL SCRIPT#####################################
 
@@ -117,7 +117,6 @@ class Mensajeria extends CI_Controller {
 		
 		$codigo = $this->session->userdata("codigo");
 		$rol = $this->session->userdata("rol");
-		//$folio = $this->uri->segment(3);
 		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
 		//$datos['folio'] = $folio;
 
@@ -146,10 +145,11 @@ class Mensajeria extends CI_Controller {
 		$folio = $this->uri->segment(3);
 		$rol = $this->session->userdata("rol");
 		$datos['folio'] = $folio;
-		$datos['ticket'] = $this->m_mensajeria->seguimiento_ticket($folio);
+		$datos['oficio'] = $this->m_mensajeria->seguimiento_ticket($folio);
 		$datos['asignados'] = $this->m_mensajeria->obt_asignados();
 		$datos['categorias'] = $this->m_mensajeria->obt_categorias();
 		$datos['seguimiento'] = $this->m_mensajeria->obt_seguimiento($folio);
+		$datos['ccp'] = $this->m_mensajeria->obt_dependencias_ccp($folio);
 
 		if ($rol == 1) {
 			
@@ -192,6 +192,24 @@ class Mensajeria extends CI_Controller {
 	    $msg = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Se ha Asignado con Exito</p></div>';
 
  		  echo json_encode($msg);
+	}
+
+	function validar_recibido()
+	{
+		$oficio = $_POST['folio'];
+		$estatus = 4;
+		$fecha = $this->m_mensajeria->fecha_actual();
+		$hora = $this->m_mensajeria->hora_actual();	
+
+		$this->m_mensajeria->cambiar_estatus($oficio, $estatus);		
+		//$this->m_mensajeria->h_cerrar_ticket($folio, $usr, $fecha, $hora);			
+		$this->m_mensajeria->copias_enviadas($oficio, $fecha, $hora);
+
+		$msg = new \stdClass();
+		$msg->id = 1;
+		$msg->mensaje = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Ticket Cerrado Satisfactoriamente :)</p></div>';
+ 		echo json_encode($msg);
+ 		redirect('mensajeria/correo_copias_enviadas/'. $oficio);
 	}
 
 	function cambiar_categoria()
@@ -281,10 +299,13 @@ class Mensajeria extends CI_Controller {
 	}
 
 
-	function correo_ticket_levantado()
+	function correo_copias_enviadas()
 	{
-		$incidente = $this->uri->segment(3);
-		$infoCorreo = $this->m_mensajeria->seguimiento_ticket($incidente);
+		$oficio = $this->uri->segment(3);
+		$copias = $this->m_mensajeria->obt_dependencias_ccp($oficio);
+		$rutaPdf = $this->m_mensajeria->obtPDF($oficio);
+		$doc = str_replace('"', '', $rutaPdf->dir_oficio);
+		$pdf = "src/oficios/".$doc;
 		$horario = $this->m_mensajeria->hora_actual();
 		$saludo = '';
 
@@ -298,23 +319,25 @@ class Mensajeria extends CI_Controller {
 			$saludo = 'Buenas noches';
 		}
 		
-		$datos['ticket'] = $infoCorreo;
+		$datos['oficio'] = $oficio;
 		$datos['saludo'] = $saludo;		
 	  //  $this->load->view('_head');
 		$msg = $this->load->view('correos/c_nuevoTicket', $datos, true);
 
 		$this->load->library('email');
-		$this->email->from('incidenciasoag@gmail.com', 'incidenciasOAG');
-		$this->email->to($infoCorreo->correo);
-		$this->email->cc('incidenciasoag@gmail.com');
+		$this->email->from('incidenciasoag@gmail.com', 'Mensajeria OAG');
+		//$this->email->to($infoCorreo->correo);
+		$this->email->to('luis.mora@redudg.udg.mx');
+		//$this->email->cc('incidenciasoag@gmail.com');
 		//$this->email->bcc('them@their-example.com');
 
-		$this->email->subject('Registro de Incidente | incidenciasOAG');
+		$this->email->subject('Envio de Copia de Oficio | Mensajeria OAG');
 		$this->email->message($msg);
+		$this->email->attach($pdf);
 		$this->email->set_mailtype('html');
 		$this->email->send();
 
-		redirect('ticket/seguimiento/'. $incidente);
+		//redirect('mensajeria/seguimiento/'. $incidente);
 
 	//	echo $this->email->print_debugger();
 

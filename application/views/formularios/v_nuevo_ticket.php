@@ -131,7 +131,7 @@
                             <i class="fa fa-save"></i> Generar Ticket de Servicio
                         </button>
                         </form>
-                        <a class="btn btn-danger" href="/oagmvc">Cancelar</a>
+                        <a class="btn btn-danger" href="/mensajeria">Cancelar</a>
                     </div>
                 </div>
             </div>
