@@ -38,7 +38,7 @@ class m_mensajeria extends CI_Model {
     {
         $qry = '';
 
-        $qry = "SELECT abreviatura,id_dependencia FROM crm.dependencias
+        $qry = "SELECT abreviatura,id_dependencia FROM crm.dependencias   
                 INNER JOIN usuario
                 where 
                 usuario.dependencia = id_dependencia

@@ -156,7 +156,14 @@
 
 <script>
     $(function(){
-        pdf = <?=$oficio->pdf?>;
+      var es_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+      if(es_chrome){
+          pdf = '<?=$pdf?>';
+        }
+        else {
+          pdf = 'src/oficios/' + '<?=$pdf?>';
+        }
+        
         console.log(pdf);
 
         ver_pdf(pdf);
@@ -164,7 +171,28 @@
 </script>
 
 
-
+<script>
+      $("#btnCerrar").click(function(){
+    var formulario = $("#frmCerrar").serializeArray();
+    var button = "<i class='fa fa-spinner fa-pulse fa-fw'></i> Enviando Copias!";
+     // enlace.disabled='disabled';
+      document.getElementById('btnCerrar').disabled=true;
+      document.getElementById('btnCerrar').innerHTML = button;
+      //enlace.innerHTML = button;
+    $.ajax({
+      type: "POST",
+      dataType: 'json',
+      url: "<?=base_url()?>index.php?/mensajeria/validar_recibido",
+      data: formulario,
+    }).done(function(respuesta){      
+ /*      if (respuesta.id == 1) {
+         var buttonClosed = "<i class='fa fa-check '></i> Exito :)";
+         document.getElementById('btnCerrar').innerHTML = buttonClosed;        
+       } */    
+    });
+     setTimeout('document.location.reload()',1000); 
+   });
+</script>
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -195,27 +223,7 @@
        }     
     });
    });
-    $("#btnCerrar").click(function(){
-    var formulario = $("#frmCerrar").serializeArray();
-    var button = "<i class='fa fa-spinner fa-pulse fa-fw'></i> Enviando Copias";
-     // enlace.disabled='disabled';
-      document.getElementById('btnCerrar').disabled=true;
-      document.getElementById('btnCerrar').innerHTML = button;
-      //enlace.innerHTML = button;
-    $.ajax({
-      type: "POST",
-      dataType: 'json',
-      url: "<?=base_url()?>index.php?/mensajeria/validar_recibido",
-      data: formulario,
-    }).done(function(respuesta){
-       $("#mensaje").html(respuesta.mensaje);
-       if (respuesta.id == 1) {
-         var buttonClosed = "<i class='fa fa-check '></i> Exito :)";
-         document.getElementById('btnCerrar').innerHTML = buttonClosed;
-        setTimeout('document.location.reload()',1000);
-       }     
-    });
-   });
+
     $("#cambiarStatus").click(function(){
     var formulario = $("#frmStatus").serializeArray();
     $.ajax({

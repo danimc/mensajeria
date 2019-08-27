@@ -24,6 +24,7 @@ class Mensajeria extends CI_Controller {
 
 	function nueva_copia()
 	{
+		
 		$codigo = $this->session->userdata("codigo");	
 		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
 		$datos['reportante'] = $this->m_mensajeria->obt_lista_usuarios();
@@ -74,15 +75,10 @@ class Mensajeria extends CI_Controller {
 			$numOficio = explode('/', $oficio);
 			$pdf = $siglas->abreviatura . $numOficio[count($numOficio) - 2] .'-'. $numOficio[count($numOficio) - 1];			
 			move_uploaded_file($_FILES['documento']['tmp_name'], $this->ftp_ruta . 'src/oficios/' . $pdf .'.' . $ext);	
-			$config_image['image_library'] = 'gd2';
-			$config_image['source_image'] = $this->ftp_ruta . 'src/oficios/doc_'. $pdf .'.'. $ext;
-			$config_image['maintain_ratio'] = true;
-			$config_image['quality'] = 98;
-			$this->image_lib->initialize($config_image);
-			$this->image_lib->resize(); 
+			
 			//return $ext;
 
-			$nPdf ='"'. $pdf .'.' . $ext . '"';
+			$nPdf =$pdf .'.' . $ext;
 		} 
 		######### FIN DEL SCRIPT#####################################
 
@@ -109,7 +105,7 @@ class Mensajeria extends CI_Controller {
 			$this->m_mensajeria->guardar_copias($copias);
 		}
 
-		redirect('mensajeria/seguimiento/'. $idIncidente);
+		redirect(base_url().'index.php?/mensajeria/seguimiento/'. $idIncidente);
 	}
 
 	function lista_mensajes()
@@ -150,6 +146,7 @@ class Mensajeria extends CI_Controller {
 		$datos['categorias'] = $this->m_mensajeria->obt_categorias();
 		$datos['seguimiento'] = $this->m_mensajeria->obt_seguimiento($folio);
 		$datos['ccp'] = $this->m_mensajeria->obt_dependencias_ccp($folio);
+		$datos['pdf'] = ''. $datos['oficio']->pdf;
 
 		if ($rol == 1) {
 			
@@ -200,16 +197,20 @@ class Mensajeria extends CI_Controller {
 		$estatus = 4;
 		$fecha = $this->m_mensajeria->fecha_actual();
 		$hora = $this->m_mensajeria->hora_actual();	
+		$rutaPdf = $this->m_mensajeria->obtPDF($oficio);
+		$doc = str_replace('"', '', $rutaPdf->dir_oficio);
+		$pdf = "src/oficios/".$doc;
 
 		$this->m_mensajeria->cambiar_estatus($oficio, $estatus);		
 		//$this->m_mensajeria->h_cerrar_ticket($folio, $usr, $fecha, $hora);			
 		$this->m_mensajeria->copias_enviadas($oficio, $fecha, $hora);
+		$this->m_correos->correo_enviar_copias($oficio, $pdf);	
 
 		$msg = new \stdClass();
 		$msg->id = 1;
 		$msg->mensaje = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Ticket Cerrado Satisfactoriamente :)</p></div>';
  		echo json_encode($msg);
- 		redirect('mensajeria/correo_copias_enviadas/'. $oficio);
+ 		
 	}
 
 	function cambiar_categoria()
@@ -328,7 +329,7 @@ class Mensajeria extends CI_Controller {
 		$this->email->from('incidenciasoag@gmail.com', 'Mensajeria OAG');
 		//$this->email->to($infoCorreo->correo);
 		$this->email->to('luis.mora@redudg.udg.mx');
-		//$this->email->cc('incidenciasoag@gmail.com');
+		//$this->email->cc('xochitl.ferrer@redudg.udg.mx');
 		//$this->email->bcc('them@their-example.com');
 
 		$this->email->subject('Envio de Copia de Oficio | Mensajeria OAG');
@@ -337,6 +338,10 @@ class Mensajeria extends CI_Controller {
 		$this->email->set_mailtype('html');
 		$this->email->send();
 
+		$msg = new \stdClass();
+		$msg->id = 1;
+		$msg->mensaje = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Ticket Cerrado Satisfactoriamente :)</p></div>';
+ 		echo json_encode($msg);
 		//redirect('mensajeria/seguimiento/'. $incidente);
 
 	//	echo $this->email->print_debugger();

@@ -22,7 +22,10 @@ class m_ticket extends CI_Model {
         $this->db->where("rol", 1);
         return $this->db->get("usuario")->result();
     }
-
+    function obt_dependencias(){
+        $this->db->order_by('nombre_dependencia', 'ASC');
+        return $this->db->get("dependencias")->result();   
+    }
     function estatus()
     {
         $this->db->where('id !=', 2);

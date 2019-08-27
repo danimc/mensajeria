@@ -11,7 +11,7 @@
                 </ol>
                 <br>
     <a href="/oagmvc" class="btn btn-blue btn-icon-only btn-lg"><i class="fa fa-arrow-left"></i></a>
-    <a href="<?=base_url()?>index.php?/ticket/nuevo_ticket" class="btn btn-warning btn-icon-only btn-lg "><span class="fa fa-plus"></span></a>
+    <a href="<?=base_url()?>index.php?/mensajeria/nueva_mensajeria" class="btn btn-warning btn-icon-only btn-lg "><span class="fa fa-plus"></span></a>
     </div>
   <!-- Main content -->
   <section class="page-content fade-in-up">
@@ -21,7 +21,7 @@
                         <h5 class="font-strong mb-4">MENSAJES</h5>
                         <div class="flexbox mb-4">
                             <div class="flexbox">
-                                <label class="mb-0 mr-2">Filtrar por:</label>
+                                <!-- <label class="mb-0 mr-2">Filtrar por:</label>
                                 <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
 
                                   <select class="selectpicker show-tick form-control" id="type-filter" title="Please select" data-style="btn-solid" data-width="150px" tabindex="-98">
@@ -31,7 +31,9 @@
                                     <option>En Proceso</option>
                                     <option>Resuelto</option>
                                     <option>Cerrado</option>
-                                </select></div>
+                                </select> -->
+                                  
+                              </div>
                             </div>
                             <div class="input-group-icon input-group-icon-left mr-3">
                                 <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
@@ -72,6 +74,7 @@
                                    {
                                     $fecha = $this->m_mensajeria->fecha_text_f($ticket->fecha_alta);
                                     $estatus = $this->m_mensajeria->etiqueta($ticket->estatus);
+                                    $doc = str_replace('"', '', $ticket->pdf);
                                     ?>
                                     <tr class="">
                                       <td ><?=$ticket->folio?></td>
@@ -81,7 +84,7 @@
                                       <td ><?=$ticket->nombre_dependencia?></td>
                                       <td ><?=$ticket->receptor?></td>
                                       <td align="center">
-                                        <a class="btn btn-sm btn-danger" href="<?=base_url()?>src/oficios/<?=$ticket->pdf?>" data-toggle = "tooltip"  title="Ver Oficio"><i class="fa  fa-file-pdf-o"></i> </a>
+                                        <a class="btn btn-sm btn-danger" target="_blank" href="<?=base_url()?>src/oficios/<?=$doc?>" data-toggle = "tooltip"  title="Ver Oficio"><i class="fa fa-file-pdf-o"></i> </a>
 
                                         <a class="btn btn-sm btn-info " href="<?=base_url()?>index.php?/mensajeria/seguimiento/<?=$ticket->folio?>" data-toggle = "tooltip"  title="Seguimiento"><i class="fa fa-info"></i> </a>
                                       </td>

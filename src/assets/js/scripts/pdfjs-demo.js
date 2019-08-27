@@ -1,5 +1,5 @@
 function ver_pdf(pdf){
-        var url = 'src/oficios/'+ pdf;
+        var url = pdf;
 
         var pdfDoc = null,
                 pageNum = 1,
