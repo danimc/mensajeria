@@ -19,7 +19,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title> Mensajería OAG</title>
+    <title> Control de Oficios OAG</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
       <link href="<?=base_url()?>src/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -60,9 +60,9 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     <div class="page-wrapper">
         <header class="header">
             <div class="page-brand">
-                <a href="/mensajeria">
-                    <span class="brand">sistematización</span>
-                    <span class="brand-mini">OAG</span>
+                <a href="/mensajeria">                    
+                    <span class="brand"><img src="<?=base_url()?>src/img/logoUdg.png" height="50px"> Oficios oag</span>
+                    <span class="brand-mini"></span>
                 </a>
             </div>
             <div class="flexbox flex-1">

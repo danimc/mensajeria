@@ -24,7 +24,7 @@ class Mensajeria extends CI_Controller {
 
 	function nueva_copia()
 	{
-		
+		 
 		$codigo = $this->session->userdata("codigo");	
 		$datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
 		$datos['reportante'] = $this->m_mensajeria->obt_lista_usuarios();
@@ -193,7 +193,7 @@ class Mensajeria extends CI_Controller {
 
 	function validar_recibido()
 	{
-		$oficio = $_POST['folio'];
+		$oficio = 37;  //$_POST['folio']; 37
 		$estatus = 4;
 		$fecha = $this->m_mensajeria->fecha_actual();
 		$hora = $this->m_mensajeria->hora_actual();	
@@ -299,6 +299,32 @@ class Mensajeria extends CI_Controller {
 		redirect('ticket/seguimiento/'. $folio .'/#chat');
 	}
 
+	function correo()
+	{
+		
+		$this->load->library('email');
+
+		$config['protocol'] = 'smtp';
+		$this->email->initialize($config);
+		$this->email->from('incidenciasoag@gmail.com', 'Mensajeria OAG');
+		//$this->email->to($infoCorreo->correo);
+		$this->email->to('luis.mora@redudg.udg.mx');
+		//$this->email->cc('xochitl.ferrer@redudg.udg.mx');
+		//$this->email->bcc('them@their-example.com');
+
+		$this->email->subject('Envio de Copia de Oficio | Mensajeria OAG');
+		$this->email->message('Hola bb');
+		//$this->email->attach($pdf);
+		$this->email->set_mailtype('html');
+		$this->email->send();
+
+		echo $this->email->print_debugger();
+
+
+		
+
+	}
+
 
 	function correo_copias_enviadas()
 	{
@@ -320,7 +346,7 @@ class Mensajeria extends CI_Controller {
 			$saludo = 'Buenas noches';
 		}
 		
-		$datos['oficio'] = $oficio;
+	//	$datos['oficio'] = $oficio;
 		$datos['saludo'] = $saludo;		
 	  //  $this->load->view('_head');
 		$msg = $this->load->view('correos/c_nuevoTicket', $datos, true);
@@ -334,18 +360,20 @@ class Mensajeria extends CI_Controller {
 
 		$this->email->subject('Envio de Copia de Oficio | Mensajeria OAG');
 		$this->email->message($msg);
-		$this->email->attach($pdf);
+		//$this->email->attach($pdf);
 		$this->email->set_mailtype('html');
 		$this->email->send();
 
-		$msg = new \stdClass();
-		$msg->id = 1;
-		$msg->mensaje = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Ticket Cerrado Satisfactoriamente :)</p></div>';
- 		echo json_encode($msg);
+		echo $this->email->print_debugger();
+
+
+		$respuesta = new \stdClass();
+		$respuesta->id = 1;
+		$respuesta->mensaje = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Ticket Cerrado Satisfactoriamente :)</p></div>';
+ 		echo json_encode($respuesta);
 		//redirect('mensajeria/seguimiento/'. $incidente);
 
-	//	echo $this->email->print_debugger();
-
+		
 	}
 
 	

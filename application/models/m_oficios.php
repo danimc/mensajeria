@@ -25,18 +25,38 @@ class m_oficios extends CI_Model {
 
     	$qry = "
     		SELECT max(consecutivo) as cons
-    		FROM crm.Tb_Oficios
-			where oficio like '%/$year'";
+    		FROM crm.Tb_LibroOficios
+			where year = $year";
 
 		return $this->db->query($qry)->row();
     }
 
     function verifica_nuevoOficio($oficio)
     {
-    	$this->db->where('oficio', $oficio);
+    	$this->db->where('consecutivo', $oficio);
+        $this->db->where('year', date('Y'));
 
-    	return $this->db->get('Tb_Oficios')->num_rows();
+    	return $this->db->get('Tb_LibroOficios')->num_rows();
     }
+
+        function obt_LibroOficios()
+    {
+        $qry = "";
+
+        $qry = "SELECT 
+                id,
+                consecutivo,
+                fecha_captura,
+                hora_captura,
+                solicitante,
+                dependencia_solicitante,
+                dependencia_receptor,
+                asunto
+                FROM crm.Tb_LibroOficios";
+
+        return $this->db->query($qry)->result();
+    }
+
 
     function obt_oficios()
     {

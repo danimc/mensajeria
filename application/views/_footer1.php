@@ -35,6 +35,7 @@
     <script src="<?=base_url()?>src/assets/vendors/pdfjs/pdf.js"></script>
     <!-- CORE SCRIPTS-->
     <script src="<?=base_url()?>src/assets/js/app.min.js"></script>
+    
     <!-- PAGE LEVEL SCRIPTS-->
     <script src="<?=base_url()?>src/assets/js/scripts/pdfjs-demo.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/dataTables/datatables.min.js"></script>

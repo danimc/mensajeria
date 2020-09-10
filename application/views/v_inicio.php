@@ -10,7 +10,7 @@
             <a href="<?=base_url()?>index.php?/oficios">
              <div class="card btn-danger">
                 <div class="card-body">
-                    <h2 class="text-white">Libro Oficios<i class=" ti-folder float-right"></i></h2>
+                    <h2 class="text-white">Libro Oficios<i class=" ti-archive float-right"></i></h2>
                     <div class="text-white mt-1"><i class="ti-stats-up mr-1"></i><small>Oficios remitidos por la OAG</small></div>
                 </div>
                 <div class="progress mb-2 widget-dark-progress">
@@ -37,7 +37,7 @@
             <a href="<?=base_url()?>index.php?/mensajeria/lista_mensajes">
              <div class="card btn-info">
                 <div class="card-body">
-                    <h2 class="text-white">Mensajeria Registrada <i class=" ti-folder float-right"></i></h2>
+                    <h2 class="text-white">Mensajeria estatus<i class=" ti-folder float-right"></i></h2>
                     <div class="text-white mt-1"><i class="ti-stats-up mr-1"></i><small>ver los oficios mandados</small></div>
                 </div>
                 <div class="progress mb-2 widget-dark-progress">

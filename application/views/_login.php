@@ -2,7 +2,7 @@
 <body class="hold-transition loading-page">
         <div class="login-box">
             <div class="login-logo">
-                sistema de incidencias<br> OAG
+                Mensajería<br> <b>OAG</b>
             </div>
             <div class="login-box-body">
                 <p class="login-box-msg">Ingresa al Sistema</p>

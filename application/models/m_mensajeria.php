@@ -87,7 +87,7 @@ class m_mensajeria extends CI_Model {
         $qry = "SELECT 
                 d.id_delivery as folio,
                 d.oficio,
-                us.usuario,
+                us.nombre_completo,
                 dep.nombre_dependencia,
                 r.nombre as receptor,
                 d.estatus,

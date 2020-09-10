@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-6 text-muted">Capturado por:</div>
-                                    <div class="col-6"><?=$oficio->usuario?></div>
+                                    <div class="col-6"><?=$oficio->nombre_completo?></div>
                                 </div>
                                 <div class="row mb-2">
                                     <div class="col-6 text-muted">Receptor:</div>
@@ -156,13 +156,10 @@
 
 <script>
     $(function(){
-      var es_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-      if(es_chrome){
-          pdf = '<?=$pdf?>';
-        }
-        else {
+    
+
           pdf = 'src/oficios/' + '<?=$pdf?>';
-        }
+    
         
         console.log(pdf);
 
@@ -190,7 +187,7 @@
          document.getElementById('btnCerrar').innerHTML = buttonClosed;        
        } */    
     });
-     setTimeout('document.location.reload()',1000); 
+    // setTimeout('document.location.reload()',1000); 
    });
 </script>
 
