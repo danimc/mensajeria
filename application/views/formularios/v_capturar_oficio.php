@@ -31,7 +31,7 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-addon">A.G./</span> 
                                     <input class="form-control form-control-solid" min="<?=$consecutivo?>" max="9999"  id="oficio" value="<?=$consecutivo?>" name="oficio" type="number" placeholder="">
-                                    <span class="input-group-addon">/2019</span> 
+                                    <span class="input-group-addon">/<?=date('Y')?></span> 
                                 </div>
                             </div>
 

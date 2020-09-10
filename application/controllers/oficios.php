@@ -68,7 +68,7 @@ class Oficios extends CI_Controller {
 
         if ($verificador == 0 ) {
             echo "registrando";
-            //$this->nueva_mensajeria();
+            $this->guardar_captura();
         }
         else{
             echo " No se puede registrar el mismo numero de Oficio";
@@ -79,9 +79,9 @@ class Oficios extends CI_Controller {
     {
         $oficio = array(
                         'consecutivo'             => $this->input->post('oficio'),
-                        'year'                    => date('YYYY'),
+                        'year'                    => date('Y'),
                         'fecha_captura'           => $this->m_ticket->fecha_actual(),
-                        'hora_captura'            => $this->m_ticket->hora_captura(),
+                        'hora_captura'            => $this->m_ticket->hora_actual(),
                         'solicitante'             => $this->session->userdata('codigo'),
                         'dependencia_solicitante' => $this->session->userdata('dependencia'),
                         'receptor'                => $this->input->post('responsable'),
@@ -90,6 +90,7 @@ class Oficios extends CI_Controller {
                         'estatus'                 => 1,
                         'exp'                     => $this->input->post('exp')
                 );
+        
     }
 
     function genera_PDF()
