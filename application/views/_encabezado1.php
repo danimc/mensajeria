@@ -37,6 +37,30 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     <link href="<?php echo base_url()?>src/assets/css/main.min.css" rel="stylesheet" />
 
     <script src="<?php echo base_url()?>src/js/jquery-2.2.3.min.js"></script>
+
+
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+
+    <!-- 
+    RTL version
+-->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css" />
 </head>
 
 <?php
@@ -60,7 +84,8 @@ if($this->m_seguridad->acceso_sistema() == 0) {
         <header class="header">
             <div class="page-brand">
                 <a href="/bases">
-                    <span class="brand"><img src="<?php echo base_url()?>src/img/logoUdg.png" height="50px"> Oficios oag</span>
+                    <span class="brand"><img src="<?php echo base_url()?>src/img/logoUdg.png" height="50px"> Oficios
+                        oag</span>
                     <span class="brand-mini"></span>
                 </a>
             </div>
@@ -108,7 +133,8 @@ if($this->m_seguridad->acceso_sistema() == 0) {
                             <div class="dropdown-arrow"></div>
                             <div class="dropdown-header">
                                 <div class="admin-avatar">
-                                    <img src="<?php echo base_url()?>src/img/usr/team.png" class="user-image" alt="foto Perfil">
+                                    <img src="<?php echo base_url()?>src/img/usr/team.png" class="user-image"
+                                        alt="foto Perfil">
                                 </div>
                                 <div>
                                     <h5 class="font-strong text-white"><?php echo $usuario->nombre?></h5>
@@ -119,8 +145,8 @@ if($this->m_seguridad->acceso_sistema() == 0) {
                                 </div>
                             </div>
                             <div class="admin-menu-features">
-                                <a class="admin-features-item" href="<?php echo base_url()?>index.php?/usuario/perfil"><i
-                                        class="ti-user"></i>
+                                <a class="admin-features-item"
+                                    href="<?php echo base_url()?>index.php?/usuario/perfil"><i class="ti-user"></i>
                                     <span>PERFIL</span>
                                 </a>
                                 <a class="admin-features-item" href="javascript:;"><i class="ti-settings"></i>

@@ -20,14 +20,15 @@ class Oficios extends CI_Controller
     public function index()
     {
         $codigo = $this->session->userdata("codigo");
-        $usuario = $this->m_usuario->obt_usuario($codigo);    
+        $usuario = $this->m_usuario->obt_usuario($codigo);
+        $datos['years'] = $this->m_oficios->obtAniosRegistrados();
         $datos['usuario'] = $usuario;
-        $datos['oficios'] = $this->m_oficios->obt_LibroOficios();
+        $head['title'] = "Control de Oficios";
 
-        $this->load->view('_encabezado1');
+        $this->load->view('_encabezado1', $head);
         $this->load->view('_menuLateral1');
         $this->load->view('v_inicioOficios', $datos);
-        $this->load->view('_footer1');    
+        $this->load->view('_footer1');
     }
 
     function nuevo_oficio()
@@ -71,24 +72,24 @@ class Oficios extends CI_Controller
     {
 
         $max = $this->m_oficios->obtMaxConsecutivo();
+        $datosDependencia = $this->m_oficios->obtDatosDependencia($this->input->post('dependencia'));
         $consecutivo = $max->cons + 1;
-        $nOficio = 'OAG/' . $consecutivo . '/' . date('Y');
+        $nOficio = 'AG/' . $consecutivo . '/' . date('Y');
 
         $oficio = array(
         'consecutivo'       => $consecutivo,
-        'oficio'            => $nOficio,
-        'folio'             => $this->input->post('folio'),
-        'servicio'          => $_POST['ticket'],
-        'oficioRecibido'    => $_POST['oficioRecibido'],
+        'oficio'            => $nOficio,     
         'destinatario'      => $_POST['destinatario'],
-        'cargo'             => $_POST['cargo'],
-        'ccp'               => $_POST['ccp'],
-        'redaccion'         => $_POST['redaccion'],
+        'dependencia'       => $_POST['dependencia'],
+        'nombreDependencia' => $datosDependencia->nombre,
+        'cargo'             => $_POST['cargo'],       
+        'redaccion'         => $_POST['asunto'],
         'fecha_realizado'   => $this->m_ticket->fecha_actual(),
         'hora_realizado'    => $this->m_ticket->hora_actual(),
         'estatus'           => 1,
-        'tipo'              => $_POST['tipoOficio'],
-        'capturista'        => $this->session->userdata("codigo")
+        'exp'               => $_POST['exp'],
+        'capturista'        => $this->session->userdata("codigo"),
+        'unidadRemitente'   => $this->session->userdata("dependencia")
         );
 
         $oficio = array_filter($oficio);
@@ -120,6 +121,18 @@ class Oficios extends CI_Controller
         echo json_encode($max);
     }
 
+    /**
+     * Regresa Json con la informacion de la Dependencia Externa
+     * 
+     * @return Json
+     */
+    function obtDatosDependencia()
+    {
+        $id = $this->input->get('id');
+
+        echo json_encode($this->m_oficios->obtDatosDependencia($id));
+    }
+
 
     
     function verifica_registroOficio()
@@ -137,22 +150,27 @@ class Oficios extends CI_Controller
         }
     }
 
-    function guardar_captura()
+    /**
+     * Vista de seguimiento del oficio 
+     * 
+     * @return view
+     */
+    function seguimiento()
     {
-        $oficio = array(
-                        'consecutivo'             => $this->input->post('oficio'),
-                        'year'                    => date('Y'),
-                        'fecha_captura'           => $this->m_ticket->fecha_actual(),
-                        'hora_captura'            => $this->m_ticket->hora_actual(),
-                        'solicitante'             => $this->session->userdata('codigo'),
-                        'dependencia_solicitante' => $this->session->userdata('dependencia'),
-                        'receptor'                => $this->input->post('responsable'),
-                        'dependencia_receptor'    => $this->input->post('dependencia'),
-                        'asunto'                  => $this->input->post('asunto'),
-                        'estatus'                 => 1,
-                        'exp'                     => $this->input->post('exp')
-                );
-        
+        $oficio = $this->uri->segment(3);
+
+        $datos['id']        = $oficio;
+        $datos['oficio']    = $this->m_oficios->obt_oficio($oficio);
+        $datos['pdf']        = explode(".", $datos['oficio']->pdf);
+        //    $datos['tipos']     = $this->m_oficios->obt_tipoOficios();
+        $head['title']      = "Seguimiento del oficio ";
+
+        $this->load->view('_encabezado1', $head);
+        $this->load->view('_menuLateral1');
+        $this->load->view('oficios/seguimiento', $datos);
+        //$this->load->view('fragmentos/modales/oficios/mod_asociarTicket', $datos);
+        //$this->load->view('oficios/v_edita_oficio', $datos);
+        $this->load->view('_footer1');
     }
 
     function genera_PDF()
@@ -176,6 +194,66 @@ class Oficios extends CI_Controller
          $this->mydompdf->stream("ficha", array("Attachment" => false));
     }
 
+
+    /**
+     * Regresa la tabla de oficios por año de filtro
+     * 
+     * @return Json Tabla de datos 
+     */
+    function obt_oficios()
+    {
+
+        $year = $this->input->get('anio');
+        $oficios =  $this->m_oficios->obt_oficios($year);
+        $tabla = '
+       <table class="table table-bordered table-hover dataTable no-footer dtr-inline" id="datatable" role="grid" aria-describedby="datatable_info">
+       <thead class="thead-default thead-lg">
+           <tr role="row">
+               <th>CONS.</th>
+               <th>OFICIO</th>              
+               <th>DESTINATARIO</th>
+               <th>DEPENDENCIA</th>               
+               <th>FECHA CAPTURA</th>
+               <th>ASUNTO</th>
+               <th>EXP</th>
+               <th>ESTATUS</th>
+               <th></th>
+           </tr>
+       </thead>
+       <tbody>';
+
+        foreach ($oficios as $o) {
+            $fecha = $this->m_ticket->fecha_text_f($o->fecha_realizado);
+            $estatus = $this->m_oficios->estatus($o->estatus);
+            $tabla .=
+            ' <tr class="">
+                 <td>' . $o->consecutivo . '</td>
+                 <td>' . $o->oficio . '</td>
+                
+                 <td>' . strtoupper($o->destinatario) . '</td>
+                 <td>' . $o->nombreDependencia . '</td>                
+                 <td>' . $fecha . '</td>
+                 <td>' . strip_tags($o->redaccion) . ' </td>
+                 <td>' . $o->exp.'</td>
+                 <td align="center">' . $estatus . '</td>
+                 <td width="120px">';
+            if ($o->generado == 1) {
+                $tabla .= '<a href="' . base_url() . 'oficios/descarga_generado/' . $o->id . '" target="_blank" class="btn btn-sm " data-toggle="tooltip" title="Descargar Oficio Generado"><i style="color: orange" class="fas fa-download fa-2x"></i></a>';
+            }
+            $tabla .= '<a class="btn btn-sm" href="' . base_url() . 'oficios/seguimiento/' . $o->id . '" data-toggle="tooltip" title="Editar y Seguimiento"><i style="color: brown;" class="far fa-edit fa-2x"></i></a>';
+            if ($o->pdf != null) {
+                $tabla .= '<a href="' . base_url() . 'src/oficios/oficios/' . $o->pdf . '" target="_blank" class="btn btn-sm " data-toggle="tooltip" title="Acuse"><i style="color: red" class="fas fa-file-pdf fa-2x"></i></a>';
+            }
+            $tabla .= '
+                </td>
+             </tr>';
+        }
+        $tabla .= '
+         </tbody>
+         </table>';
+
+        echo json_encode($tabla);
+    }
 
     
 
