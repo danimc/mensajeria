@@ -1,7 +1,4 @@
-
-
-
- <div class="content-wrapper">
+<div class="content-wrapper">
   <!-- Content Header (Page header) -->
  <div class="page-heading">
                 <h1 class="page-title">Registrar Nuevo Envio de Copias:</h1>
@@ -15,7 +12,7 @@
                 <br>
     </div>
 
-        <form enctype="multipart/form-data" role="form" action="<?base_url()?>index.php?/oficios/verifica_registroOficio" method="post" id="form_newsletter">
+        <form enctype="multipart/form-data" role="form" action="<?php base_url()?>index.php?/oficios/verifica_registroOficio" method="post" id="form_newsletter">
     <!-- Main content -->
  <section class="page-content fade-in-up">
         <div class="row">
@@ -30,8 +27,8 @@
                                 <label class="col-form-label">Numero de Oficio:</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-addon">A.G./</span> 
-                                    <input class="form-control form-control-solid" min="<?=$consecutivo?>" max="9999"  id="oficio" value="<?=$consecutivo?>" name="oficio" type="number" placeholder="">
-                                    <span class="input-group-addon">/<?=date('Y')?></span> 
+                                    <input class="form-control form-control-solid" min="<?php echo $consecutivo?>" max="9999"  id="oficio" value="<?php echo $consecutivo?>" name="oficio" type="number" placeholder="">
+                                    <span class="input-group-addon">/<?php echo date('Y')?></span> 
                                 </div>
                             </div>
 
@@ -46,9 +43,9 @@
                                 <div class="input-group mb-3">
                                     <select name="dependencia" id="dependencia" class="form-control select2_demo_1">
                                         <option value="0">Seleccione para que dependencia</option>
-                                        <? foreach ($centros as $centro) {?>
-                                        <option value="<?=$centro->id?>"><?=$centro->nombre?></option>
-                                        <? }?>
+                                        <?php foreach ($centros as $centro) {?>
+                                        <option value="<?php echo $centro->id?>"><?php echo $centro->nombre?></option>
+                                        <?php }?>
                                     </select>
                                 </div>
                             </div>
@@ -81,15 +78,29 @@
 </section>
 
 
-<!-- /.content -->
- <script src="<?=base_url()?>src/assets/js/scripts/form-plugins.js"></script>
-<!-- /.content-wrapper -->
-    <script>
-        $(function() {
-            $('#summernote').summernote({
-                 height: 100
-            });
-        });
-    </script>
- 
+<script>
+$(function() {
+    setInterval('actualizarCons()', 5000);
 
+    $('#summernote').summernote({
+        height: 100
+    });
+});
+</script>
+
+<script>
+function actualizarCons() {
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: '<?php echo base_url() ?>oficios/obtConsecutivo',
+    }).done(function(respuesta) {
+        valor = $("#oficio").val();
+        if (valor != respuesta) {
+            alertify.error('¡EL CONSECUTIVO ACABA DE ACTUALIZARSE AL ' + respuesta + '!');
+            $("#oficio").val(respuesta);
+        }
+
+    })
+}
+</script>

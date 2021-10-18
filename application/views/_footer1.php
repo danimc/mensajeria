@@ -32,12 +32,12 @@
     <script src="<?=base_url()?>src/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.min.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/summernote/dist/summernote.min.js"></script>
-    <script src="<?=base_url()?>src/assets/vendors/pdfjs/pdf.js"></script>
+   
     <!-- CORE SCRIPTS-->
     <script src="<?=base_url()?>src/assets/js/app.min.js"></script>
     
     <!-- PAGE LEVEL SCRIPTS-->
-    <script src="<?=base_url()?>src/assets/js/scripts/pdfjs-demo.js"></script>
+  
     <script src="<?=base_url()?>src/assets/vendors/dataTables/datatables.min.js"></script>
 
     </body>
