@@ -106,6 +106,65 @@
 </section>
 
 
+
+<script>
+
+function obt_oficios(year) {
+  var idioma = {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando _START_ al _END_ de _TOTAL_ registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Filtrar por:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        buttons: {
+            copyTitle: 'Los datos fueron copiados',
+            copyInfo: {
+                _: 'Copiados %d filas al portapapeles',
+                1: 'Copiado 1 fila al portapapeles',
+            }
+        }
+    };
+  $('#datatable').DataTable({
+      ajax: {
+        url: '<?php echo base_url() ?>oficios/obt_oficios?anio=' + year,
+        dataSrc: ''
+      },
+      columns: [
+        { data: 'consecutivo' },
+        { data: 'oficio' },
+        { data: 'destinatario' },
+        { data: 'dependencia' },
+        { data: 'fecha_cap' },
+        { data: 'asunto' },
+        { data: 'exp' },
+        { data: 'estatus' },
+        { data: 'acciones'}
+      ],
+      "deferRender": true,
+      "language": idioma,
+      stateSave: true,    
+    });
+
+}
+</script>
+
 <script>
     $(function() {
         $("#year").val(<?php echo date('Y') ?>);
@@ -136,7 +195,7 @@
 </script>
 
 <script>
-    function obt_oficios(year) {
+    function obt_oficios1(year) {
         $.ajax({
             type: "GET",
             dataType: 'json',

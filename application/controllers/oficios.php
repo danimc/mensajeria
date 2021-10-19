@@ -205,9 +205,35 @@ class Oficios extends CI_Controller
 
         $year = $this->input->get('anio');
         $oficios =  $this->m_oficios->obt_oficios($year);
+        $i = 0;
+        $tabla = "";
+
+        foreach ($oficios as $t) {
+            $fecha = $this->m_ticket->fecha_text_f($t->fecha_realizado);
+            $estatus = $this->m_oficios->estatus($t->estatus);
+
+           
+            $tabla = 1;
+           
+            $respuesta[$i] = array(
+            'consecutivo'    => $t->consecutivo,
+            'oficio'         => $t->oficio,
+            'destinatario'   => $t->destinatario,
+            'dependencia'    => $t->nombreDependencia,
+            'fecha_cap'      => $fecha,
+            'asunto'         => $t->redaccion,
+            'exp'            => $t->exp,
+            'estatus'        => $estatus,
+            'acciones'        => $tabla
+            );
+            $i++;
+        }
+
+
+        /*
         $tabla = '
-       <table class="table table-bordered table-hover dataTable no-footer dtr-inline" id="datatable" role="grid" aria-describedby="datatable_info">
-       <thead class="thead-default thead-lg">
+        <table class="table table-bordered table-hover dataTable no-footer dtr-inline" id="datatable" role="grid" aria-describedby="datatable_info">
+        <thead class="thead-default thead-lg">
            <tr role="row">
                <th>CONS.</th>
                <th>OFICIO</th>              
@@ -219,8 +245,8 @@ class Oficios extends CI_Controller
                <th>ESTATUS</th>
                <th></th>
            </tr>
-       </thead>
-       <tbody>';
+        </thead>
+        <tbody>';
 
         foreach ($oficios as $o) {
             $fecha = $this->m_ticket->fecha_text_f($o->fecha_realizado);
@@ -251,8 +277,9 @@ class Oficios extends CI_Controller
         $tabla .= '
          </tbody>
          </table>';
+         */
 
-        echo json_encode($tabla);
+        echo json_encode($respuesta);
     }
 
     

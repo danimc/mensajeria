@@ -182,6 +182,10 @@ class m_oficios extends CI_Model
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-success badge-pill mb-2"><i class="fa fa-check"></i> Entregado</span>';
             return $esta;
         }
+        if($estatus == 4) {
+            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-danger badge-pill mb-2"><i class="fa fa-close "></i> Cancelado</span>';
+            return $esta;
+        }
     }
 
     function correo_ticket_cerrado($folio, $fecha, $hora)
