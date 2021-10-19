@@ -4,14 +4,6 @@ $codigo = $this->session->userdata("codigo");
 $usuario = $this->m_usuario->obt_usuario($codigo);
 
 ?>
-<!--
-    ###########################################
-    #                                         #
-    #  CARGANDO TODAS LAS LIBRERIAS CSS Y JS  #
-    #       NECESARIAS PARA EL PROYECTO       #
-    #                                         #
-    ###########################################
--->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -23,7 +15,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
     <link href="<?php echo base_url()?>src/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="<?php echo base_url()?>src/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="<?php echo base_url()?>src/assets/vendors/font-awesome/css/font-awesome.min.css?v1" rel="stylesheet" />
     <link href="<?php echo base_url()?>src/assets/vendors/line-awesome/css/line-awesome.min.css" rel="stylesheet" />
     <link href="<?php echo base_url()?>src/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
     <link href="<?php echo base_url()?>src/assets/vendors/animate.css/animate.min.css" rel="stylesheet" />

@@ -240,7 +240,7 @@ class Oficios extends CI_Controller
             if ($o->generado == 1) {
                 $tabla .= '<a href="' . base_url() . 'oficios/descarga_generado/' . $o->id . '" target="_blank" class="btn btn-sm " data-toggle="tooltip" title="Descargar Oficio Generado"><i style="color: orange" class="fas fa-download fa-2x"></i></a>';
             }
-            $tabla .= '<a class="btn btn-sm" href="' . base_url() . 'oficios/seguimiento/' . $o->id . '" data-toggle="tooltip" title="Editar y Seguimiento"><i style="color: brown;" class="far fa-edit fa-2x"></i></a>';
+            $tabla .= '<a class="btn btn-sm" href="' . base_url() . 'oficios/seguimiento/' . $o->id . '" data-toggle="tooltip" title="Editar y Seguimiento"><i style="color: brown;" class="fa fa-eye fa-2x"></i></a>';
             if ($o->pdf != null) {
                 $tabla .= '<a href="' . base_url() . 'src/oficios/oficios/' . $o->pdf . '" target="_blank" class="btn btn-sm " data-toggle="tooltip" title="Acuse"><i style="color: red" class="fas fa-file-pdf fa-2x"></i></a>';
             }

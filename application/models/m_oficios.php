@@ -128,6 +128,7 @@ class m_oficios extends CI_Model
                 if(Tb_Oficios.folio != '', Tb_Oficios.folio, '---') as folio,           
                 concat(fecha_realizado, ' ', hora_realizado ) as fechaOficio,
                 destinatario,
+                nombreDependencia as dependencia,
                 redaccion,
                 if(oficioRecibido != '', oficioRecibido, '---') as oficioRecibido,
                 cargo,
