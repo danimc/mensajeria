@@ -95,7 +95,7 @@ class m_oficios extends CI_Model
         // $year = date('Y');
         $qry = "";
 
-        $qry = "SELECT Tb_Oficios.id,
+        $qry = "SELECT DISTINCT Tb_Oficios.id,
                 consecutivo,
                 oficio,
                 folio,
@@ -105,6 +105,7 @@ class m_oficios extends CI_Model
                 fecha_realizado,
                 servicio,
                 estatus,
+                d.nombre_dependencia as remitente,
                 fecha_entrega,
                 t.tipoOficio as tipo,
                 nombreDependencia,
@@ -113,6 +114,7 @@ class m_oficios extends CI_Model
                 exp
             FROM Tb_Oficios
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
+                LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
             WHERE oficio like '%/$year' ";
 
         return $this->db->query($qry)->result();
@@ -166,6 +168,25 @@ class m_oficios extends CI_Model
     function obt_tipoOficios()
     {
         return $this->db->get('Tb_Cat_TipoOficio')->result();
+    }
+
+    /**
+     * acorta la cadena de un texto
+     * 
+     * @param string $cadena cadena a acortar
+     * @param int $limite cantidad de caracteres
+     * 
+     * @return string
+     */
+    function limitar_cadena($cadena, $limite){
+        // Si la longitud es mayor que el límite...
+        if(strlen($cadena) > $limite){
+            // Entonces corta la cadena y ponle el sufijo
+            return substr($cadena, 0, $limite);
+        }
+        
+        // Si no, entonces devuelve la cadena normal
+        return $cadena;
     }
 
     function estatus($estatus)

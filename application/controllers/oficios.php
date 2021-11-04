@@ -202,18 +202,20 @@ class Oficios extends CI_Controller
      */
     function obt_oficios()
     {
-
+        header('Content-Type: application/json');
         $year = $this->input->get('anio');
         $oficios =  $this->m_oficios->obt_oficios($year);
+        $respuesta = array();
         $i = 0;
-        $tabla = "";
 
+        
+        
         foreach ($oficios as $t) {
             $fecha = $this->m_ticket->fecha_text_f($t->fecha_realizado);
             $estatus = $this->m_oficios->estatus($t->estatus);
-
-           
-            $tabla = 1;
+           // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
+                      
+            $tabla = "<a class='fa fa-eye fa-2x text-warning' href='oficios/seguimiento/{$t->id}'></a>";
            
             $respuesta[$i] = array(
             'consecutivo'    => $t->consecutivo,
@@ -223,61 +225,12 @@ class Oficios extends CI_Controller
             'fecha_cap'      => $fecha,
             'asunto'         => $t->redaccion,
             'exp'            => $t->exp,
+            'dRemitente'     => $t->remitente,
             'estatus'        => $estatus,
             'acciones'        => $tabla
             );
             $i++;
         }
-
-
-        /*
-        $tabla = '
-        <table class="table table-bordered table-hover dataTable no-footer dtr-inline" id="datatable" role="grid" aria-describedby="datatable_info">
-        <thead class="thead-default thead-lg">
-           <tr role="row">
-               <th>CONS.</th>
-               <th>OFICIO</th>              
-               <th>DESTINATARIO</th>
-               <th>DEPENDENCIA</th>               
-               <th>FECHA CAPTURA</th>
-               <th>ASUNTO</th>
-               <th>EXP</th>
-               <th>ESTATUS</th>
-               <th></th>
-           </tr>
-        </thead>
-        <tbody>';
-
-        foreach ($oficios as $o) {
-            $fecha = $this->m_ticket->fecha_text_f($o->fecha_realizado);
-            $estatus = $this->m_oficios->estatus($o->estatus);
-            $tabla .=
-            ' <tr class="">
-                 <td>' . $o->consecutivo . '</td>
-                 <td>' . $o->oficio . '</td>
-                
-                 <td>' . strtoupper($o->destinatario) . '</td>
-                 <td>' . $o->nombreDependencia . '</td>                
-                 <td>' . $fecha . '</td>
-                 <td>' . strip_tags($o->redaccion) . ' </td>
-                 <td>' . $o->exp.'</td>
-                 <td align="center">' . $estatus . '</td>
-                 <td width="120px">';
-            if ($o->generado == 1) {
-                $tabla .= '<a href="' . base_url() . 'oficios/descarga_generado/' . $o->id . '" target="_blank" class="btn btn-sm " data-toggle="tooltip" title="Descargar Oficio Generado"><i style="color: orange" class="fas fa-download fa-2x"></i></a>';
-            }
-            $tabla .= '<a class="btn btn-sm" href="' . base_url() . 'oficios/seguimiento/' . $o->id . '" data-toggle="tooltip" title="Editar y Seguimiento"><i style="color: brown;" class="fa fa-eye fa-2x"></i></a>';
-            if ($o->pdf != null) {
-                $tabla .= '<a href="' . base_url() . 'src/oficios/oficios/' . $o->pdf . '" target="_blank" class="btn btn-sm " data-toggle="tooltip" title="Acuse"><i style="color: red" class="fas fa-file-pdf fa-2x"></i></a>';
-            }
-            $tabla .= '
-                </td>
-             </tr>';
-        }
-        $tabla .= '
-         </tbody>
-         </table>';
-         */
 
         echo json_encode($respuesta);
     }

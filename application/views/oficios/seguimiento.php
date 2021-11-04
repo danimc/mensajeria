@@ -158,7 +158,7 @@
                         <div class="text-center centered" style="max-width:600px;">
                             <div class="btn-group">
                                 <a class="btn btn-secondary" target="_blank"
-                                    href="<?php echo base_url() ?>src/oficios/oficios/<?php echo $oficio->pdf ?>">
+                                    href="<?php echo base_url() ?>src/librooficios/2021/<?php echo $oficio->consecutivo ?>.pdf">
                                     <span class="d-none d-md-inline">Descargar</span>
                                 </a>
                                 <button class="btn btn-secondary" id="prev"><i class="fa fa-long-arrow-left"></i>
@@ -183,7 +183,7 @@
                             <canvas class="pdfcanvas" id="the-canvas"></canvas>
                             <?php }
                             else {?>
-                            <img src="<?php echo base_url() ?>src/oficios/oficios/<?php echo $oficio->pdf ?>"
+                            <img src="<?php echo base_url() ?>src/librooficios/2021/<?php echo $oficio->consecutivo ?>.pdf"
                                 alt="Oficio">
                             <?php }
                             ?>
@@ -206,7 +206,7 @@
 
         <script>
         $(function() {
-            let pdf = window.location.origin + '/bases/src/oficios/oficios/<?php echo $oficio->pdf ?>';
+            let pdf = window.location.origin + '/bases/src/librooficios/2021/<?php echo $oficio->consecutivo ?>.pdf';
             console.log(pdf);
             ver_pdf(pdf);
         })
