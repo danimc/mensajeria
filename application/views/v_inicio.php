@@ -61,7 +61,7 @@
                     <div class="ibox-head">
                         <div class="ibox-title">OFICIOS PENDIENTES </div>
                         <div class="ibox-tools">
-                            <span class="badge btn-warning" id="contadorPendientes"></span>
+                            <span class="badge btn-warning" style="font-size: 28px;" id="contadorPendientes"></span>
 
                         </div>
                     </div>
@@ -116,7 +116,7 @@
     let capa = document.getElementById("capa");
     (() => {
         obt_pendientes()
-        //   setInterval('obt_pendientes()', 5000);
+        setInterval('obt_pendientes()', 50000);
 
     })();
 
@@ -159,10 +159,13 @@
     }
 
     const tarjetaPendiente = (datos) => {
+
+        const urlSeguimiento = `${window.location.origin}/bases/oficios/seguimiento/${datos.id}`;   
+
         let tarjeta = ` <div class="media-body d-flex">
                         <div class="flex-1">
                             <h5 class="media-heading">
-                                <a href="#">
+                                <a href="${urlSeguimiento}">
                                     ${datos.oficio}
                                 </a>
                                 <span id="badge"></span>
@@ -186,7 +189,7 @@
                         </div>
 
                         <div class="text-right" style="width:100px;">
-                            <a href="#">
+                            <a href="${urlSeguimiento}">
                                 <span class="btn badge btn-${datos.color} badge-pill mb-2">                                    
                                     <i class="${datos.icon}"></i> ${datos.est}
                                 </span>
