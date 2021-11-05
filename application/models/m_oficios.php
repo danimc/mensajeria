@@ -52,6 +52,50 @@ class m_oficios extends CI_Model
     }
 
     /**
+     * Regresa los oficios pendientes del area
+     * 
+     * @param int $area identificador del area
+     * 
+     * @return array oficios pendientes del area
+     */
+    function obtOficiosPendientes($area)
+    {
+      
+         $qry = "";
+
+         $qry = "SELECT Tb_Oficios.id,
+                consecutivo,
+                oficio,
+                folio,
+                oficioRecibido,
+                destinatario,
+                redaccion,
+                fecha_realizado,
+                servicio,
+                Tb_Oficios.estatus,
+                d.nombre_dependencia as remitente,
+                fecha_entrega,
+                t.tipoOficio as tipo,
+                nombreDependencia,
+                pdf,
+                generado,
+                exp,
+                est.estatus as est,
+                est.color,
+                est.icon,
+                us.usuario as capturista
+            FROM Tb_Oficios
+                LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
+                LEFT JOIN dependencias d ON Tb_Oficios.unidadRemitente = d.id_dependencia
+                LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
+                LEFT JOIN usuario us ON capturista = codigo
+            WHERE unidadRemitente = {$area}";
+            
+ 
+         return $this->db->query($qry)->result();
+    }
+
+    /**
      * Obtienen los registros de los oficios
      */
     function obtLibroOficios()
@@ -174,13 +218,14 @@ class m_oficios extends CI_Model
      * acorta la cadena de un texto
      * 
      * @param string $cadena cadena a acortar
-     * @param int $limite cantidad de caracteres
+     * @param int    $limite cantidad de caracteres
      * 
      * @return string
      */
-    function limitar_cadena($cadena, $limite){
+    function limitar_cadena($cadena, $limite)
+    {
         // Si la longitud es mayor que el límite...
-        if(strlen($cadena) > $limite){
+        if(strlen($cadena) > $limite) {
             // Entonces corta la cadena y ponle el sufijo
             return substr($cadena, 0, $limite);
         }
