@@ -58,7 +58,7 @@ class m_oficios extends CI_Model
      * 
      * @return array oficios pendientes del area
      */
-    function obtOficiosPendientes($area)
+    function obtOficiosPendientes($opciones)
     {
       
          $qry = "";
@@ -89,7 +89,10 @@ class m_oficios extends CI_Model
                 LEFT JOIN dependencias d ON Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
                 LEFT JOIN usuario us ON capturista = codigo
-            WHERE unidadRemitente = {$area}";
+            WHERE Tb_Oficios.estatus != 8
+            AND   Tb_Oficios.estatus != 10  
+            {$opciones}
+            ";
             
  
          return $this->db->query($qry)->result();
@@ -131,6 +134,22 @@ class m_oficios extends CI_Model
                 ORDER BY year DESC ";
 
         return $this->db->query($qry)->result();;
+    }
+
+    /**
+     * Edita campos individuales del oficio
+     * 
+     * @param int $id Identificador del oficio
+     * @param string $campo nombre del campo a modificar
+     * @param any $value Nuevo valor a ingresar 
+     * 
+     * @return void
+     */
+    function editarOficio($id, $campo, $value)
+    {
+        $this->db->where('id', $id);
+        $this->db->set($campo, $value);
+        $this->db->update('Tb_Oficios', $this);
     }
 
 

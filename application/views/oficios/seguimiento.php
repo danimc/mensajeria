@@ -10,14 +10,14 @@
             <li class="breadcrumb-item">Edición y Seguimiento de Oficio</li>
         </ol>
         <br>
-        <a href="<?php echo base_url() ?>oficios" class="btn btn-blue "><i class="fa fa-arrow-left"></i> </a>
-        <button href="#" id="btnEditar" value="<?php echo $oficio->id ?>" class="btn btn-warning"><i
-                class="fas fa-edit"></i>
+        <a href="<?php echo base_url("oficios") ?>" class="btn btn-blue "><i class="fa fa-arrow-left"></i> </a>
+        <button href="#" id="btnEditar" value="<?php echo $oficio->id ?>" class="btn btn-warning">
+        <i class="fa fa-edit"></i>
             Editar Captura
         </button>
-        <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modAsociarTicket"
+       <!-- <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modAsociarTicket"
             title="Asociar a un ticket de Servicio"><i class="fas fa-ticket-alt"></i> Asociar Ticket
-        </a>
+        </a>-->
         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modificarOficio"
             title="Subir Acuse y cambiar estatus a 'Entregado'"><i class="fas fa-upload"></i> Subir Acuse
         </a>

@@ -55,8 +55,23 @@ class Inicio extends CI_Controller
     {
         header('Content-Type: application/json');
         $area = $this->input->get("dep");
+        $opciones = "";
 
-        $oficios = $this->m_oficios->obtOficiosPendientes($area);
+        if ($area != 19 && $area != 20) {
+            
+            $opciones =  "AND unidadRemitente = {$area} ";
+
+        }
+
+        // area 20 = Mensajeria
+        if ($area == 20 ) {
+            $opciones .= "AND Tb_Oficios.estatus > 3 AND Tb_Oficios.estatus < 7 ";
+        }
+
+
+
+
+        $oficios = $this->m_oficios->obtOficiosPendientes($opciones);
 
         echo json_encode(
             [

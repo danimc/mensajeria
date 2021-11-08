@@ -33,6 +33,9 @@
     <script src="<?=base_url()?>src/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/summernote/dist/summernote.min.js"></script>
     <script src="<?=base_url()?>src/assets/vendors/pdfjs/pdf.js"></script>
+
+    <script src="<?=base_url()?>src/assets/vendors/editable/bs-editable.js"></script>
+
    
     <!-- CORE SCRIPTS-->
     <script src="<?=base_url()?>src/assets/js/app.min.js"></script>

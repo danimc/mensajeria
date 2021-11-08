@@ -3,16 +3,20 @@ const url = window.location.origin + '/bases/oficios/';
 const pk: number| any = $("#btnEditar").val();
 
 (() => {
+
+    /*
     $("#pdf").fileinput({
         showUpload: true,
         mainClass: "input-group-sm",
         maxFileSize: 3000,
     });
+    */
 })();
 
 
 
 $("#btnEditar").on("click", () => {
+    
 
     const urlEditar = `${url}editar_oficio`;
 

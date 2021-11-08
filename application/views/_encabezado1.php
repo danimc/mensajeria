@@ -25,6 +25,8 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     <link href="<?php echo base_url()?>src/assets/vendors/summernote/dist/summernote.css" rel="stylesheet" />
     <link href="<?php echo base_url()?>src/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
     <link href="<?php echo base_url()?>src/assets/vendors/dataTables/datatables.min.css" rel="stylesheet" />
+    <link href="<?=base_url()?>src/assets/vendors/editable/bs-editable.css" rel="stylesheet" />
+
     <!-- THEME STYLES-->
     <link href="<?php echo base_url()?>src/assets/css/main.min.css" rel="stylesheet" />
 

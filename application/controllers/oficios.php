@@ -236,6 +236,20 @@ class Oficios extends CI_Controller
     }
 
     
+    function editar_oficio()
+    {
+        $id        = $_POST['pk'];
+        $campo     = $_POST['name'];
+        $value     = $_POST['value'];
+
+        $this->m_oficios->editarOficio($id, $campo, $value);
+        
+      //  $this->seguridad($id);
+      
+        echo json_encode($id);
+    }
+
+    
 
 
 
