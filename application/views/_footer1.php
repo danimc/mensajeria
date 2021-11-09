@@ -1,5 +1,5 @@
              <footer class="page-footer">
-                <div class="font-13"> <strong>Incidencias OAG</strong> Desarrollado por L. Daniel Mora C.</div>
+                <div class="font-13"> <strong>Sistema de Control de Oficios</strong> Desarrollado por L. Daniel Mora C.</div>
                 <div>
                     <a class="px-3 pl-4" href="#" target=""></a>
                 </div>
@@ -35,6 +35,7 @@
     <script src="<?=base_url()?>src/assets/vendors/pdfjs/pdf.js"></script>
 
     <script src="<?=base_url()?>src/assets/vendors/editable/bs-editable.js"></script>
+    
 
    
     <!-- CORE SCRIPTS-->

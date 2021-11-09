@@ -137,6 +137,14 @@ class m_oficios extends CI_Model
     }
 
     /**
+     * Regresa todas las depenedencias externas Registradas en la BD
+     */
+    function obtDependenciasExternas()
+    {
+        return $this->db->get('b_dependencias')->result();
+    }
+
+    /**
      * Edita campos individuales del oficio
      * 
      * @param int $id Identificador del oficio
@@ -151,6 +159,7 @@ class m_oficios extends CI_Model
         $this->db->set($campo, $value);
         $this->db->update('Tb_Oficios', $this);
     }
+
 
 
     function obt_oficios($year)
@@ -211,10 +220,38 @@ class m_oficios extends CI_Model
         return $this->db->query($qry)->row();
     }
 
+      /**
+       * Regresa desde la Bd los tipos de oficio
+       * 
+       * @return array
+       */
+    function obtTipoOficios()
+    {
+        return $this->db->get('Tb_Cat_TipoOficio')->result();
+    }
+
+    /**
+     * Guarda en la Bd que se cargo el Acuse
+     * 
+     * @param object $oficio objeto de campos a actualizar
+     * @param int $id identificador del oficio
+     * 
+     * @return void
+     */
+    function subir_oficio($oficio, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->set($oficio);
+        $this->db->update('Tb_Oficios');
+    }
+
+
+
     function capturar_consecutivo()
     {        
         $this->db->insert('Tb_Oficios', $this);
     }
+
     /**
      * Regresa responsable y cargo de la dependencia enviada como parametro
      * 

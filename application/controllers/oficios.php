@@ -14,7 +14,9 @@ class Oficios extends CI_Controller
         $this->load->model('m_oficios', "", true);
         $this->load->model('m_ticket', "", true);
 
-
+        $ci = get_instance();
+        $this->ftp_ruta = $ci->config->item("f_ruta");
+        $this->dir = $ci->config->item("oficios");      
     }
 
     public function index()
@@ -61,6 +63,53 @@ class Oficios extends CI_Controller
         $this->load->view('formularios/v_capturar_oficio', $datos);
         $this->load->view('_footer1');  
     }
+
+    /**
+     * Genera y retorna los tipos de oficios
+     * 
+     * @return Json
+     */
+    function obtTipoOficios()
+    {
+        header('Content-Type: application/json');
+        $oficios = $this->m_oficios->obtTipoOficios();
+        $i = 0;
+        $data = array();
+        foreach ($oficios as $o) {
+            $data[$i] = array(
+            'value' => $o->id,
+            'text'  => $o->tipoOficio
+            );
+
+            $i++;
+        }
+
+        echo json_encode($data);
+    }
+
+    /**
+     * Retorna el nombre de las dependencias
+     * 
+     * @return Json
+     */
+    function obtNombreDependencias()
+    {
+        header('Content-Type: application/json');
+        $oficios = $this->m_oficios->obtDependenciasExternas();
+        $i = 0;
+        $data = array();
+        foreach ($oficios as $o) {
+            $data[$i] = array(
+            'value' => $o->nombre,
+            'text'    => $o->nombre
+            );
+
+            $i++;
+        }
+
+        echo json_encode($data);
+    }
+    
 
 
     /**
@@ -150,6 +199,24 @@ class Oficios extends CI_Controller
         }
     }
 
+
+    /**
+     * Actualiza el archivo PDF de un oficio y actualiza su direccion en la BD
+     * 
+     * @var int $id Identificador del oficio
+     * @var int $consecutivo numeración del oficio para su nombre
+     * 
+     * @return redirection 
+     */
+    function subirAcuse()
+    {
+        $id = $this->input->post('actualizaId');
+        $consecutivo = $this->input->post('consecutivo');        
+        $this->subir_oficio($id, $consecutivo);
+        header("Location:" . $_SERVER['HTTP_REFERER']);
+
+    }
+
     /**
      * Vista de seguimiento del oficio 
      * 
@@ -168,7 +235,7 @@ class Oficios extends CI_Controller
         $this->load->view('_encabezado1', $head);
         $this->load->view('_menuLateral1');
         $this->load->view('oficios/seguimiento', $datos);
-        //$this->load->view('fragmentos/modales/oficios/mod_asociarTicket', $datos);
+        $this->load->view('oficios/mod-asociarTicket', $datos);
         //$this->load->view('oficios/v_edita_oficio', $datos);
         $this->load->view('_footer1');
     }
@@ -235,6 +302,37 @@ class Oficios extends CI_Controller
         echo json_encode($respuesta);
     }
 
+    function prueba()
+    {
+        $carpeta = $this->ftp_ruta. 'documents/acuses/2021/';
+
+        $qry = "AND consecutivo < 11";
+
+        $oficios = $this->m_oficios->obtOficiosPendientes($qry);
+
+        foreach ($oficios as $oficio) {
+            $ruta = "{$carpeta}{$oficio->consecutivo}.pdf";
+            if (file_exists($ruta)) {
+
+                echo "El fichero $ruta existe <br>";
+
+                $pdf = "{$oficio->consecutivo}.pdf";
+                $data = array(
+                    'pdf'       => $pdf,
+                    'estatus'   => 8
+                );
+
+                $this->m_oficios->subir_oficio($data, $oficio->id);
+            
+            
+            
+            } else {
+                echo "El fichero $ruta no existe <br>";
+            }
+        }
+
+    }
+
     
     function editar_oficio()
     {
@@ -250,6 +348,29 @@ class Oficios extends CI_Controller
     }
 
     
+
+    function subir_oficio($idIncidente, $consecutivo)
+    {
+
+        // SCRIPT PARA SUBIR LOS PDF ###########################
+        if ($_FILES['pdf']['name'] != "") {
+            $ext = explode('.', $_FILES['pdf']['name']);
+            $ext = $ext[count($ext) - 1];
+            $pdf = "{$consecutivo}.{$ext}";
+            move_uploaded_file($_FILES['pdf']['tmp_name'], $this->ftp_ruta . 'documents/acuses/2021/' . $pdf);    
+           
+            
+            // FIN DEL SCRIPT#####################################   
+
+            $nuevoPdf = array(
+            'pdf'      => $pdf,
+            'estatus'  => 8,
+            'fecha_entrega' => $this->m_ticket->fecha_actual(),
+            'hora_entrega'  => $this->m_ticket->hora_actual()
+            );
+            $this->m_oficios->subir_oficio($nuevoPdf, $idIncidente);
+        }    
+    }
 
 
 

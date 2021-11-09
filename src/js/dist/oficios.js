@@ -1,4 +1,4 @@
-import { asociar_ticket, tipo_oficios } from "./oficios/catalogo-oficios.js";
+import { asociar_ticket, nombre_dependencias, tipo_oficios } from "./oficios/catalogo-oficios.js";
 const url = window.location.origin + '/bases/oficios/';
 const pk = $("#btnEditar").val();
 (() => {
@@ -8,7 +8,7 @@ const pk = $("#btnEditar").val();
         mainClass: "input-group-sm",
         maxFileSize: 3000,
     });
-    */
+   */
 })();
 $("#btnEditar").on("click", () => {
     const urlEditar = `${url}editar_oficio`;
@@ -23,6 +23,16 @@ $("#btnEditar").on("click", () => {
         select: {
             width: 500,
             placeholder: '',
+            allowClear: true
+        },
+    });
+    $('.bt-dependencia').editable({
+        pk,
+        url: urlEditar,
+        source: nombre_dependencias(),
+        select2: {
+            width: 500,
+            placeholder: 'Seleccione la dependencia',
             allowClear: true
         },
     });

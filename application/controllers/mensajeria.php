@@ -16,6 +16,7 @@ class Mensajeria extends CI_Controller
         $ci = get_instance();    
         $this->ftp_ruta = $ci->config->item("f_ruta");
         $this->dir = $ci->config->item("oficios");
+
     }
 
     public function index()
@@ -59,17 +60,18 @@ class Mensajeria extends CI_Controller
     function nueva_mensajeria()
     {
 
-        $ccp                 = $_POST["ccp"];
-        $receptor             = $_POST['receptor'];
+        $ccp                = $_POST["ccp"];
+        $receptor           = $_POST['receptor'];
         $codigo             = $this->session->userdata("codigo");    
         $oficio             = $_POST['oficio'];
         $siglas             = $this->m_mensajeria->obt_abreviatura($codigo);
-        $dependenciaEnvia     = $siglas->id_dependencia;
-        $estatus             = 1;
-        $nPdf                 = '';            //variable que guarda la direccion del PDF si este es cargado.
+        $dependenciaEnvia   = $siglas->id_dependencia;
+        $estatus            = 1;
+        $nPdf               = '';            //variable que guarda la direccion del PDF si este es cargado.
 
         // SCRIPT PARA SUBIR LOS PDF ###########################
-        if($_FILES['documento']['name'] != "") {
+        if ($_FILES['documento']['name'] != "") {
+
             $this->load->library('image_lib');            
             $ext = explode('.', $_FILES['documento']['name']);
             $ext = $ext[count($ext) - 1];
@@ -97,7 +99,7 @@ class Mensajeria extends CI_Controller
         $this->m_mensajeria->nueva_mensajeria($delivery);
         $idIncidente = $this->db->insert_id();
 
-        for($i = 0; $i < count($ccp); $i++) {
+        for ($i = 0; $i < count($ccp); $i++) {
             $copias = array(
             'oficio'         => $idIncidente,
             'receptor'        => $ccp[$i]                
@@ -155,8 +157,7 @@ class Mensajeria extends CI_Controller
             $this->load->view('_menuLateral1');
             $this->load->view('formularios/v_seguimiento_admin', $datos);
             $this->load->view('_footer1');
-        }
-        else{
+        } else {
             $this->load->view('_encabezado');
             $this->load->view('_menuLateral');
             $this->load->view('formularios/v_seguimiento_usuario', $datos);

@@ -17,10 +17,17 @@
         </button>
        <!-- <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modAsociarTicket"
             title="Asociar a un ticket de Servicio"><i class="fas fa-ticket-alt"></i> Asociar Ticket
-        </a>-->
+        </a>-->       
+
         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modificarOficio"
-            title="Subir Acuse y cambiar estatus a 'Entregado'"><i class="fas fa-upload"></i> Subir Acuse
+            title="Subir Acuse y cambiar estatus a 'Entregado'"><i class="fa fa-upload"></i> Cambiar estatus
         </a>
+
+        <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modificarOficio"
+            title="Subir Acuse y cambiar estatus a 'Entregado'"><i class="fa fa-upload"></i> Subir Acuse
+        </a>
+
+
         <a href="#" data-toggle="modal" data-target="#frmModificarOficio" class="btn btn-danger disabled pull-right"><i
                 class="fas fa-times-circle"></i> CANCELAR OFICIO
         </a>
@@ -55,8 +62,8 @@
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Dependencia:</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-tipo" data-name="tipo" data-type="select"
-                                    data-title="Edite el tipo de oficio"> <?php echo $oficio->dependencia ?> </a>
+                                <a href="javascript:;" class="bt-dependencia" data-name="nombreDependencia" data-type="select"
+                                    data-title="Modifique la Dependencia"> <?php echo $oficio->dependencia ?> </a>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -206,7 +213,7 @@
 
         <script>
         $(function() {
-            let pdf = window.location.origin + '/bases/src/librooficios/2021/<?php echo $oficio->consecutivo ?>.pdf';
+            let pdf = window.location.origin + '/bases/documents/acuses/2021/<?php echo $oficio->consecutivo ?>.pdf';
             console.log(pdf);
             ver_pdf(pdf);
         })

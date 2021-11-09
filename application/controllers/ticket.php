@@ -10,6 +10,7 @@ class Ticket extends CI_Controller {
 		$this->load->model('m_usuario',"",TRUE);
 		$this->load->model('m_ticket',"",TRUE);
 		$this->load->model('m_correos',"",TRUE);
+		
 
 	}
 

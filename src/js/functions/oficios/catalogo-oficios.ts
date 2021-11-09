@@ -4,11 +4,31 @@ import { sendAlert } from "../clases/alertas.js";
 const url = `${window.location.origin}/bases/oficios/`;
 
 export const tipo_oficios = () => {
-    let valores;
+    let valores: any;
 	$.ajax({
 		type: "GET",
 		dataType: "JSON",
-		url: url + "obt_tipo_oficios",
+		url: `${url}obtTipoOficios`,
+		async: false,
+		error: () => {
+
+            console.log("error de conexion al servidor");
+			return [{error: "Error al cargar los tipos de oficios desde el servidor"}];
+		},
+		success: (data) => {
+            valores = data;
+		},
+	});
+
+    return valores;
+};
+
+export const nombre_dependencias = () => {
+    let valores: any;
+	$.ajax({
+		type: "GET",
+		dataType: "JSON",
+		url: `${url}obtNombreDependencias`,
 		async: false,
 		error: () => {
 
@@ -36,7 +56,7 @@ export const asociar_ticket = (pk:number, ticket: number| any, prellenado:boolea
 	$.ajax({
 		type: "POST",
 		dataType: "JSON",
-		url: url + "asociar_ticket",
+		url: `${url}asociar_ticket`,
 		async: false,
 		data,
 		error: () => {
