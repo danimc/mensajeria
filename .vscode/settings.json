@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "148.202.169.71",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "SISTEMATIZACION",
+            "database": "crm",
+            "username": "oag",
+            "password": "abogral90"
+        }
+    ]
+}

@@ -11,7 +11,7 @@
 
         <div class="row">
             <div class="col mb-4">
-                <a href="<?=base_url("oficios/nueva_captura")?>">
+                <a href="<?=base_url("oficios/nuevaCaptura")?>">
                     <div class="card btn-success">
                         <div class="card-body">
                             <h2 class="text-white">Nuevo Oficio<i class=" ti-files float-right"></i></h2>

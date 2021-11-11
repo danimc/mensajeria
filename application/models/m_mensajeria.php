@@ -1,28 +1,26 @@
-<?php 
+<?php
 
-class m_mensajeria extends CI_Model {
+class m_mensajeria extends CI_Model
+{
 
-    function __construct()
+    /**
+     * Guarda los registros de cada copia en la Bd
+     * @param object $copias registro a almacenar 
+     * 
+     * @return void
+     */
+    function guardarCopias($copias)
     {
-        parent::__construct();
+        $this->db->insert("Tb_CopiasConocimiento", $copias);
     }
 
-    function obt_lista_usuarios(){
-
-     return $this->db->get("usuario")->result();   
-    }
-
-    function obt_categorias(){
-     return $this->db->get("categoria_ticket")->result();   
-
-    }
-
-      function obt_centros()
+    function obt_centros()
     {
         return $this->db->get('b_dependencias')->result();
     }
 
-    function obt_asignados(){
+    function obt_asignados()
+    {
 
         $this->db->where("rol", 1);
         return $this->db->get("usuario")->result();
@@ -47,7 +45,7 @@ class m_mensajeria extends CI_Model {
         return $this->db->query($qry)->row();
     }
 
-    function obt_dependencias_ccp($folio)
+    function obtCopiasConocimiento($folio)
     {
         $qry = '';
 
@@ -55,7 +53,7 @@ class m_mensajeria extends CI_Model {
                 d.nombre
                 ,fecha_envio
                 ,hora_envio
-                FROM crm.m_envio_copias
+                FROM crm.Tb_CopiasConocimiento
                 LEFT JOIN b_dependencias d ON d.id = receptor 
                 WHERE oficio = $folio";
 
@@ -71,14 +69,11 @@ class m_mensajeria extends CI_Model {
     }
 
     function nueva_mensajeria($delivery)
-    {        
+    {
         $this->db->insert("m_delivery", $delivery);
     }
 
-    function guardar_copias($copias)
-    {        
-        $this->db->insert("m_envio_copias", $copias);
-    }
+
 
     function seguimiento_ticket($folio)
     {
@@ -105,7 +100,7 @@ class m_mensajeria extends CI_Model {
 
     function obt_seguimiento($folio)
     {
-   $qry = "SELECT 
+        $qry = "SELECT 
         h_ticket.id
         ,cat.categoria
         ,situ.situacion
@@ -133,8 +128,7 @@ class m_mensajeria extends CI_Model {
         $this->db->set('hora_asignado', $hora);
         $this->db->set('estatus', $estatus);
         $this->db->where('folio', $folio);
-        $this->db->update('ticket');      
-
+        $this->db->update('ticket');
     }
 
     function cambiar_categoria($folio, $categoria)
@@ -223,7 +217,6 @@ class m_mensajeria extends CI_Model {
 
     function notificacion()
     {
-        
     }
 
     function mensaje($folio, $mensaje, $fecha, $hora)
@@ -237,7 +230,7 @@ class m_mensajeria extends CI_Model {
         $this->db->insert('h_ticket', $this);
     }
 
-   /* function noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion)
+    /* function noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion)
     {
         $this->generador = $reportante;
         $this->ticket = $idIncidente;
@@ -269,11 +262,11 @@ class m_mensajeria extends CI_Model {
                 LEFT JOIN dependencias dep on dep.id_dependencia = d.dependencia
                 LEFT JOIN b_dependencias r on r.id = d.receptor
                 ORDER BY folio DESC";
-               
-                return $this->db->query($qry)->result();
+
+        return $this->db->query($qry)->result();
     }
 
-        function lista_tickets_administrador_cerrados()
+    function lista_tickets_administrador_cerrados()
     {
         $qry = '';
         $qry = "SELECT 
@@ -296,11 +289,11 @@ class m_mensajeria extends CI_Model {
                 LEFT JOIN usuario asignado on ticket.usr_asignado = asignado.codigo
                 WHERE est.id = 5
                 ORDER BY folio DESC";
-               
-                return $this->db->query($qry)->result();
+
+        return $this->db->query($qry)->result();
     }
 
-            function lista_tickets_administrador_abiertos()
+    function lista_tickets_administrador_abiertos()
     {
         $qry = '';
         $qry = "SELECT 
@@ -324,8 +317,8 @@ class m_mensajeria extends CI_Model {
                 LEFT JOIN usuario asignado on ticket.usr_asignado = asignado.codigo
                 WHERE est.id != 5
                 ORDER BY folio DESC";
-               
-                return $this->db->query($qry)->result();
+
+        return $this->db->query($qry)->result();
     }
 
     function lista_tickets_usuario($codigo)
@@ -352,188 +345,193 @@ class m_mensajeria extends CI_Model {
                 WHERE usr_incidente = '$codigo'
                 ORDER BY folio DESC";
 
-                return $this->db->query($qry)->result();
+        return $this->db->query($qry)->result();
     }
 
     //******************************** FECHAS **********************************************/   
-        
-    function fecha_a_sql($date){
-        $fecha = explode("/",$date);
-        $fecha_sql = $fecha['2']."-".$fecha['0']."-".$fecha['1'];
+
+    function fecha_a_sql($date)
+    {
+        $fecha = explode("/", $date);
+        $fecha_sql = $fecha['2'] . "-" . $fecha['0'] . "-" . $fecha['1'];
         return $fecha_sql;
     }
-    
-    function fecha_a_form($date){
-        $fecha = explode("-",$date);
-        $fecha_sql = $fecha['1']."/".$fecha['2']."/".$fecha['0'];
+
+    function fecha_a_form($date)
+    {
+        $fecha = explode("-", $date);
+        $fecha_sql = $fecha['1'] . "/" . $fecha['2'] . "/" . $fecha['0'];
         return $fecha_sql;
     }
-    
-    function fecha_actual(){
+
+    function fecha_actual()
+    {
         date_default_timezone_set("America/Mexico_City");
         $fecha = date("Y-m-d");
         return $fecha;
     }
-    
-      function hora_actual(){
+
+    function hora_actual()
+    {
         date_default_timezone_set("America/Mexico_City");
         $hora = date("H:i:s");
         return $hora;
     }
-    function fechahora_actual(){
+    function fechahora_actual()
+    {
         date_default_timezone_get("America/Mexico_City");
         $fecha = date("Y-m-d h:i:s");
         return $fecha;
     }
-    
+
     function fecha_text($datetime)
     {
-        if($datetime == "0000-00-00 00:00:00"){
+        if ($datetime == "0000-00-00 00:00:00") {
             return "Fecha indefinida";
-        }else{
-            
-        $dia = explode(" ",$datetime);
-        $fecha = explode("-",$dia[0]);
-            if($fecha[1] == 1){
+        } else {
+
+            $dia = explode(" ", $datetime);
+            $fecha = explode("-", $dia[0]);
+            if ($fecha[1] == 1) {
                 $mes = 'enero';
-            }else if($fecha[1] == 2){
+            } else if ($fecha[1] == 2) {
                 $mes = 'febrero';
-            }else if($fecha[1] == 3){
+            } else if ($fecha[1] == 3) {
                 $mes = 'marzo';
-            }else if($fecha[1] == 4){
+            } else if ($fecha[1] == 4) {
                 $mes = 'abril';
-            }else if($fecha[1] == 5){
+            } else if ($fecha[1] == 5) {
                 $mes = 'mayo';
-            }else if($fecha[1] == 6){
+            } else if ($fecha[1] == 6) {
                 $mes = 'junio';
-            }else if($fecha[1] == 7){
+            } else if ($fecha[1] == 7) {
                 $mes = 'julio';
-            }else if($fecha[1] == 8){
+            } else if ($fecha[1] == 8) {
                 $mes = 'agosto';
-            }else if($fecha[1] == 9){
+            } else if ($fecha[1] == 9) {
                 $mes = 'septiembre';
-            }else if($fecha[1] == 10){
+            } else if ($fecha[1] == 10) {
                 $mes = 'octubre';
-            }else if($fecha[1] == 11){
+            } else if ($fecha[1] == 11) {
                 $mes = 'noviembre';
-            }else if($fecha[1] == 12){
+            } else if ($fecha[1] == 12) {
                 $mes = 'diciembre';
             }
-            
-            $hora = explode(":",$dia[1]);
-            
-            $time = $hora[0].":".$hora[1]." Hrs";
-            
-            $fecha2 = $fecha[2]." ".$mes." ".$fecha[0];
-            return $fecha2." a las ".$time ;
+
+            $hora = explode(":", $dia[1]);
+
+            $time = $hora[0] . ":" . $hora[1] . " Hrs";
+
+            $fecha2 = $fecha[2] . " " . $mes . " " . $fecha[0];
+            return $fecha2 . " a las " . $time;
         }
     }
-    
+
     function fecha_text_f($datetime)
     {
-        if($datetime == "0000-00-00"){
+        if ($datetime == "0000-00-00") {
             return "Fecha indefinida";
-        }else{
-            
-        $fecha = explode("-",$datetime);
-            if($fecha[1] == 1){
+        } else {
+
+            $fecha = explode("-", $datetime);
+            if ($fecha[1] == 1) {
                 $mes = 'enero';
-            }else if($fecha[1] == 2){
+            } else if ($fecha[1] == 2) {
                 $mes = 'febrero';
-            }else if($fecha[1] == 3){
+            } else if ($fecha[1] == 3) {
                 $mes = 'marzo';
-            }else if($fecha[1] == 4){
+            } else if ($fecha[1] == 4) {
                 $mes = 'abril';
-            }else if($fecha[1] == 5){
+            } else if ($fecha[1] == 5) {
                 $mes = 'mayo';
-            }else if($fecha[1] == 6){
+            } else if ($fecha[1] == 6) {
                 $mes = 'junio';
-            }else if($fecha[1] == 7){
+            } else if ($fecha[1] == 7) {
                 $mes = 'julio';
-            }else if($fecha[1] == 8){
+            } else if ($fecha[1] == 8) {
                 $mes = 'agosto';
-            }else if($fecha[1] == 9){
+            } else if ($fecha[1] == 9) {
                 $mes = 'septiembre';
-            }else if($fecha[1] == 10){
+            } else if ($fecha[1] == 10) {
                 $mes = 'octubre';
-            }else if($fecha[1] == 11){
+            } else if ($fecha[1] == 11) {
                 $mes = 'noviembre';
-            }else if($fecha[1] == 12){
+            } else if ($fecha[1] == 12) {
                 $mes = 'diciembre';
             }
-            
-            
-            $fecha2 = $fecha[2]." ".$mes." ".$fecha[0];
-            return $fecha2 ;
+
+
+            $fecha2 = $fecha[2] . " " . $mes . " " . $fecha[0];
+            return $fecha2;
         }
     }
-    
+
     function hora_fecha_text($dia)
     {
-        $dia2 = explode(" ",$dia);
-        
-        if($dia2[0] == "0000-00-00"){
+        $dia2 = explode(" ", $dia);
+
+        if ($dia2[0] == "0000-00-00") {
             $fecha2 = "Termino indefinido";
-        }else{
-            $fecha = explode("-",$dia2[0]);
-            if($fecha[1] == 1){
+        } else {
+            $fecha = explode("-", $dia2[0]);
+            if ($fecha[1] == 1) {
                 $mes = 'enero';
-            }else if($fecha[1] == 2){
+            } else if ($fecha[1] == 2) {
                 $mes = 'febrero';
-            }else if($fecha[1] == 3){
+            } else if ($fecha[1] == 3) {
                 $mes = 'marzo';
-            }else if($fecha[1] == 4){
+            } else if ($fecha[1] == 4) {
                 $mes = 'abril';
-            }else if($fecha[1] == 5){
+            } else if ($fecha[1] == 5) {
                 $mes = 'mayo';
-            }else if($fecha[1] == 6){
+            } else if ($fecha[1] == 6) {
                 $mes = 'junio';
-            }else if($fecha[1] == 7){
+            } else if ($fecha[1] == 7) {
                 $mes = 'julio';
-            }else if($fecha[1] == 8){
+            } else if ($fecha[1] == 8) {
                 $mes = 'agosto';
-            }else if($fecha[1] == 9){
+            } else if ($fecha[1] == 9) {
                 $mes = 'septiembre';
-            }else if($fecha[1] == 10){
+            } else if ($fecha[1] == 10) {
                 $mes = 'octubre';
-            }else if($fecha[1] == 11){
+            } else if ($fecha[1] == 11) {
                 $mes = 'noviembre';
-            }else if($fecha[1] == 12){
+            } else if ($fecha[1] == 12) {
                 $mes = 'diciembre';
             }
-            
-            $fecha2 = $fecha[2]." de ".$mes." del ".$fecha[0];
+
+            $fecha2 = $fecha[2] . " de " . $mes . " del " . $fecha[0];
         }
         return $fecha2;
     }
 
-              function etiqueta($estatus)
+    function etiqueta($estatus)
     {
-        if($estatus == 1){
+        if ($estatus == 1) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-primary badge-pill mb-2"><i class="fa fa-ticket"></i> Registrado </span>';
             return $esta;
         }
-        if($estatus == 2){
+        if ($estatus == 2) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-pink badge-pill mb-2"><i class="fa fa-user-plus"></i> Validado</span>';
             return $esta;
         }
-          if($estatus == 3){
+        if ($estatus == 3) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-info badge-pill mb-2"><i class="fa fa-spinner"></i> enviado</span>';
             return $esta;
         }
-          if($estatus == 4){
+        if ($estatus == 4) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-success badge-pill mb-2"><i class="fa fa-check-circle"></i> Recibido </span>';
             return $esta;
         }
-            if($estatus == 5){
+        if ($estatus == 5) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-danger badge-pill mb-2"><i class="fa fa-lock"></i> Cerrado</span>';
             return $esta;
         }
-           if($estatus == 6){
+        if ($estatus == 6) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-secondary badge-pill mb-2"><i class="fa  fa-hourglass-2" ></i> Pendiente</span>';
             return $esta;
         }
-           if($estatus == 7){
+        if ($estatus == 7) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-warning badge-pill mb-2"><i class="fa  fa-random"></i> Reasignado</span>';
             return $esta;
         }
@@ -543,83 +541,76 @@ class m_mensajeria extends CI_Model {
     {
         if ($id == '') {
             $asig = '<button class="btn btn-xs btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Asignar</button>';
-        }
-        else{
+        } else {
             $asig = '<button class="btn btn-xs btn-default" data-toggle="modal" data-target="#myModal" title="Reasignar Ingeniero"><i class="fa fa-exchange "></i> </button>';
         }
-        
+
         return $asig;
     }
 
     function timeline($mensaje, $fecha)
-    {        
-        if ($fecha != 1)
-            {
-                $fecha = $this->m_ticket->hora_fecha_text($mensaje->fecha);
-              ?>
-                    <li class="time-label">
-                    <span class="bg-red">
-                    <?=$fecha?>
-                    </span>
-                    </li>
-<?   
-        
-            }
-            else{
-               
-            
-            } 
-    if (isset($mensaje->mensaje)){
+    {
+        if ($fecha != 1) {
+            $fecha = $this->m_ticket->hora_fecha_text($mensaje->fecha);
 ?>
-    <li>
-        <i class="fa fa-comment bg-purple"></i>
-        <div class="timeline-item bg-default ">
-            <span class="time"><i class="fa fa-clock-o"></i> <?=$mensaje->hora?></span>
-            <h3 class="timeline-header btn-default"><a href="">Mensaje:</a> <b> <?=$mensaje->usuario?></b> Dice: </h3>
-            <div class="timeline-body bg-gray ">
-                <?=$mensaje->mensaje?>                
-            </div>
-        </div>
-    </li>
-        <?}
+            <li class="time-label">
+                <span class="bg-red">
+                    <?= $fecha ?>
+                </span>
+            </li>
+        <?
+
+        } else {
+        }
+        if (isset($mensaje->mensaje)) {
+        ?>
+            <li>
+                <i class="fa fa-comment bg-purple"></i>
+                <div class="timeline-item bg-default ">
+                    <span class="time"><i class="fa fa-clock-o"></i> <?= $mensaje->hora ?></span>
+                    <h3 class="timeline-header btn-default"><a href="">Mensaje:</a> <b> <?= $mensaje->usuario ?></b> Dice: </h3>
+                    <div class="timeline-body bg-gray ">
+                        <?= $mensaje->mensaje ?>
+                    </div>
+                </div>
+            </li>
+        <? }
 
         if (isset($mensaje->categoria)) {
-            ?>
-    <li>
-        <!-- timeline icon -->
-        <i class="fa fa-tags bg-orange"></i>
-        <div class="timeline-item">
-            <span class="time"><i class="fa fa-clock-o"></i> <?=$mensaje->hora?></span>
+        ?>
+            <li>
+                <!-- timeline icon -->
+                <i class="fa fa-tags bg-orange"></i>
+                <div class="timeline-item">
+                    <span class="time"><i class="fa fa-clock-o"></i> <?= $mensaje->hora ?></span>
 
-            <h3 class="timeline-header"><a href="#">Cambio de Categoria:</a> <b> <?=$mensaje->usuario?></b> Cambio la categoria a <b><?=$mensaje->categoria?> </b>
-        </div>
-    </li> 
+                    <h3 class="timeline-header"><a href="#">Cambio de Categoria:</a> <b> <?= $mensaje->usuario ?></b> Cambio la categoria a <b><?= $mensaje->categoria ?> </b>
+                </div>
+            </li>
 
-        <?}
+            <? }
         if (isset($mensaje->situacion)) {
             if (isset($mensaje->asignado)) {
-?>
-        <li>
-            <i class="fa fa-user bg-blue"></i>
-            <div class="timeline-item">
-            <span class="time"><i class="fa fa-clock-o">    </i> <?=$mensaje->hora?></span>
-            <h3 class="timeline-header"><a href="#">El ticket ha sido Asignado a: <?=$mensaje->asignado?> </a></h3>          
-            </div>
-        </li>
-           <? }
-           else{
-?>
-        <li>
-        <!-- timeline icon -->
-        <i class="fa fa-info-circle bg-green"></i>
-        <div class="timeline-item">
-            <span class="time"><i class="fa fa-clock-o"></i> <?=$mensaje->hora?></span>
+            ?>
+                <li>
+                    <i class="fa fa-user bg-blue"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"> </i> <?= $mensaje->hora ?></span>
+                        <h3 class="timeline-header"><a href="#">El ticket ha sido Asignado a: <?= $mensaje->asignado ?> </a></h3>
+                    </div>
+                </li>
+            <? } else {
+            ?>
+                <li>
+                    <!-- timeline icon -->
+                    <i class="fa fa-info-circle bg-green"></i>
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> <?= $mensaje->hora ?></span>
 
-            <h3 class="timeline-header"><a href="#">Cambio de Estatus</a> <b> <?=$mensaje->usuario?></b> Cambio es estatus del incidente a <b> <?=$mensaje->situacion?> </b> </h3>
-        </div>
-    </li>
-    <?      }
+                        <h3 class="timeline-header"><a href="#">Cambio de Estatus</a> <b> <?= $mensaje->usuario ?></b> Cambio es estatus del incidente a <b> <?= $mensaje->situacion ?> </b> </h3>
+                    </div>
+                </li>
+<?      }
         }
     }
-
 }

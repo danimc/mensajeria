@@ -1,9 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Oficios extends CI_Controller
 {
-    
+
     function __construct()
     {
         parent::__construct();
@@ -12,11 +12,11 @@ class Oficios extends CI_Controller
         $this->load->model('m_usuario', "", true);
         $this->load->model('m_mensajeria', "", true);
         $this->load->model('m_oficios', "", true);
-        $this->load->model('m_ticket', "", true);
+
 
         $ci = get_instance();
         $this->ftp_ruta = $ci->config->item("f_ruta");
-        $this->dir = $ci->config->item("oficios");      
+        $this->dir = $ci->config->item("oficios");
     }
 
     public function index()
@@ -33,9 +33,10 @@ class Oficios extends CI_Controller
         $this->load->view('_footer1');
     }
 
+    /*
     function nuevo_oficio()
     {
-        $codigo = $this->session->userdata("codigo"); 
+        $codigo = $this->session->userdata("codigo");
         $datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
         $datos['dependencias'] = $this->m_ticket->obt_dependencias();
         $datos['tipos'] = $this->m_oficios->obt_tipoOficios();
@@ -44,24 +45,30 @@ class Oficios extends CI_Controller
 
         $this->load->view('_encabezado1');
         $this->load->view('_menuLateral1');
-        $this->load->view('formularios/v_nuevo_oficio', $datos);
-        $this->load->view('_footer1');  
+        $this->load->view('oficios/v_nuevo_oficio', $datos);
+        $this->load->view('_footer1');
     }
+    */
 
-    function nueva_captura()
+
+    /**
+     * Vista para registrar un nuevo oficio de salida
+     * 
+     * @return view
+     */
+    function nuevaCaptura()
     {
         $consecutivo = $this->m_oficios->obtMaxConsecutivo();
-        $codigo = $this->session->userdata("codigo"); 
+        $codigo = $this->session->userdata("codigo");
         $datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
-        //$datos['dependencias'] = $this->m_ticket->obt_dependencias();
-        $datos['tipos'] = $this->m_oficios->obt_tipoOficios();       
+        $datos['tipos'] = $this->m_oficios->obt_tipoOficios();
         $datos['centros'] = $this->m_mensajeria->obt_centros();
         $datos['consecutivo'] = $consecutivo->cons + 1;
 
         $this->load->view('_encabezado1');
         $this->load->view('_menuLateral1');
-        $this->load->view('formularios/v_capturar_oficio', $datos);
-        $this->load->view('_footer1');  
+        $this->load->view('oficios/capturar-nuevo-oficio', $datos);
+        $this->load->view('_footer1');
     }
 
     /**
@@ -77,8 +84,8 @@ class Oficios extends CI_Controller
         $data = array();
         foreach ($oficios as $o) {
             $data[$i] = array(
-            'value' => $o->id,
-            'text'  => $o->tipoOficio
+                'value' => $o->id,
+                'text'  => $o->tipoOficio
             );
 
             $i++;
@@ -100,8 +107,8 @@ class Oficios extends CI_Controller
         $data = array();
         foreach ($oficios as $o) {
             $data[$i] = array(
-            'value' => $o->nombre,
-            'text'    => $o->nombre
+                'value' => $o->nombre,
+                'text'    => $o->nombre
             );
 
             $i++;
@@ -109,7 +116,7 @@ class Oficios extends CI_Controller
 
         echo json_encode($data);
     }
-    
+
 
 
     /**
@@ -126,19 +133,19 @@ class Oficios extends CI_Controller
         $nOficio = 'AG/' . $consecutivo . '/' . date('Y');
 
         $oficio = array(
-        'consecutivo'       => $consecutivo,
-        'oficio'            => $nOficio,     
-        'destinatario'      => $_POST['destinatario'],
-        'dependencia'       => $_POST['dependencia'],
-        'nombreDependencia' => $datosDependencia->nombre,
-        'cargo'             => $_POST['cargo'],       
-        'redaccion'         => $_POST['asunto'],
-        'fecha_realizado'   => $this->m_ticket->fecha_actual(),
-        'hora_realizado'    => $this->m_ticket->hora_actual(),
-        'estatus'           => 1,
-        'exp'               => $_POST['exp'],
-        'capturista'        => $this->session->userdata("codigo"),
-        'unidadRemitente'   => $this->session->userdata("dependencia")
+            'consecutivo'       => $consecutivo,
+            'oficio'            => $nOficio,
+            'destinatario'      => $_POST['destinatario'],
+            'dependencia'       => $_POST['dependencia'],
+            'nombreDependencia' => $datosDependencia->nombre,
+            'cargo'             => $_POST['cargo'],
+            'redaccion'         => $_POST['asunto'],
+            'fecha_realizado'   => $this->m_oficios->fechaActual(),
+            'hora_realizado'    => $this->m_oficios->horaActual(),
+            'estatus'           => 1,
+            'exp'               => $_POST['exp'],
+            'capturista'        => $this->session->userdata("codigo"),
+            'unidadRemitente'   => $this->session->userdata("dependencia")
         );
 
         $oficio = array_filter($oficio);
@@ -146,15 +153,40 @@ class Oficios extends CI_Controller
         $verificador = $this->m_oficios->verifica_nuevoOficio($nOficio);
         if ($verificador == 0) {
             $this->m_oficios->capturarOficio($oficio);
-            $idIncidente = $this->db->insert_id();
-            if ($idIncidente != '') {
-                // $this->subir_oficio($nOficio, $idIncidente, $consecutivo);
+            $idOficio = $this->db->insert_id();
+            if ($idOficio != '') {
+                $this->_revisaCopias($idOficio);
+                $this->_agregaHistorial($idOficio, 1);
                 redirect(base_url() . 'oficios?nOficio=' . $nOficio);
             }
         } else {
             $mensaje = 0;
             echo $mensaje;
         }
+    }
+
+    /**
+     * Valida si el oficio lleva copia de conocimiento
+     * 
+     * @param int $id Identificador del oficio Original
+     * 
+     * @return void
+     */
+    private function _revisaCopias($id)
+    {
+
+        $ccp = $this->input->post('ccp');
+
+        for ($i = 0; $i < count($ccp); $i++) {
+            $copias = array(
+                'oficio'         => $id,
+                'receptor'        => $ccp[$i]
+            );
+
+            $this->m_mensajeria->guardarCopias($copias);
+        }
+
+        return true;
     }
 
     /**
@@ -182,23 +214,42 @@ class Oficios extends CI_Controller
         echo json_encode($this->m_oficios->obtDatosDependencia($id));
     }
 
+    /**
+     * Añade al historial del oficio un movimiento
+     * 
+     * @param int $id Identificador del oficio
+     * @param int $movimiento tipo de movimiento realizado
+     * 
+     * @return void
+     */
+    private function _agregaHistorial($id, $movimiento)
+    {
+        $movimiento = array(
+            'oficio'    => $id,
+            'fecha'     => $this->m_oficios->fechahoraActual(),
+            'movimiento' => $movimiento,
+            'usr'       => $this->session->userdata('codigo')
+        );
 
-    
+        $this->m_oficios->agregaHistorial($movimiento);
+    }
+
+    /*
+
     function verifica_registroOficio()
     {
         $oficio = $_POST['oficio'];
         $verificador = $this->m_oficios->verifica_nuevoOficio($oficio);
         echo $oficio . 'esta ' . $verificador . ' veces... ';
 
-        if ($verificador == 0 ) {
+        if ($verificador == 0) {
             echo "registrando";
             $this->guardar_captura();
-        }
-        else{
+        } else {
             echo " No se puede registrar el mismo numero de Oficio";
         }
     }
-
+*/
 
     /**
      * Actualiza el archivo PDF de un oficio y actualiza su direccion en la BD
@@ -211,10 +262,9 @@ class Oficios extends CI_Controller
     function subirAcuse()
     {
         $id = $this->input->post('actualizaId');
-        $consecutivo = $this->input->post('consecutivo');        
+        $consecutivo = $this->input->post('consecutivo');
         $this->subir_oficio($id, $consecutivo);
         header("Location:" . $_SERVER['HTTP_REFERER']);
-
     }
 
     /**
@@ -228,8 +278,9 @@ class Oficios extends CI_Controller
 
         $datos['id']        = $oficio;
         $datos['oficio']    = $this->m_oficios->obt_oficio($oficio);
-        $datos['pdf']        = explode(".", $datos['oficio']->pdf);
-        //    $datos['tipos']     = $this->m_oficios->obt_tipoOficios();
+        $datos['pdf']       = explode(".", $datos['oficio']->pdf);
+        $datos['copias']    = $this->m_mensajeria->obtCopiasConocimiento($oficio);
+        $datos['historial'] = $this->m_oficios->obtHistorialOficios($oficio);
         $head['title']      = "Seguimiento del oficio ";
 
         $this->load->view('_encabezado1', $head);
@@ -255,10 +306,10 @@ class Oficios extends CI_Controller
          * true = forza a descargar el pdf
          * false = genera el pdf dentro del navegador
          */
-         $this->mydompdf->load_html($html);
-         $this->mydompdf->setPaper("Letter", "potrait");
-         $this->mydompdf->render();
-         $this->mydompdf->stream("ficha", array("Attachment" => false));
+        $this->mydompdf->load_html($html);
+        $this->mydompdf->setPaper("Letter", "potrait");
+        $this->mydompdf->render();
+        $this->mydompdf->stream("ficha", array("Attachment" => false));
     }
 
 
@@ -275,26 +326,26 @@ class Oficios extends CI_Controller
         $respuesta = array();
         $i = 0;
 
-        
-        
+
+
         foreach ($oficios as $t) {
             $fecha = $this->m_ticket->fecha_text_f($t->fecha_realizado);
-            $estatus = $this->m_oficios->estatus($t->estatus);
-           // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
-                      
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
+
             $tabla = "<a class='fa fa-eye fa-2x text-warning' href='oficios/seguimiento/{$t->id}'></a>";
-           
+
             $respuesta[$i] = array(
-            'consecutivo'    => $t->consecutivo,
-            'oficio'         => $t->oficio,
-            'destinatario'   => $t->destinatario,
-            'dependencia'    => $t->nombreDependencia,
-            'fecha_cap'      => $fecha,
-            'asunto'         => $t->redaccion,
-            'exp'            => $t->exp,
-            'dRemitente'     => $t->remitente,
-            'estatus'        => $estatus,
-            'acciones'        => $tabla
+                'consecutivo'    => $t->consecutivo,
+                'oficio'         => $t->oficio,
+                'destinatario'   => $t->destinatario,
+                'dependencia'    => $t->nombreDependencia,
+                'fecha_cap'      => $fecha,
+                'asunto'         => $t->redaccion,
+                'exp'            => $t->exp,
+                'dRemitente'     => $t->remitente,
+                'estatus'        => $estatus,
+                'acciones'        => $tabla
             );
             $i++;
         }
@@ -302,9 +353,12 @@ class Oficios extends CI_Controller
         echo json_encode($respuesta);
     }
 
+    /**
+     * PRUEBA PARA VALIDAR SI EXISTE EL PDF GUARDADO
+     */
     function prueba()
     {
-        $carpeta = $this->ftp_ruta. 'documents/acuses/2021/';
+        $carpeta = $this->ftp_ruta . 'documents/acuses/2021/';
 
         $qry = "AND consecutivo < 11";
 
@@ -323,17 +377,13 @@ class Oficios extends CI_Controller
                 );
 
                 $this->m_oficios->subir_oficio($data, $oficio->id);
-            
-            
-            
             } else {
                 echo "El fichero $ruta no existe <br>";
             }
         }
-
     }
 
-    
+
     function editar_oficio()
     {
         $id        = $_POST['pk'];
@@ -341,13 +391,11 @@ class Oficios extends CI_Controller
         $value     = $_POST['value'];
 
         $this->m_oficios->editarOficio($id, $campo, $value);
-        
-      //  $this->seguridad($id);
-      
+
         echo json_encode($id);
     }
 
-    
+
 
     function subir_oficio($idIncidente, $consecutivo)
     {
@@ -357,22 +405,18 @@ class Oficios extends CI_Controller
             $ext = explode('.', $_FILES['pdf']['name']);
             $ext = $ext[count($ext) - 1];
             $pdf = "{$consecutivo}.{$ext}";
-            move_uploaded_file($_FILES['pdf']['tmp_name'], $this->ftp_ruta . 'documents/acuses/2021/' . $pdf);    
-           
-            
+            move_uploaded_file($_FILES['pdf']['tmp_name'], $this->ftp_ruta . 'documents/acuses/2021/' . $pdf);
+
+
             // FIN DEL SCRIPT#####################################   
 
             $nuevoPdf = array(
-            'pdf'      => $pdf,
-            'estatus'  => 8,
-            'fecha_entrega' => $this->m_ticket->fecha_actual(),
-            'hora_entrega'  => $this->m_ticket->hora_actual()
+                'pdf'      => $pdf,
+                'estatus'  => 8,
+                'fecha_entrega' => $this->m_oficios->fechaActual(),
+                'hora_entrega'  => $this->m_oficios->horaActual()
             );
             $this->m_oficios->subir_oficio($nuevoPdf, $idIncidente);
-        }    
+        }
     }
-
-
-
-
 }

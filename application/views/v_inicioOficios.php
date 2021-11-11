@@ -32,7 +32,7 @@
         <!-- BOTONES DE ACCION GENERAL -->
         <div class="row">
             <div class="col-lg-4 col-md-4 mb-4">
-                <a href="<?php echo base_url() ?>oficios/nueva_captura">
+                <a href="<?php echo base_url() ?>oficios/nuevaCaptura">
                     <div class="card bg-info">
                         <div class="card-body">
                             <h2 class="text-white">Capturar Oficio <i class="ti-list float-right"></i></h2>

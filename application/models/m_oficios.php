@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class m_oficios extends CI_Model
 {
@@ -37,8 +37,7 @@ class m_oficios extends CI_Model
 
         $qry = "SELECT max(consecutivo) as cons
         FROM Tb_Oficios
-        where oficio like '%/$year'"
-        ;
+        where oficio like '%/$year'";
 
         return $this->db->query($qry)->row();
     }
@@ -60,10 +59,10 @@ class m_oficios extends CI_Model
      */
     function obtOficiosPendientes($opciones)
     {
-      
-         $qry = "";
 
-         $qry = "SELECT Tb_Oficios.id,
+        $qry = "";
+
+        $qry = "SELECT Tb_Oficios.id,
                 consecutivo,
                 oficio,
                 folio,
@@ -93,9 +92,9 @@ class m_oficios extends CI_Model
             AND   Tb_Oficios.estatus != 10  
             {$opciones}
             ";
-            
- 
-         return $this->db->query($qry)->result();
+
+
+        return $this->db->query($qry)->result();
     }
 
     /**
@@ -147,9 +146,9 @@ class m_oficios extends CI_Model
     /**
      * Edita campos individuales del oficio
      * 
-     * @param int $id Identificador del oficio
+     * @param int    $id    Identificador del oficio
      * @param string $campo nombre del campo a modificar
-     * @param any $value Nuevo valor a ingresar 
+     * @param any    $value Nuevo valor a ingresar 
      * 
      * @return void
      */
@@ -167,7 +166,7 @@ class m_oficios extends CI_Model
         // $year = date('Y');
         $qry = "";
 
-        $qry = "SELECT DISTINCT Tb_Oficios.id,
+        $qry = "SELECT Tb_Oficios.id,
                 consecutivo,
                 oficio,
                 folio,
@@ -176,17 +175,21 @@ class m_oficios extends CI_Model
                 redaccion,
                 fecha_realizado,
                 servicio,
-                estatus,
+                Tb_Oficios.estatus,
                 d.nombre_dependencia as remitente,
                 fecha_entrega,
                 t.tipoOficio as tipo,
                 nombreDependencia,
                 pdf,
                 generado,
-                exp
+                exp,
+                est.estatus as est,
+                est.color,
+                est.icon
             FROM Tb_Oficios
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
+                LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
             WHERE oficio like '%/$year' ";
 
         return $this->db->query($qry)->result();
@@ -211,20 +214,25 @@ class m_oficios extends CI_Model
                 fecha_entrega,
                 Tb_Oficios.tipo as idTipo,
                 t.tipoOficio as tipo,
-                pdf
+                pdf,
+                est.estatus as est,
+                est.color,
+                est.icon
                 FROM Tb_Oficios
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
+                LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
+                LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
               
                 WHERE Tb_Oficios.id = {$oficio}";
 
         return $this->db->query($qry)->row();
     }
 
-      /**
-       * Regresa desde la Bd los tipos de oficio
-       * 
-       * @return array
-       */
+    /**
+     * Regresa desde la Bd los tipos de oficio
+     * 
+     * @return array
+     */
     function obtTipoOficios()
     {
         return $this->db->get('Tb_Cat_TipoOficio')->result();
@@ -234,7 +242,7 @@ class m_oficios extends CI_Model
      * Guarda en la Bd que se cargo el Acuse
      * 
      * @param object $oficio objeto de campos a actualizar
-     * @param int $id identificador del oficio
+     * @param int    $id     identificador del oficio
      * 
      * @return void
      */
@@ -248,7 +256,7 @@ class m_oficios extends CI_Model
 
 
     function capturar_consecutivo()
-    {        
+    {
         $this->db->insert('Tb_Oficios', $this);
     }
 
@@ -271,6 +279,44 @@ class m_oficios extends CI_Model
     }
 
     /**
+     * Regresa todos los movimeintos de un Oficio
+     * 
+     * @param int $id Identificador del Oficios
+     * 
+     * @return array arreglo de objetos de movimientos
+     */
+    function obtHistorialOficios($id)
+    {
+        $qry = "";
+
+        $qry = "SELECT m.id,
+                m.fecha,
+                m.mensaje,
+                u.usuario,
+                h.nombre,
+                h.label
+            FROM h_Oficios m
+                LEFT JOIN usuario u ON m.usr = u.codigo
+                LEFT JOIN Tb_Cat_MovimientoOficios h ON m.movimiento = h.id
+            WHERE m.oficio = {$id}";
+
+        return $this->db->query($qry)->result();
+    }
+
+
+    /**
+     * Agrega a la BD un nuevo movimiento en un oficio
+     * 
+     * @param object $movimiento array con los datos del movimiento
+     * 
+     * @return void
+     */
+    function agregaHistorial($movimiento)
+    {
+        $this->db->insert("h_Oficios", $movimiento);
+    }
+
+    /**
      * acorta la cadena de un texto
      * 
      * @param string $cadena cadena a acortar
@@ -281,18 +327,33 @@ class m_oficios extends CI_Model
     function limitar_cadena($cadena, $limite)
     {
         // Si la longitud es mayor que el límite...
-        if(strlen($cadena) > $limite) {
+        if (strlen($cadena) > $limite) {
             // Entonces corta la cadena y ponle el sufijo
             return substr($cadena, 0, $limite);
         }
-        
+
         // Si no, entonces devuelve la cadena normal
         return $cadena;
     }
 
-    function estatus($estatus)
+    /**
+     * Genera el Html del estatus
+     * 
+     * @param $estatus datos del estatus
+     * 
+     * @return html
+     */
+    function estatus($color, $icono, $label)
     {
-        if($estatus == 1) {
+
+        $esta = " <span class='btn badge btn-{$color} badge-pill mb-2'>                                    
+                     <i class='{$icono}'></i> {$label}
+                </span>";
+
+        return $esta;
+
+
+        /*        if($estatus == 1) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-info badge-pill mb-2"><i class="fa fa-file"></i> Capturado</span>';
             return $esta;
         }
@@ -307,11 +368,99 @@ class m_oficios extends CI_Model
         if($estatus == 4) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-danger badge-pill mb-2"><i class="fa fa-close "></i> Cancelado</span>';
             return $esta;
-        }
+        } */
     }
 
-    function correo_ticket_cerrado($folio, $fecha, $hora)
+
+
+
+    //FECHAS
+
+
+    /**
+     * Regresa la fecha actual del servidor MX
+     * 
+     * @return date fecha actual
+     */
+    function fechaActual()
     {
-    
+        date_default_timezone_set("America/Mexico_City");
+        $fecha = date("Y-m-d");
+        return $fecha;
+    }
+
+    /**
+     * Regresa la hora actual del servidor MX
+     * 
+     * @return time Hora actual
+     */
+    function horaActual()
+    {
+        date_default_timezone_set("America/Mexico_City");
+        $hora = date("H:i:s");
+        return $hora;
+    }
+
+    /**
+     * Regresa la fecha y hora actual del servidor
+     * 
+     * @return datetime
+     */
+    function fechahoraActual()
+    {
+        date_default_timezone_set("America/Mexico_City");
+        $fecha = date("Y-m-d h:i:s");
+        return $fecha;
+    }
+
+
+    /**
+     * Regresa la fecha Formateada
+     * 
+     * @param date $datetime fecha en formato unix
+     * 
+     * @return string Fecha en formato largo
+     */
+    function fechaText($datetime)
+    {
+        if ($datetime == "0000-00-00 00:00:00") {
+            return "Fecha indefinida";
+        } else {
+
+            $dia = explode(" ", $datetime);
+            $fecha = explode("-", $dia[0]);
+            if ($fecha[1] == 1) {
+                $mes = 'enero';
+            } else if ($fecha[1] == 2) {
+                $mes = 'febrero';
+            } else if ($fecha[1] == 3) {
+                $mes = 'marzo';
+            } else if ($fecha[1] == 4) {
+                $mes = 'abril';
+            } else if ($fecha[1] == 5) {
+                $mes = 'mayo';
+            } else if ($fecha[1] == 6) {
+                $mes = 'junio';
+            } else if ($fecha[1] == 7) {
+                $mes = 'julio';
+            } else if ($fecha[1] == 8) {
+                $mes = 'agosto';
+            } else if ($fecha[1] == 9) {
+                $mes = 'septiembre';
+            } else if ($fecha[1] == 10) {
+                $mes = 'octubre';
+            } else if ($fecha[1] == 11) {
+                $mes = 'noviembre';
+            } else if ($fecha[1] == 12) {
+                $mes = 'diciembre';
+            }
+
+            $hora = explode(":", $dia[1]);
+
+            $time = $hora[0] . ":" . $hora[1] . " Hrs";
+
+            $fecha2 = $fecha[2] . " " . $mes . " " . $fecha[0];
+            return $fecha2 . " a las " . $time;
+        }
     }
 }

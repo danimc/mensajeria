@@ -29,7 +29,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     
 
     <!-- THEME STYLES-->
-    <link href="<?php echo base_url()?>src/assets/css/main.min.css" rel="stylesheet" />
+    <link href="<?php echo base_url()?>src/assets/css/main.min.css?v1" rel="stylesheet" />
 
     <script src="<?php echo base_url()?>src/js/jquery-2.2.3.min.js"></script>
 
