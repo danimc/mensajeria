@@ -154,11 +154,6 @@ if($this->m_seguridad->acceso_sistema() == 0) {
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <a class="nav-link quick-sidebar-toggler">
-                            <span class="ti-align-right"></span>
-                        </a>
-                    </li>
                 </ul>
                 <!-- END TOP-RIGHT TOOLBAR-->
             </div>
