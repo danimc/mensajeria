@@ -329,7 +329,7 @@ class Oficios extends CI_Controller
 
 
         foreach ($oficios as $t) {
-            $fecha = $this->m_ticket->fecha_text_f($t->fecha_realizado);
+            $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
             $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 

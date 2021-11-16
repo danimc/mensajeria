@@ -463,4 +463,50 @@ class m_oficios extends CI_Model
             return $fecha2 . " a las " . $time;
         }
     }
+
+    /**
+     * Regresa solo la fecha formateada 
+     * 
+     * @param date|string $date fecha a formatear
+     * 
+     * @return string 
+     */
+    function soloFechaText($date)
+    {
+        if ($date == "0000-00-00") {
+            return "Fecha indefinida";
+        } else {
+
+            $fecha = explode("-", $date);
+            if ($fecha[1] == 1) {
+                $mes = 'enero';
+            } else if ($fecha[1] == 2) {
+                $mes = 'febrero';
+            } else if ($fecha[1] == 3) {
+                $mes = 'marzo';
+            } else if ($fecha[1] == 4) {
+                $mes = 'abril';
+            } else if ($fecha[1] == 5) {
+                $mes = 'mayo';
+            } else if ($fecha[1] == 6) {
+                $mes = 'junio';
+            } else if ($fecha[1] == 7) {
+                $mes = 'julio';
+            } else if ($fecha[1] == 8) {
+                $mes = 'agosto';
+            } else if ($fecha[1] == 9) {
+                $mes = 'septiembre';
+            } else if ($fecha[1] == 10) {
+                $mes = 'octubre';
+            } else if ($fecha[1] == 11) {
+                $mes = 'noviembre';
+            } else if ($fecha[1] == 12) {
+                $mes = 'diciembre';
+            }
+
+
+            $fecha2 = $fecha[2] . " " . $mes . " " . $fecha[0];
+            return $fecha2;
+        }
+    }
 }
