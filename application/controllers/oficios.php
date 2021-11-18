@@ -145,7 +145,8 @@ class Oficios extends CI_Controller
             'estatus'           => 1,
             'exp'               => $_POST['exp'],
             'capturista'        => $this->session->userdata("codigo"),
-            'unidadRemitente'   => $this->session->userdata("dependencia")
+            'unidadRemitente'   => $this->session->userdata("dependencia"),
+            'tipo'              => $this->input->post('tipo')
         );
 
         $oficio = array_filter($oficio);
@@ -281,6 +282,8 @@ class Oficios extends CI_Controller
         $datos['pdf']       = explode(".", $datos['oficio']->pdf);
         $datos['copias']    = $this->m_mensajeria->obtCopiasConocimiento($oficio);
         $datos['historial'] = $this->m_oficios->obtHistorialOficios($oficio);
+        // datos para los modales
+        $datos['estatus']   = $this->m_oficios->obtEstatusOficio();
         $head['title']      = "Seguimiento del oficio ";
 
         $this->load->view('_encabezado1', $head);
@@ -392,6 +395,16 @@ class Oficios extends CI_Controller
 
         $this->m_oficios->editarOficio($id, $campo, $value);
 
+        $seguimiento = array(
+            'oficio'    => $id,
+            'fecha'     => $this->m_oficios->fechahoraActual(),
+            'movimiento' => 2,
+            'usr'       => $this->session->userdata('codigo'),
+            'estatus'   => $value
+        );
+
+        $this->m_oficios->agregaHistorial($seguimiento);
+
         echo json_encode($id);
     }
 
@@ -418,5 +431,23 @@ class Oficios extends CI_Controller
             );
             $this->m_oficios->subir_oficio($nuevoPdf, $idIncidente);
         }
+    }
+
+    /**
+     * Devuelve el estatus actual de un oficio
+     * 
+     * @var int $id identificador unico del oficion enviado por Get
+     * 
+     * @return json
+     */
+    function estatusOficio()
+    {
+        header('Content-Type: application/json');
+
+        $id  = $this->input->get('pk');
+
+        $datos = $this->m_oficios->obt_oficio($id);
+
+        echo json_encode($datos);
     }
 }

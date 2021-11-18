@@ -19,14 +19,33 @@
             title="Asociar a un ticket de Servicio"><i class="fas fa-ticket-alt"></i> Asociar Ticket
         </a>-->
 
-        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modificarOficio" title="Subir Acuse y cambiar estatus a 'Entregado'"><i class="fa fa-upload"></i> Cambiar estatus
+        <a href="#" class="btn btn-primary hidden" id="btnEnviarFirma" title="Subir Acuse y cambiar estatus a 'Entregado'">
+            <i class="fa fa-pencil "></i>
+            Mandar a Firma
         </a>
 
-        <a href="#" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modificarOficio" title="Subir Acuse y cambiar estatus a 'Entregado'"><i class="fa fa-upload"></i> Subir Acuse
-        </a>
 
 
-        <a href="#" data-toggle="modal" data-target="#frmModificarOficio" class="btn btn-danger disabled pull-right"><i class="fas fa-times-circle"></i> CANCELAR OFICIO
+        <button class="btn btn-pink dropdown-toggle dropdown-arrow" data-toggle="dropdown" aria-expanded="false" id="btnAcciones">
+            <i class="fa fa-gear"></i>
+            Cambiar estado del oficio
+        </button>
+        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+            <h6 class="dropdown-header">Estatus de oficio</h6>
+            <a class="dropdown-item" href="javascript:;" id="btnOficioFirmado">Firmado</a>
+            <a class="dropdown-item" href="javascript:;" id="btnAmensajeria">Enviado a mensajería</a>
+            <a class="dropdown-item" href="javascript:;" id="btnAcuseRecibido">Acuse Recibido</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:;" id="btnMarcarPendiete">Marcar como pendiente</a>
+        </div>
+
+
+
+
+
+        <a href="#" data-toggle="modal" data-target="#frmModificarOficio" class="btn btn-danger disabled pull-right">
+            <i class="fa fa-times-circle"></i>
+            CANCELAR OFICIO
         </a>
 
     </div>
@@ -52,7 +71,7 @@
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Tipo de Oficio:</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-tipo" data-name="tipo" data-type="select" data-title="Edite el tipo de oficio"> <?php echo $oficio->tipo ?> ---</a>
+                                <a href="javascript:;" class="bt-tipo" data-name="tipo" data-type="select" data-title="Edite el tipo de oficio"> <?php echo $oficio->tipo ?> </a>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -89,7 +108,7 @@
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Estatus :</div>
                             <div class="col-6">
-                                <?php echo $this->m_oficios->estatus($oficio->color, $oficio->icon, $oficio->est) ?>
+                                <span id="lblEstatus"></span>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -150,7 +169,12 @@
             <div class="col-md-7">
                 <div class="ibox">
                     <div class="ibox-head">
-                        <div class="ibox-title">Vista Previa Oficio</div>
+                        <div class="ibox-title">
+                            <a href="#" class="btn btn-success hidden " data-toggle="modal" data-target="#modificarOficio" title="Subir Acuse y cambiar estatus a 'Entregado'" id="btnSubirAcuse">
+                                <i class="fa fa-upload"></i> Subir Acuse
+                            </a>
+                        </div>
+
                         <div class="ibox-tools">
                             <a class="ibox-collapse"><i class="ti-angle-down"></i></a>
                             <a class="fullscreen-link"><i class="ti-fullscreen"></i></a>

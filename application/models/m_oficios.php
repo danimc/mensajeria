@@ -239,6 +239,16 @@ class m_oficios extends CI_Model
     }
 
     /**
+     * Regresa la lista de estatus de los oficios
+     * 
+     * @return array estatus
+     */
+    function obtEstatusOficio()
+    {
+        return $this->db->get('Tb_Cat_EstatusOficios')->result();
+    }
+
+    /**
      * Guarda en la Bd que se cargo el Acuse
      * 
      * @param object $oficio objeto de campos a actualizar
@@ -294,7 +304,8 @@ class m_oficios extends CI_Model
                 m.mensaje,
                 u.usuario,
                 h.nombre,
-                h.label
+                h.label,
+                m.estatus
             FROM h_Oficios m
                 LEFT JOIN usuario u ON m.usr = u.codigo
                 LEFT JOIN Tb_Cat_MovimientoOficios h ON m.movimiento = h.id

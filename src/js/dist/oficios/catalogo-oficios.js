@@ -9,7 +9,9 @@ export const tipo_oficios = () => {
         async: false,
         error: () => {
             console.log("error de conexion al servidor");
-            return [{ error: "Error al cargar los tipos de oficios desde el servidor" }];
+            return [
+                { error: "Error al cargar los tipos de oficios desde el servidor" },
+            ];
         },
         success: (data) => {
             valores = data;
@@ -26,7 +28,9 @@ export const nombre_dependencias = () => {
         async: false,
         error: () => {
             console.log("error de conexion al servidor");
-            return [{ error: "Error al cargar los tipos de oficios desde el servidor" }];
+            return [
+                { error: "Error al cargar los tipos de oficios desde el servidor" },
+            ];
         },
         success: (data) => {
             valores = data;
@@ -39,7 +43,7 @@ export const asociar_ticket = (pk, ticket, prellenado) => {
     const data = {
         pk,
         ticket,
-        prellenado
+        prellenado,
     };
     $.ajax({
         type: "POST",
@@ -58,4 +62,11 @@ export const asociar_ticket = (pk, ticket, prellenado) => {
         },
     });
     return respuesta;
+};
+export const lblEstatus = (color, icon, estatus) => {
+    let html = ` 
+	<span class="btn badge btn-${color} badge-pill mb-2">                                    
+		<i class="${icon}"></i> ${estatus}
+	</span>`;
+    $("#lblEstatus").html(html);
 };
