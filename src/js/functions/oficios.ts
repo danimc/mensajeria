@@ -139,6 +139,8 @@ const actualizaOficio = (pk: number, campo: string, valor: any) => {
 		return 0;
 	}
 
+	if()
+
 	const data = {
 		pk,
 		name: campo,

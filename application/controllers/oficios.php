@@ -252,6 +252,13 @@ class Oficios extends CI_Controller
     }
 */
 
+    function test()
+    {
+        $data =  $this->m_oficios->obtYear(9479);
+
+        echo $data->year;
+    }
+
     /**
      * Actualiza el archivo PDF de un oficio y actualiza su direccion en la BD
      * 
@@ -260,13 +267,25 @@ class Oficios extends CI_Controller
      * 
      * @return redirection 
      */
-    function subirAcuse()
+    function subirOficios()
     {
-        $id = $this->input->post('actualizaId');
-        $consecutivo = $this->input->post('consecutivo');
-        $this->subir_oficio($id, $consecutivo);
+        $id             = $this->input->post('actualizaId');
+        $consecutivo    = $this->input->post('consecutivo');
+        $tipo           = $this->input->post('tipo');
+
+        $data = $this->m_oficios->obtYear($id);
+
+        if ($tipo == 1) {
+            $this->subir_oficio($id, $consecutivo, $data->year);
+        }
+
+        if ($tipo == 2) {
+            $this->subeOriginal($id, $consecutivo, $data->year);
+        }
+
         header("Location:" . $_SERVER['HTTP_REFERER']);
     }
+
 
     /**
      * Vista de seguimiento del oficio 
@@ -421,7 +440,16 @@ class Oficios extends CI_Controller
 
 
 
-    function subir_oficio($idIncidente, $consecutivo)
+    /**
+     * Sube el Oficio a la Carpeta correspondiente
+     * 
+     * @param int $id          Identificador del oficio
+     * @param int $consecutivo Numero consecutivo que sera el nombre del oficio
+     * @param int $year        año de captura del oficio
+     * 
+     * @return void
+     */
+    function subir_oficio($id, $consecutivo, $year)
     {
 
         // SCRIPT PARA SUBIR LOS PDF ###########################
@@ -429,9 +457,10 @@ class Oficios extends CI_Controller
             $ext = explode('.', $_FILES['pdf']['name']);
             $ext = $ext[count($ext) - 1];
             $pdf = "{$consecutivo}.{$ext}";
-            move_uploaded_file($_FILES['pdf']['tmp_name'], $this->ftp_ruta . 'documents/acuses/2021/' . $pdf);
-
-
+            move_uploaded_file(
+                $_FILES['pdf']['tmp_name'],
+                "{$this->ftp_ruta}documents/acuses/{$year}/{$pdf}"
+            );
             // FIN DEL SCRIPT#####################################   
 
             $nuevoPdf = array(
@@ -440,14 +469,52 @@ class Oficios extends CI_Controller
                 'fecha_entrega' => $this->m_oficios->fechaActual(),
                 'hora_entrega'  => $this->m_oficios->horaActual()
             );
-            $this->m_oficios->subir_oficio($nuevoPdf, $idIncidente);
+            $this->m_oficios->subir_oficio($nuevoPdf, $id);
 
             $seguimiento = array(
-                'oficio'    => $idIncidente,
+                'oficio'    => $id,
                 'fecha'     => $this->m_oficios->fechahoraActual(),
                 'movimiento' => 2,
                 'usr'       => $this->session->userdata('codigo'),
                 'estatus'   => 8
+            );
+
+            $this->m_oficios->agregaHistorial($seguimiento);
+        }
+    }
+
+    /**
+     * Funcion temporal para subir los oficios de Copia conocimiento
+     * 
+     * @param int $id          Identificador del oficio
+     * @param int $consecutivo Numero consecutivo que sera el nombre del oficio
+     * @param int $year        año de captura del oficio
+     * 
+     * @return void
+     */
+    function subeOriginal($id, $consecutivo, $year)
+    {
+        // SCRIPT PARA SUBIR LOS PDF ###########################
+        if ($_FILES['pdf']['name'] != "") {
+            $ext = explode('.', $_FILES['pdf']['name']);
+            $ext = $ext[count($ext) - 1];
+            $pdf = "{$consecutivo}.{$ext}";
+            move_uploaded_file(
+                $_FILES['pdf']['tmp_name'],
+                "{$this->ftp_ruta}documents/originals/{$year}/{$pdf}"
+            );
+            // FIN DEL SCRIPT#####################################   
+
+            $nuevoPdf = array(
+                'pdfOriginal'      => $pdf
+            );
+            $this->m_oficios->subir_oficio($nuevoPdf, $id);
+
+            $seguimiento = array(
+                'oficio'    => $id,
+                'fecha'     => $this->m_oficios->fechahoraActual(),
+                'movimiento' => 3,
+                'usr'       => $this->session->userdata('codigo')
             );
 
             $this->m_oficios->agregaHistorial($seguimiento);

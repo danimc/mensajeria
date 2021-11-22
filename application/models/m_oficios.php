@@ -217,7 +217,9 @@ class m_oficios extends CI_Model
                 pdf,
                 est.estatus as est,
                 est.color,
-                est.icon
+                est.icon,
+                YEAR(fecha_realizado) as year,
+                pdfOriginal as original
                 FROM Tb_Oficios
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
@@ -226,6 +228,22 @@ class m_oficios extends CI_Model
                 WHERE Tb_Oficios.id = {$oficio}";
 
         return $this->db->query($qry)->row();
+    }
+
+    /**
+     * Regresa el año en que fue capturado un Oficio
+     * 
+     * @param int $id Identificador del oficio a revisar
+     * 
+     * @return row año de captura
+     */
+    function obtYear($id)
+    {
+        $this->db->where("id", $id);
+
+        $this->db->select('Year(fecha_realizado) as year');
+
+        return $this->db->get("Tb_Oficios")->row();
     }
 
     /**

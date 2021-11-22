@@ -1,9 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Inicio extends CI_Controller
 {
-    
+
     function __construct()
     {
         parent::__construct();
@@ -22,11 +22,11 @@ class Inicio extends CI_Controller
     public function index()
     {
         $codigo = $this->session->userdata("codigo");
-        $usuario = $this->m_usuario->obt_usuario($codigo);    
+        $usuario = $this->m_usuario->obt_usuario($codigo);
         $datos['usuario'] = $usuario;
         $datos['total'] = $this->m_inicio->obt_contador_total();
         $datos['cerrados'] = $this->m_inicio->obt_contador_cerrados();
-        $datos['abiertos'] = $this->m_inicio->obt_contador_abiertos(); 
+        $datos['abiertos'] = $this->m_inicio->obt_contador_abiertos();
         //  $datos['tGeneral'] = $this->m_inicio->tickets_pendientes_general();
 
 
@@ -34,16 +34,15 @@ class Inicio extends CI_Controller
         $this->load->view('_menuLateral1');
         $this->load->view('v_inicio', $datos);
         $this->load->view('_footer1');
-    
     }
 
     function descargar_formatos()
     {
-        $codigo = $this->session->userdata("codigo");    
+        $codigo = $this->session->userdata("codigo");
         $this->load->view('_encabezado');
         $this->load->view('_menuLateral');
         $this->load->view('v_descargaFormatos');
-        $this->load->view('_footer');    
+        $this->load->view('_footer');
     }
 
     /**
@@ -57,14 +56,18 @@ class Inicio extends CI_Controller
         $area = $this->input->get("dep");
         $opciones = "";
 
-        if ($area != 19 && $area != 20) {
-            
+        if ($area != 19 && $area != 20 && $area != 2) {
             $opciones =  "AND unidadRemitente = {$area} ";
-
         }
 
+        // AREA 2 = Direccion
+        if ($area == 2) {
+            $opciones .= "AND Tb_Oficios.estatus = 2";
+        }
+
+
         // area 20 = Mensajeria
-        if ($area == 20 ) {
+        if ($area == 20) {
             $opciones .= "AND Tb_Oficios.estatus > 3 AND Tb_Oficios.estatus < 7 ";
         }
 
@@ -75,11 +78,11 @@ class Inicio extends CI_Controller
 
         echo json_encode(
             [
-            "area" => $area,
-            "error" => false, 
-            "result" => $oficios]
+                "area" => $area,
+                "error" => false,
+                "result" => $oficios
+            ]
         );
-        
     }
 
 
@@ -88,5 +91,4 @@ class Inicio extends CI_Controller
         $this->load->view('_head');
         $this->load->view('errors/_noaccess');
     }
-
 }

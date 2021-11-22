@@ -125,6 +125,27 @@
                     <div class="ibox">
                         <div class="ibox-head bg-primary-100 ">
                             <div class="ibox-title">COPIAS DE CONOCIMIENTO:</div>
+
+                            <? if ($oficio->original == '') { ?>
+
+
+                                <span id="originalFaltante" class="pull-right ">
+                                    <i class="fa fa-exclamation-triangle text-warning"></i>
+                                    Falta Original
+                                    <a href="#" class="btn btn-sm btn-warning " data-toggle="modal" data-target="#subirOriginal" title="Subir El oficio para enviar como Copia de conocimiento">
+                                        <i class="fa fa-upload "></i>
+                                    </a>
+                                </span>
+                            <? } else { ?>
+                                <span id="originalFaltante" class="pull-right ">
+                                    <i class="fa fa-check text-success"></i>
+                                    Original Cargado
+                                    <a href="<?php echo base_url() ?>documents/originals/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf" target="_blank" class="btn btn-sm btn-danger" title="Ver Oficio Original">
+                                        <i class="fa fa-file "></i>
+                                    </a>
+                                </span>
+                            <? } ?>
+
                         </div>
                         <div class="ibox-body">
                             <? foreach ($copias as $copia) { ?>
@@ -145,7 +166,7 @@
 
                 <div class="ibox">
                     <div class="ibox-head bg-pink-100">
-                        <div class="ibox-title">Seguimiento</div>
+                        <div class="ibox-title">SEGUIMIENTO</div>
 
                     </div>
                     <div class="ibox-body">
@@ -173,7 +194,7 @@
 
                             <div class="text-center centered" style="max-width:600px;">
                                 <div class="btn-group">
-                                    <a class="btn btn-secondary" target="_blank" href="<?php echo base_url() ?>src/librooficios/2021/<?php echo $oficio->consecutivo ?>.pdf">
+                                    <a class="btn btn-secondary" target="_blank" href="<?php echo base_url() ?>documents/acuses/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf">
                                         <span class="d-none d-md-inline">Descargar</span>
                                     </a>
                                     <button class="btn btn-secondary" id="prev"><i class="fa fa-long-arrow-left"></i>
@@ -196,12 +217,13 @@
                                 if (isset($pdf[1]) && $pdf[1] == "pdf") { ?>
                                     <canvas class="pdfcanvas" id="the-canvas"></canvas>
                                 <?php } else { ?>
-                                    <img src="<?php echo base_url() ?>src/librooficios/2021/<?php echo $oficio->consecutivo ?>.pdf" alt="Oficio">
+                                    <img src="<?php echo base_url() ?>documents/acuses/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf" alt="Oficio">
                                 <?php }
                                 ?>
                             </div>
 
                         <?php } else { ?>
+
                             <a href="#" data-toggle="modal" data-target="#modificarOficio" title="Subir Oficio">
                                 <h1 class="text-secondary text-center"><i class="fa fa-upload fa-3x"></i></h1>
                             </a>
@@ -219,7 +241,7 @@
         <script>
             $(function() {
                 let pdf = window.location.origin +
-                    '/bases/documents/acuses/2021/<?php echo $oficio->consecutivo ?>.pdf';
+                    '/bases/documents/acuses/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf';
                 console.log(pdf);
                 ver_pdf(pdf);
             })

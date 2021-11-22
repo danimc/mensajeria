@@ -37,6 +37,26 @@
                     </div>
                 </a>
             </div>
+
+
+            <div class="col mb-4">
+                <a href="<?= base_url() ?>oficios">
+                    <div class="card btn-primary">
+                        <div class="card-body">
+                            <h2 class="text-white">Notificar Firmados<i class=" ti-check float-right"></i></h2>
+                            <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Consulte los oficios
+                                    emitidos</small></div>
+                        </div>
+                        <div class="progress mb-2 widget-dark-progress">
+                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+
+
         </div>
 
         <!-- TABLAS --->
@@ -98,6 +118,9 @@
         const url = `${window.location.origin}/bases/inicio/`;
         const dependencia = <?php echo $usuario->depId ?>;
         let capa = document.getElementById("capa");
+
+
+
         (() => {
             obt_pendientes()
             setInterval('obt_pendientes()', 50000);
