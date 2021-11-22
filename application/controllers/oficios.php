@@ -387,7 +387,18 @@ class Oficios extends CI_Controller
     }
 
 
-    function editar_oficio()
+    /**
+     * Edita campos individualmente de un oficio
+     * 
+     * Requiere que se envie 3 datos para editar el campo seleccioando de un oficio
+     * 
+     * @var int $id primary key del oficio
+     * @var string $campo nombre de la columna a editar
+     * @var mixed $value valor nuevo a actualizar
+     * 
+     * @return Json
+     */
+    function editarOficio()
     {
         $id        = $_POST['pk'];
         $campo     = $_POST['name'];
@@ -430,6 +441,16 @@ class Oficios extends CI_Controller
                 'hora_entrega'  => $this->m_oficios->horaActual()
             );
             $this->m_oficios->subir_oficio($nuevoPdf, $idIncidente);
+
+            $seguimiento = array(
+                'oficio'    => $idIncidente,
+                'fecha'     => $this->m_oficios->fechahoraActual(),
+                'movimiento' => 2,
+                'usr'       => $this->session->userdata('codigo'),
+                'estatus'   => 8
+            );
+
+            $this->m_oficios->agregaHistorial($seguimiento);
         }
     }
 
@@ -449,5 +470,38 @@ class Oficios extends CI_Controller
         $datos = $this->m_oficios->obt_oficio($id);
 
         echo json_encode($datos);
+    }
+
+    /**
+     * Regresa el historial de un oficio solicitado por Get
+     * 
+     * @var int $id Identificador unico del oficio
+     * 
+     * @return $html historial del oficio
+     */
+    function obtHistorialOficio()
+    {
+
+        $id = $this->input->get('id');
+
+        $historial =  $this->m_oficios->obtHistorialOficios($id);
+
+        $html = "";
+
+        foreach ($historial as $h) {
+            $fecha = $this->m_mensajeria->fecha_text($h->fecha);
+
+            $html .= " 
+            <div class='row mb-2'>           
+                <div class='col-9'> <b> {$h->usuario}</b> {$h->LABEL}</div>
+                <div class='col-3 text-muted' data-toggle='tooltip' title='Fecha de movimiento'>
+                    {$fecha}
+                </div>
+
+            </div>
+            <hr>";
+        }
+
+        echo $html;
     }
 }

@@ -300,16 +300,21 @@ class m_oficios extends CI_Model
         $qry = "";
 
         $qry = "SELECT m.id,
-                m.fecha,
-                m.mensaje,
-                u.usuario,
-                h.nombre,
-                h.label,
-                m.estatus
-            FROM h_Oficios m
-                LEFT JOIN usuario u ON m.usr = u.codigo
-                LEFT JOIN Tb_Cat_MovimientoOficios h ON m.movimiento = h.id
-            WHERE m.oficio = {$id}";
+                        m.fecha,
+                        m.mensaje,
+                        u.usuario,
+                        h.nombre,
+                        m.estatus,
+                        if (
+                            m.movimiento = 2,
+                            concat(label, ' ', s.estatus),
+                            h.`label`
+                        ) as LABEL
+                    FROM h_Oficios m
+                        LEFT JOIN usuario u ON m.usr = u.codigo
+                        LEFT JOIN Tb_Cat_MovimientoOficios h ON m.movimiento = h.id
+                        LEFT JOIN Tb_Cat_EstatusOficios s ON m.estatus = s.id
+                    WHERE m.oficio = {$id}";
 
         return $this->db->query($qry)->result();
     }

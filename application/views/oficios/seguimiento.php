@@ -26,7 +26,7 @@
 
 
 
-        <button class="btn btn-pink dropdown-toggle dropdown-arrow" data-toggle="dropdown" aria-expanded="false" id="btnAcciones">
+        <button class="btn btn-pink dropdown-toggle dropdown-arrow hidden" data-toggle="dropdown" aria-expanded="false" id="btnAcciones">
             <i class="fa fa-gear"></i>
             Cambiar estado del oficio
         </button>
@@ -149,19 +149,7 @@
 
                     </div>
                     <div class="ibox-body">
-                        <? foreach ($historial as $h) {
-                            $fecha = $this->m_mensajeria->fecha_text_f($h->fecha); ?>
-                            <div class="row mb-2">
-                                <div class="col-9"> <b> <?= $h->usuario ?></b> <?= $h->label ?> </div>
-
-
-                                <div class="col-3 text-muted" data-toggle="tooltip" title="Fecha de movimiento">
-                                    <?= $h->fecha ?>
-                                </div>
-
-                            </div>
-                            <hr>
-                        <? } ?>
+                        <div id="historial" class="scroller" data-height="470px"></div>
                     </div>
                 </div>
             </div>

@@ -76,7 +76,7 @@ export const asociar_ticket = (
 	return respuesta;
 };
 
-export const lblEstatus = (color, icon, estatus) => {
+export const lblEstatus = (color: string, icon: string, estatus: string) => {
 	let html = ` 
 	<span class="btn badge btn-${color} badge-pill mb-2">                                    
 		<i class="${icon}"></i> ${estatus}

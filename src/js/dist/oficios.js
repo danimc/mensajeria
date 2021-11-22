@@ -1,7 +1,9 @@
+import { sendAlert } from "./clases/alertas.js";
 import { asociar_ticket, lblEstatus, nombre_dependencias, tipo_oficios, } from "./oficios/catalogo-oficios.js";
 const url = window.location.origin + "/bases/oficios/";
 const pk = $("#btnEditar").val();
-const urlEditar = `${url}editar_oficio`;
+const urlEditar = `${url}editarOficio`;
+let estatusGlobal;
 $("#btnEditar").on("click", () => {
     $(".bt-destinatario, .bt-cargo, .bt-folio, .bt-recibido, .bt-redaccion").editable({
         pk,
@@ -31,31 +33,26 @@ $("#btnEditar").on("click", () => {
 $("#btnEnviarFirma").on("click", () => {
     let campo = "estatus";
     let valor = 2;
-    console.log(campo);
     actualizaOficio(pk, campo, valor);
 });
 $("#btnOficioFirmado").on("click", () => {
     let campo = "estatus";
     let valor = 3;
-    console.log(campo);
     actualizaOficio(pk, campo, valor);
 });
 $("#btnAmensajeria").on("click", () => {
     let campo = "estatus";
     let valor = 4;
-    console.log(campo);
     actualizaOficio(pk, campo, valor);
 });
 $("#btnAcuseRecibido").on("click", () => {
     let campo = "estatus";
     let valor = 7;
-    console.log(campo);
     actualizaOficio(pk, campo, valor);
 });
 $("#btnMarcarPendiete").on("click", () => {
     let campo = "estatus";
     let valor = 9;
-    console.log(campo);
     actualizaOficio(pk, campo, valor);
 });
 $("#btnAsociaTicket").on("click", () => {
@@ -77,6 +74,8 @@ const obtEstatusOficio = () => {
         success: (resp) => {
             botonera(resp.estatus);
             lblEstatus(resp.color, resp.icon, resp.est);
+            obtHistorial();
+            estatusGlobal = resp.estatus;
         },
     });
 };
@@ -85,15 +84,22 @@ const obtEstatusOficio = () => {
  * @param estatus Actualiza los botones que aparecen en la interfaz
  */
 const botonera = (estatus) => {
-    if (estatus < 2) {
+    if (estatus == 1) {
         $("#btnEnviarFirma").removeClass("hidden");
     }
-    if (estatus > 2) {
-        //	$("#btnSubirAcuse").removeClass("hidden");
-        $("#btnEnviarFirma").addClass("hidden");
+    if (estatus >= 2 && estatus != 8) {
+        $("#btnAcciones").removeClass("hidden");
+        $("#btnEnviarFirma").addClass('hidden');
+    }
+    if (estatus == 8) {
+        $("#btnAcciones").addClass("hidden");
     }
 };
 const actualizaOficio = (pk, campo, valor) => {
+    if (campo === "estatus" && valor == estatusGlobal) {
+        sendAlert(true, 'Selecciono el estatus actual del Oficio');
+        return 0;
+    }
     const data = {
         pk,
         name: campo,
@@ -106,13 +112,26 @@ const actualizaOficio = (pk, campo, valor) => {
         data,
         beforeSend: () => { },
         success: (resp) => {
-            console.log(resp);
             obtEstatusOficio();
+        },
+    });
+};
+const obtHistorial = () => {
+    const data = { id: pk };
+    $.ajax({
+        type: "GET",
+        dataType: "HTML",
+        url: `${url}obtHistorialOficio`,
+        data,
+        beforeSend: () => { },
+        success: (resp) => {
+            $("#historial").html(resp);
         },
     });
 };
 (() => {
     obtEstatusOficio();
+    //	obtHistorial();
     /*
     $("#pdf").fileinput({
         showUpload: true,

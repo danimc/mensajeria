@@ -11,6 +11,6 @@ export const sendAlert =  (error:boolean, mensaje:string)=>{
 	if (!error) {
 		alertify.success('<i class="fa fa-check"></i> ' + mensaje);
 	} else {
-		alertify.error('<i class="fas fa-exclamation-triangle"></i> ' + mensaje);
+		alertify.error('<i class="fa fa-exclamation-triangle"></i> ' + mensaje);
 	}
 };
