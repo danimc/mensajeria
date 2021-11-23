@@ -38,21 +38,40 @@
                 </a>
             </div>
 
+            <?
+            if ($this->session->userdata('dependencia') == 2) { ?>
+                <div class="col mb-4">
+                    <a href="<?= base_url() ?>inicio/paraFirma">
+                        <div class="card btn-primary">
+                            <div class="card-body">
+                                <h2 class="text-white">Notificar Firmados<i class=" ti-check float-right"></i></h2>
+                                <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Valide los Oficios Firmados</small></div>
+                            </div>
+                            <div class="progress mb-2 widget-dark-progress">
+                                <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <? } ?>
 
-            <div class="col mb-4">
-                <a href="<?= base_url() ?>oficios">
-                    <div class="card btn-primary">
-                        <div class="card-body">
-                            <h2 class="text-white">Notificar Firmados<i class=" ti-check float-right"></i></h2>
-                            <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Consulte los oficios
-                                    emitidos</small></div>
+            <!-- mensajeria -->
+            <?
+            if ($this->session->userdata('dependencia') == 20) { ?>
+                <div class="col mb-4">
+                    <a href="<?= base_url() ?>inicio/mensajeria">
+                        <div class="card btn-pink">
+                            <div class="card-body">
+                                <h2 class="text-white">Panel Mensajería<i class=" ti-car float-right"></i></h2>
+                                <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Para envío</small></div>
+                            </div>
+                            <div class="progress mb-2 widget-dark-progress">
+                                <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                         </div>
-                        <div class="progress mb-2 widget-dark-progress">
-                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            <? } ?>
 
 
 

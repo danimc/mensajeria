@@ -51,6 +51,7 @@ class m_mensajeria extends CI_Model
 
         $qry = "SELECT 
                 d.nombre
+                ,d.correo
                 ,fecha_envio
                 ,hora_envio
                 FROM crm.Tb_CopiasConocimiento
@@ -205,14 +206,14 @@ class m_mensajeria extends CI_Model
         $this->hora_envio = $hora;
 
         $this->db->where('oficio', $folio);
-        $this->db->update('m_envio_copias', $this);
+        $this->db->update('Tb_CopiasConocimiento', $this);
     }
 
     function obtPDF($oficio)
     {
-        $this->db->select('dir_oficio');
-        $this->db->where('id_delivery', $oficio);
-        return $this->db->get('m_delivery')->row();
+        $this->db->select('pdfOriginal as ruta, YEAR(fecha_realizado) as year');
+        $this->db->where('id', $oficio);
+        return $this->db->get('Tb_Oficios')->row();
     }
 
     function notificacion()

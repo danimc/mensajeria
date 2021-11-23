@@ -1,61 +1,60 @@
-<?php 
+<?php
 
-class m_correos extends CI_Model {
+class m_correos extends CI_Model
+{
 
-    function __construct()
-    {
-        parent::__construct();
-    }
+	function __construct()
+	{
+		parent::__construct();
+	}
 
-    function correo_enviar_copias($oficio, $pdf)
-    {
-    	$copias = $this->m_mensajeria->obt_dependencias_ccp($oficio);
+	function correo_enviar_copias($oficio, $pdf)
+	{
+
+
+		$copias = $this->m_mensajeria->obtCopiasConocimiento($oficio);
 		$horario = $this->m_mensajeria->hora_actual();
 		$saludo = '';
 
-		if($horario <= '11:59:59'){
+		if ($horario <= '11:59:59') {
 			$saludo = 'Buenos días';
-		}
-		elseif ($horario <= '19:59:59') {
+		} elseif ($horario <= '19:59:59') {
 			$saludo = 'Buenas tardes';
-		}
-		elseif ($horario <= '23:59:59') {
+		} elseif ($horario <= '23:59:59') {
 			$saludo = 'Buenas noches';
 		}
-		
+
 		$datos['oficio'] = $oficio;
-		$datos['saludo'] = $saludo;		
-	  //  $this->load->view('_head');
-		$msg = $this->load->view('correos/c_nuevoTicket', $datos, true);
+		$datos['saludo'] = $saludo;
+
+		//$msg = $this->load->view('correos/c_nuevoTicket', $datos, true);
 
 		$this->load->library('email');
-		$this->email->from('incidenciasoag@gmail.com', 'Mensajeria OAG');
-		//$this->email->to($infoCorreo->correo);
+		$this->email->from('daniel.k310a@gmail.com', 'Mensajeria OAG');
+
 		$this->email->to('luis.mora@redudg.udg.mx');
 		//$this->email->cc('xochitl.ferrer@redudg.udg.mx');
 		//$this->email->bcc('them@their-example.com');
 
-		$this->email->subject('Envio de Copia de Oficio | Mensajeria OAG');
-		$this->email->message($msg);
+		$this->email->subject('Envio de Copia de Oficio | Mensajería OAG');
+		$this->email->message("Envio de Copia de conocimiento");
 		$this->email->attach($pdf);
 		$this->email->set_mailtype('html');
 		$this->email->send();
-    }
+	}
 
-    function correo_ticket_cerrado($folio, $fecha, $hora)
+	function correo_ticket_cerrado($folio, $fecha, $hora)
 	{
-	//	$usr = $this->m_ticket->seguimiento_ticket($folio);
+		//	$usr = $this->m_ticket->seguimiento_ticket($folio);
 		$ticket = $this->m_ticket->seguimiento_ticket($folio);
 		$horario = $hora;
 		$saludo = '';
 
-		if($horario <= '11:59:59'){
+		if ($horario <= '11:59:59') {
 			$saludo = 'Buenos días';
-		}
-		elseif ($horario <= '19:59:59') {
+		} elseif ($horario <= '19:59:59') {
 			$saludo = 'Buenas tardes';
-		}
-		elseif ($horario <= '23:59:59') {
+		} elseif ($horario <= '23:59:59') {
 			$saludo = 'Buenas noches';
 		}
 		$datos['hora_enviado'] = $hora;
@@ -75,6 +74,5 @@ class m_correos extends CI_Model {
 		$this->email->message($msg);
 		$this->email->set_mailtype('html');
 		$this->email->send();
-
 	}
 }

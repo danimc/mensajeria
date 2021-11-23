@@ -12,6 +12,7 @@ class Oficios extends CI_Controller
         $this->load->model('m_usuario', "", true);
         $this->load->model('m_mensajeria', "", true);
         $this->load->model('m_oficios', "", true);
+        $this->load->model('m_correos', "", true);
 
 
         $ci = get_instance();
@@ -32,24 +33,6 @@ class Oficios extends CI_Controller
         $this->load->view('v_inicioOficios', $datos);
         $this->load->view('_footer1');
     }
-
-    /*
-    function nuevo_oficio()
-    {
-        $codigo = $this->session->userdata("codigo");
-        $datos['usuario'] = $this->m_usuario->obt_usuario($codigo);
-        $datos['dependencias'] = $this->m_ticket->obt_dependencias();
-        $datos['tipos'] = $this->m_oficios->obt_tipoOficios();
-        $consecutivo = $this->m_oficios->obtMaxConsecutivo();
-        $datos['consecutivo'] = $consecutivo->cons + 1;
-
-        $this->load->view('_encabezado1');
-        $this->load->view('_menuLateral1');
-        $this->load->view('oficios/v_nuevo_oficio', $datos);
-        $this->load->view('_footer1');
-    }
-    */
-
 
     /**
      * Vista para registrar un nuevo oficio de salida
@@ -218,7 +201,7 @@ class Oficios extends CI_Controller
     /**
      * Añade al historial del oficio un movimiento
      * 
-     * @param int $id Identificador del oficio
+     * @param int $id         Identificador del oficio
      * @param int $movimiento tipo de movimiento realizado
      * 
      * @return void
@@ -423,12 +406,23 @@ class Oficios extends CI_Controller
         $campo     = $_POST['name'];
         $value     = $_POST['value'];
 
+        if ($campo === 'estatus' && $value == 6) {
+            $this->verificaMensajeria($id);
+        }
+
         $this->m_oficios->editarOficio($id, $campo, $value);
+
+        $movimiento = 4;
+
+        if ($campo === 'estatus') {
+            $movimiento = 2;
+        }
+
 
         $seguimiento = array(
             'oficio'    => $id,
             'fecha'     => $this->m_oficios->fechahoraActual(),
-            'movimiento' => 2,
+            'movimiento' => $movimiento,
             'usr'       => $this->session->userdata('codigo'),
             'estatus'   => $value
         );
@@ -437,6 +431,23 @@ class Oficios extends CI_Controller
 
         echo json_encode($id);
     }
+
+
+    function verificaMensajeria($id)
+    {
+
+        $fecha = $this->m_mensajeria->fecha_actual();
+        $hora = $this->m_mensajeria->hora_actual();
+        //verifica que este cargado el original
+        $oficio = $this->m_mensajeria->obtPDF($id);
+        $rutaPdf = "documents/originals/{$oficio->year}/{$oficio->ruta}";
+
+        //Actualiza en la BD el envio 
+        $this->m_mensajeria->copias_enviadas($id, $fecha, $hora);
+        //Envia los correos
+        @$this->m_correos->correo_enviar_copias($id, $rutaPdf);
+    }
+
 
 
 
@@ -561,8 +572,13 @@ class Oficios extends CI_Controller
             $html .= " 
             <div class='row mb-2'>           
                 <div class='col-9'> <b> {$h->usuario}</b> {$h->LABEL}</div>
-                <div class='col-3 text-muted' data-toggle='tooltip' title='Fecha de movimiento'>
-                    {$fecha}
+                <div 
+                    class='col-3 text-muted' 
+                    data-toggle='tooltip' 
+                    title='Fecha de movimiento'>
+                    
+                        {$fecha}
+                
                 </div>
 
             </div>

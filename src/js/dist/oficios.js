@@ -100,12 +100,11 @@ const actualizaOficio = (pk, campo, valor) => {
         sendAlert(true, 'Selecciono el estatus actual del Oficio');
         return 0;
     }
-    if ()
-        const data = {
-            pk,
-            name: campo,
-            value: valor,
-        };
+    const data = {
+        pk,
+        name: campo,
+        value: valor,
+    };
     $.ajax({
         type: "POST",
         dataType: "JSON",

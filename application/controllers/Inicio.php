@@ -36,7 +36,7 @@ class Inicio extends CI_Controller
         $this->load->view('_footer1');
     }
 
-    function descargar_formatos()
+    function descargarFormatos()
     {
         $codigo = $this->session->userdata("codigo");
         $this->load->view('_encabezado');
@@ -71,9 +71,6 @@ class Inicio extends CI_Controller
             $opciones .= "AND Tb_Oficios.estatus > 3 AND Tb_Oficios.estatus < 7 ";
         }
 
-
-
-
         $oficios = $this->m_oficios->obtOficiosPendientes($opciones);
 
         echo json_encode(
@@ -85,7 +82,144 @@ class Inicio extends CI_Controller
         );
     }
 
+    /**
+     * Vista para el area de direccion 
+     * 
+     * Permite firmar cambiar el estatus de los oficios a firmado
+     * 
+     * @return view
+     */
+    function paraFirma()
+    {
+        $codigo = $this->session->userdata("codigo");
+        $usuario = $this->m_usuario->obt_usuario($codigo);
+        $datos['years'] = $this->m_oficios->obtAniosRegistrados();
+        $datos['usuario'] = $usuario;
+        $head['title'] = "Para Firma";
 
+        $this->load->view('_encabezado1', $head);
+        $this->load->view('_menuLateral1');
+        $this->load->view('acciones/firmados', $datos);
+        $this->load->view('_footer1');
+    }
+
+    /**
+     * Vista para el area de direccion 
+     * 
+     * Permite cambiar de estatus de mensajeria los oficios a firmado
+     * 
+     * @return view
+     */
+    function mensajeria()
+    {
+        $codigo = $this->session->userdata("codigo");
+        $usuario = $this->m_usuario->obt_usuario($codigo);
+        $datos['years'] = $this->m_oficios->obtAniosRegistrados();
+        $datos['usuario'] = $usuario;
+        $head['title'] = "Para Firma";
+
+        $this->load->view('_encabezado1', $head);
+        $this->load->view('_menuLateral1');
+        $this->load->view('acciones/mensajeria', $datos);
+        $this->load->view('_footer1');
+    }
+
+
+
+    /**
+     * Regresa la tabla de oficios por año de filtro
+     * 
+     * @return Json Tabla de datos 
+     */
+    function obtOficiosFirma()
+    {
+        header('Content-Type: application/json');
+        $oficios =  $this->m_oficios->obtOficiosFirma();
+        $respuesta = array();
+        $i = 0;
+
+
+
+        foreach ($oficios as $t) {
+            $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
+
+            $tabla = "<button class='btn btn-success' onclick='marcaFirmado({$t->id})'> Marcar firmado </button>";
+
+            $respuesta[$i] = array(
+                'consecutivo'    => $t->consecutivo,
+                'oficio'         => $t->oficio,
+                'destinatario'   => $t->destinatario,
+                'dependencia'    => $t->nombreDependencia,
+                'fecha_cap'      => $fecha,
+                'asunto'         => $t->redaccion,
+                'exp'            => $t->exp,
+                'dRemitente'     => $t->remitente,
+                'estatus'        => $estatus,
+                'acciones'        => $tabla
+            );
+            $i++;
+        }
+
+        echo json_encode($respuesta);
+    }
+
+
+    /**
+     * Regresa la tabla de oficios por año de filtro
+     * 
+     * @return Json Tabla de datos 
+     */
+    function obtOficiosMensajeria()
+    {
+        header('Content-Type: application/json');
+        $oficios =  $this->m_oficios->obtOficiosMensajeria();
+        $respuesta = array();
+        $i = 0;
+
+
+
+        foreach ($oficios as $t) {
+            $acciones = '';
+            $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
+
+            $ruta = "<button class='btn btn-sm btn-pink' onclick='cambiarEstatus({$t->id},5)'> <i class='fa fa-car'></i> </button>";
+
+            if ($t->estatus <= 5) {
+                $acciones = "<button class='btn btn-sm btn-success' onclick='cambiarEstatus({$t->id}, 6)'> <i class='fa fa-check'></i> Marca Recibido</button>";
+            } else {
+                $ruta = "<button class='btn btn-sm btn-pink disabled'> <i class='fa fa-car'></i> </button>";
+                $acciones = "<button class='btn btn-sm btn-warning' onclick='cambiarEstatus({$t->id},7)'> <i class='fa fa-hand-holding'></i> Entregado a Solicitante</button>";
+            }
+
+            $respuesta[$i] = array(
+                'consecutivo'    => $t->consecutivo,
+                'oficio'         => $t->oficio,
+                'destinatario'   => $t->destinatario,
+                'dependencia'    => $t->nombreDependencia,
+                'fecha_cap'      => $fecha,
+                'asunto'         => $t->redaccion,
+                'exp'            => $t->exp,
+                'dRemitente'     => $t->remitente,
+                'estatus'        => $estatus,
+                'ruta'           => $ruta,
+                'acciones'       => $acciones
+
+            );
+            $i++;
+        }
+
+        echo json_encode($respuesta);
+    }
+
+    /**
+     * Envia a vista de seguridad de no acceso
+     * 
+     * @return view
+     */
     public function noaccess()
     {
         $this->load->view('_head');
