@@ -259,7 +259,7 @@ class Inicio extends CI_Controller
             $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
-            $tabla = "<a class='fa fa-eye fa-2x text-warning' href='oficios/seguimiento/{$t->id}'></a>";
+            $tabla = "<a class='fa fa-eye fa-2x text-warning' href='".base_url()."oficios/seguimiento/{$t->id}'></a>";
 
             $respuesta[$i] = array(
                 'consecutivo'    => $t->consecutivo,

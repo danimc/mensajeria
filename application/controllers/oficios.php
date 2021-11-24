@@ -387,27 +387,28 @@ class Oficios extends CI_Controller
         $id        = $_POST['pk'];
         $campo     = $_POST['name'];
         $value     = $_POST['value'];
-
-        if ($campo === 'estatus' && $value == 6) {
-            $this->verificaMensajeria($id);
-        }
-
-        $this->m_oficios->editarOficio($id, $campo, $value);
-
         $movimiento = 4;
 
         if ($campo === 'estatus') {
             $movimiento = 2;
         }
+        if ($campo === 'estatus' && $value == 6) {
+            $this->verificaMensajeria($id);
+        }
 
+        $this->m_oficios->editarOficio($id, $campo, $value);     
 
         $seguimiento = array(
             'oficio'    => $id,
             'fecha'     => $this->m_oficios->fechahoraActual(),
             'movimiento' => $movimiento,
-            'usr'       => $this->session->userdata('codigo'),
-            'estatus'   => $value
+            'usr'       => $this->session->userdata('codigo')            
         );
+
+        if($movimiento === 2){
+            $seguimiento['estatus'] = $value;
+        }
+
 
         $this->m_oficios->agregaHistorial($seguimiento);
 
