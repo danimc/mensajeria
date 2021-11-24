@@ -12,7 +12,8 @@ class m_correos extends CI_Model
 	{
 
 
-		$copias = $this->m_mensajeria->obtCopiasConocimiento($oficio);
+		$correos = $this->m_mensajeria->correosCopias($oficio);
+	
 		$horario = $this->m_mensajeria->hora_actual();
 		$saludo = '';
 
@@ -32,7 +33,7 @@ class m_correos extends CI_Model
 		$this->load->library('email');
 		$this->email->from('daniel.k310a@gmail.com', 'Mensajeria OAG');
 
-		$this->email->to('luis.mora@redudg.udg.mx');
+		$this->email->to($correos);
 		//$this->email->cc('xochitl.ferrer@redudg.udg.mx');
 		//$this->email->bcc('them@their-example.com');
 

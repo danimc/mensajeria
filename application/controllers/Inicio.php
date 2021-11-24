@@ -125,6 +125,28 @@ class Inicio extends CI_Controller
     }
 
 
+      /**
+     * Vista para el area de direccion 
+     * 
+     * Permite cambiar de estatus de mensajeria los oficios a firmado
+     * 
+     * @return view
+     */
+    function reportes()
+    {
+        $codigo = $this->session->userdata("codigo");
+        $usuario = $this->m_usuario->obt_usuario($codigo);
+        $datos['years'] = $this->m_oficios->obtAniosRegistrados();
+        $datos['usuario'] = $usuario;
+        $head['title'] = "Para Firma";
+
+        $this->load->view('_encabezado1', $head);
+        $this->load->view('_menuLateral1');
+        $this->load->view('acciones/pendientes-total', $datos);
+        $this->load->view('_footer1');
+    }
+
+
 
     /**
      * Regresa la tabla de oficios por año de filtro
@@ -214,6 +236,49 @@ class Inicio extends CI_Controller
 
         echo json_encode($respuesta);
     }
+
+    
+    /**
+     * Regresa la tabla de oficios por año de filtro
+     * 
+     * @return Json Tabla de datos 
+     */
+    function obtOficiosOficialia()
+    {
+        header('Content-Type: application/json');
+        $year = $this->input->get('anio');
+        $validador = "OR Tb_Oficios.estatus != 8 OR Tb_Oficios.estatus != 10";
+        $oficios =  $this->m_oficios->obt_oficios($year, $validador);
+        $respuesta = array();
+        $i = 0;
+
+
+
+        foreach ($oficios as $t) {
+            $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
+
+            $tabla = "<a class='fa fa-eye fa-2x text-warning' href='oficios/seguimiento/{$t->id}'></a>";
+
+            $respuesta[$i] = array(
+                'consecutivo'    => $t->consecutivo,
+                'oficio'         => $t->oficio,
+                'destinatario'   => $t->destinatario,
+                'dependencia'    => $t->nombreDependencia,
+                'fecha_cap'      => $fecha,
+                'asunto'         => $t->redaccion,
+                'exp'            => $t->exp,
+                'dRemitente'     => $t->remitente,
+                'estatus'        => $estatus,
+                'acciones'        => $tabla
+            );
+            $i++;
+        }
+
+        echo json_encode($respuesta);
+    }
+
 
     /**
      * Envia a vista de seguridad de no acceso

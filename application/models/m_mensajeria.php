@@ -200,10 +200,10 @@ class m_mensajeria extends CI_Model
         $this->db->insert('h_ticket', $this);
     }
 
-    function copias_enviadas($folio, $fecha, $hora)
+    function copias_enviadas($folio)
     {
-        $this->fecha_envio = $fecha;
-        $this->hora_envio = $hora;
+        $this->fecha_envio  = $this->fecha_actual();
+        $this->hora_envio   = $this->hora_actual();
 
         $this->db->where('oficio', $folio);
         $this->db->update('Tb_CopiasConocimiento', $this);
@@ -214,6 +214,25 @@ class m_mensajeria extends CI_Model
         $this->db->select('pdfOriginal as ruta, YEAR(fecha_realizado) as year');
         $this->db->where('id', $oficio);
         return $this->db->get('Tb_Oficios')->row();
+    }
+
+    function correosCopias($id)
+    {
+        $copias = $this->m_mensajeria->obtCopiasConocimiento($id);
+
+        $correos = "";
+        $n = sizeof($copias);
+        $i = 0;
+        
+        foreach($copias as $c){
+            $correos .= " {$c->correo}";
+            if($i < 2 ) {
+                $correos .= ",";
+            }
+            $i++;
+        }
+
+       return $correos;
     }
 
     function notificacion()

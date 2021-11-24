@@ -161,7 +161,7 @@ class m_oficios extends CI_Model
 
 
 
-    function obt_oficios($year)
+    function obt_oficios($year, $opt = '')
     {
         // $year = date('Y');
         $qry = "";
@@ -190,7 +190,8 @@ class m_oficios extends CI_Model
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
-            WHERE oficio like '%/$year' ";
+            WHERE oficio like '%/{$year}'
+             {$opt}";
 
         return $this->db->query($qry)->result();
     }
@@ -465,23 +466,6 @@ class m_oficios extends CI_Model
 
         return $esta;
 
-
-        /*        if($estatus == 1) {
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-info badge-pill mb-2"><i class="fa fa-file"></i> Capturado</span>';
-            return $esta;
-        }
-        if($estatus == 2) {
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-pink badge-pill mb-2"><i class="fa fa-paper-plane"></i> Enviado</span>';
-            return $esta;
-        }
-        if($estatus == 3) {
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-success badge-pill mb-2"><i class="fa fa-check"></i> Entregado</span>';
-            return $esta;
-        }
-        if($estatus == 4) {
-            $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-danger badge-pill mb-2"><i class="fa fa-close "></i> Cancelado</span>';
-            return $esta;
-        } */
     }
 
 

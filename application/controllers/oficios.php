@@ -218,28 +218,10 @@ class Oficios extends CI_Controller
         $this->m_oficios->agregaHistorial($movimiento);
     }
 
-    /*
-
-    function verifica_registroOficio()
-    {
-        $oficio = $_POST['oficio'];
-        $verificador = $this->m_oficios->verifica_nuevoOficio($oficio);
-        echo $oficio . 'esta ' . $verificador . ' veces... ';
-
-        if ($verificador == 0) {
-            echo "registrando";
-            $this->guardar_captura();
-        } else {
-            echo " No se puede registrar el mismo numero de Oficio";
-        }
-    }
-*/
-
     function test()
     {
-        $data =  $this->m_oficios->obtYear(9479);
-
-        echo $data->year;
+       $this->m_correos->correo_enviar_copias(9494,'originals/2021/6313.pdf');
+       
     }
 
     /**
@@ -436,16 +418,18 @@ class Oficios extends CI_Controller
     function verificaMensajeria($id)
     {
 
-        $fecha = $this->m_mensajeria->fecha_actual();
-        $hora = $this->m_mensajeria->hora_actual();
+
         //verifica que este cargado el original
         $oficio = $this->m_mensajeria->obtPDF($id);
-        $rutaPdf = "documents/originals/{$oficio->year}/{$oficio->ruta}";
 
-        //Actualiza en la BD el envio 
-        $this->m_mensajeria->copias_enviadas($id, $fecha, $hora);
-        //Envia los correos
-        @$this->m_correos->correo_enviar_copias($id, $rutaPdf);
+        if ($oficio->ruta) {
+            $rutaPdf = "documents/originals/{$oficio->year}/{$oficio->ruta}";
+
+            //Envia los correos
+            @$this->m_correos->correo_enviar_copias($id, $rutaPdf);
+            //Actualiza en la BD el envio 
+            $this->m_mensajeria->copias_enviadas($id);
+        }
     }
 
 
@@ -559,9 +543,7 @@ class Oficios extends CI_Controller
      */
     function obtHistorialOficio()
     {
-
         $id = $this->input->get('id');
-
         $historial =  $this->m_oficios->obtHistorialOficios($id);
 
         $html = "";

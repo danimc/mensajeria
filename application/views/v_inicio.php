@@ -73,6 +73,24 @@
                 </div>
             <? } ?>
 
+                  <!-- mensajeria -->
+                  <?
+            if ($this->session->userdata('dependencia') == 1) { ?>
+                <div class="col mb-4">
+                    <a href="<?= base_url() ?>inicio/reportes">
+                        <div class="card btn-warning">
+                            <div class="card-body">
+                                <h2 class="text-white">Reportes<i class=" ti-bar-chart-alt float-right"></i></h2>
+                                <div class="text-white mt-1"><i class=" ti-view-grid mr-1"></i><small>Revise los oficios pendientes </small></div>
+                            </div>
+                            <div class="progress mb-2 widget-dark-progress">
+                                <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <? } ?>
+
 
 
 
