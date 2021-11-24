@@ -132,7 +132,7 @@ if($this->m_seguridad->acceso_sistema() == 0) {
                             </div>
                             <div class="admin-menu-features">
                                 <a class="admin-features-item"
-                                    href="<?php echo base_url()?>index.php?/usuario/perfil"><i class="ti-user"></i>
+                                    href="http://148.202.169.71/helpdesk/usuario/perfil"><i class="ti-user"></i>
                                     <span>PERFIL</span>
                                 </a>
                                 <a class="admin-features-item" href="javascript:;"><i class="ti-settings"></i>
