@@ -25,13 +25,7 @@
 
                 <div class="ibox-body">
                     <div class="table-responsive row ">
-                        <div class="flexbox mb-4">
-                            <div class="form-group">
-                                <label class="col-form-label "><b>Año:</b></label>
-                            </div>
-
-                        </div>
-
+                    
                         <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
 
                             <table class="table table-bordered table-striped table-hover dataTable no-footer dtr-inline"

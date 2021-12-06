@@ -275,6 +275,41 @@ class m_oficios extends CI_Model
         return $this->db->query($qry)->result();
     }
 
+    function obtOficiosOficialia()
+    {
+        // $year = date('Y');
+        $qry = "";
+
+        $qry = "SELECT Tb_Oficios.id,
+                consecutivo,
+                oficio,
+                folio,
+                oficioRecibido,
+                destinatario,
+                redaccion,
+                fecha_realizado,
+                servicio,
+                Tb_Oficios.estatus,
+                d.nombre_dependencia as remitente,
+                fecha_entrega,
+                t.tipoOficio as tipo,
+                nombreDependencia,
+                pdf,
+                generado,
+                exp,
+                est.estatus as est,
+                est.color,
+                est.icon
+            FROM Tb_Oficios
+                LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
+                LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
+                LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
+            WHERE Tb_Oficios.estatus != 8
+            AND Tb_Oficios.estatus != 10";
+
+        return $this->db->query($qry)->result();
+    }
+
     function obt_oficio($oficio)
     {
         $qry = "";

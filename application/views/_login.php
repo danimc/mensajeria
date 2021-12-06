@@ -8,7 +8,7 @@
             <span class="auth-head-icon"><img class="img-circle" src="<?=base_url()?>src/img/escudoazul.jpg"></span>
         </div>
         <form class="ibox-body"  action="<?php echo base_url();?>acceso/login" method="post">
-            <h4 class="font-strong text-center mb-5">INICIAR SESION<br><br>SGBD</h4>
+            <h4 class="font-strong text-center mb-5">INICIAR SESION<br><br>CONTROL OFICIOS</h4>
             <? if($this->uri->segment(3) == "e")
                     {?>
                      <div class="alert alert-danger alert-dismissible">

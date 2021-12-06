@@ -7,10 +7,9 @@ $(function() {
             `<p align="center"><h3> <b>
                 <i class='fa fa-check' style='color: green;' ></i>
                  <?php echo $_GET['nOficio'] ?>
-                 </b> Guardado con exito</h3> <p/>
+                 </b> Guardado con exito</h3> <p/>           
                  
-                 
-                 <button class="btn btn-primary">Mandar a Firma</button>`,
+                 <button class="btn btn-primary" id="btnFirma" onclick="marcaAfirma(<?=$_GET['id']?>)">Mandar a Firma</button>`,
             function() {
 
             });
@@ -168,7 +167,7 @@ $(function() {
                 }
 
             ],
-          
+
             columns: [{
                     data: 'consecutivo'
                 },
@@ -190,7 +189,7 @@ $(function() {
                 {
                     data: 'asunto'
                 },
-                
+
                 {
                     data: 'estatus'
                 },
@@ -216,12 +215,44 @@ $(function() {
     });
 
     $("#year").change(function() {
-        anio = $("#year").val();
+       let anio = $("#year").val();
         $("#datatable").dataTable().fnDestroy();
         obt_oficios(anio);
         $("#etiquetaAnual").html(anio);
 
     });
+
+
+    const marcaAfirma = (id) => {
+       let anio = $("#year").val();
+       let btn = $("#btnFirma");
+        console.log(id);
+
+        data = {
+            pk: id,
+            name: 'estatus',
+            value: 2
+        };
+
+        $.ajax({
+            type: "POST",
+            dataType: 'JSON',
+            url: '<?php echo base_url() ?>oficios/editarOficio',
+            data,
+            beforeSend: () => {},
+            success: (resp) => {
+                $("#datatable").dataTable().fnDestroy();
+                obt_oficios(anio);
+
+                btn.addClass('btn-success disabled');
+                btn.html(`<i class="fa fa-check-circle"></i> HECHO`);
+                btn.attr('disabled');
+
+
+            }
+        });
+
+    }
 
     /*
     function formatoTabla() {

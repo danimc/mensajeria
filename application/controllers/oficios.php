@@ -141,7 +141,7 @@ class Oficios extends CI_Controller
             if ($idOficio != '') {
                 $this->_revisaCopias($idOficio);
                 $this->_agregaHistorial($idOficio, 1);
-                redirect(base_url() . 'oficios?nOficio=' . $nOficio);
+                redirect(base_url() . "oficios?nOficio={$nOficio}&id={$idOficio}");
             }
         } else {
             $mensaje = 0;
@@ -216,12 +216,6 @@ class Oficios extends CI_Controller
         );
 
         $this->m_oficios->agregaHistorial($movimiento);
-    }
-
-    function test()
-    {
-       $this->m_correos->correo_enviar_copias(9494,'originals/2021/6313.pdf');
-       
     }
 
     /**

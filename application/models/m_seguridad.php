@@ -62,11 +62,15 @@ class m_seguridad extends CI_Model {
 	function log_general($controlador, $funcion, $objeto)
     {        
 
-		$this->sistema = 1;
+		$this->sistema = 5; 		//sistema 5 = Control de Oficios
 		$this->controlador = $controlador;
 		$this->funcion = $funcion;
 		$this->objeto = $objeto;
-		$this->usuario = $this->session->userdata("codigo");
+		$this->fecha = date("Y-m-d");
+		$this->hora = date("H:i:s");
+		$this->usuario = $this->session->userdata("codigo");		
+		$this->ip = $this->session->userdata("ip_address");
+	
 		
         $this->db->insert("log_general",$this);
 

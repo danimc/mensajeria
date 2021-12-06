@@ -248,11 +248,9 @@ class Inicio extends CI_Controller
         header('Content-Type: application/json');
         $year = $this->input->get('anio');
         $validador = "OR Tb_Oficios.estatus != 8 OR Tb_Oficios.estatus != 10";
-        $oficios =  $this->m_oficios->obt_oficios($year, $validador);
+        $oficios =  $this->m_oficios->obtOficiosOficialia();
         $respuesta = array();
         $i = 0;
-
-
 
         foreach ($oficios as $t) {
             $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
