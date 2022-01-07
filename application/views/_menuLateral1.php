@@ -9,7 +9,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
         <ul class="side-menu metismenu">
             <li class="heading">MENÚ LATERAL</li>
             <li class="active">
-                <a href="<?php echo base_url(); ?>inicio">
+                <a href="<?php echo base_url(); ?>Inicio">
                     <i class="sidebar-item-icon ti-home"></i>
                     <span class="nav-label">Inicio</span></a>
             </li>

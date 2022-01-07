@@ -100,7 +100,7 @@
 
         $('#datatable').DataTable({
             ajax: {
-                url: '<?php echo base_url() ?>inicio/obtOficiosOficialia?anio=',
+                url: '<?php echo base_url() ?>Inicio/obtOficiosOficialia?anio=',
                 dataSrc: ''
             },
             dom: 'Bfrtip',

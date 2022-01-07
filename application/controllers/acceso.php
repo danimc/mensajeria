@@ -31,7 +31,7 @@ class Acceso extends CI_Controller
 	function login()
 	{
 		if (!isset($_POST["user"]) || !isset($_POST["password"]))
-			redirect("/inicio/index");
+			redirect("/Inicio/index");
 
 		session_start();
 
@@ -48,6 +48,6 @@ class Acceso extends CI_Controller
 	function verifica_logeado()
 	{
 		if ($this->session->userdata("logged_in"))
-			redirect("/inicio");
+			redirect("/Inicio");
 	}
 }

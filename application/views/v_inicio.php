@@ -41,7 +41,7 @@
             <?
             if ($this->session->userdata('dependencia') == 2) { ?>
                 <div class="col mb-4">
-                    <a href="<?= base_url() ?>inicio/paraFirma">
+                    <a href="<?= base_url() ?>Inicio/paraFirma">
                         <div class="card btn-primary">
                             <div class="card-body">
                                 <h2 class="text-white">Notificar Firmados<i class=" ti-check float-right"></i></h2>
@@ -59,7 +59,7 @@
             <?
             if ($this->session->userdata('dependencia') == 20) { ?>
                 <div class="col mb-4">
-                    <a href="<?= base_url() ?>inicio/mensajeria">
+                    <a href="<?= base_url() ?>Inicio/mensajeria">
                         <div class="card btn-pink">
                             <div class="card-body">
                                 <h2 class="text-white">Panel Mensajería<i class=" ti-car float-right"></i></h2>
@@ -77,7 +77,7 @@
                   <?
             if ($this->session->userdata('dependencia') == 1) { ?>
                 <div class="col mb-4">
-                    <a href="<?= base_url() ?>inicio/reportes">
+                    <a href="<?= base_url() ?>Inicio/reportes">
                         <div class="card btn-warning">
                             <div class="card-body">
                                 <h2 class="text-white">Reportes<i class=" ti-bar-chart-alt float-right"></i></h2>
@@ -152,7 +152,7 @@
 
 
     <script>
-        const url = `${window.location.origin}/bases/inicio/`;
+        const url = `${window.location.origin}/bases/Inicio/`;
         const dependencia = <?php echo $usuario->depId ?>;
         let capa = document.getElementById("capa");
 
