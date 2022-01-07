@@ -303,7 +303,8 @@ class Oficios extends CI_Controller
     {
         header('Content-Type: application/json');
         $year = $this->input->get('anio');
-        $oficios =  $this->m_oficios->obt_oficios($year);
+        $dependencia = $this->session->userdata('dependencia');
+        $oficios =  $this->m_oficios->obt_oficios($year, $dependencia);
         $respuesta = array();
         $i = 0;
 

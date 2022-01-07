@@ -161,9 +161,11 @@ class m_oficios extends CI_Model
 
 
 
-    function obt_oficios($year, $opt = '')
+    function obt_oficios($year, $dependencia)
     {
-        // $year = date('Y');
+        
+        
+
         $qry = "";
 
         $qry = "SELECT Tb_Oficios.id,
@@ -191,7 +193,7 @@ class m_oficios extends CI_Model
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
             WHERE oficio like '%/{$year}'
-             {$opt}";
+            AND unidadRemitente = {$dependencia}";
 
         return $this->db->query($qry)->result();
     }
