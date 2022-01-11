@@ -299,7 +299,16 @@ class Oficios extends CI_Controller
         header('Content-Type: application/json');
         $year = $this->input->get('anio');
         $dependencia = $this->session->userdata('dependencia');
-        $oficios = $this->m_oficios->obt_oficios($year, $dependencia);
+        $opciones = "";
+
+        $validador = $this->input->get('val');
+
+        if (!$validador == "all") {
+            $opciones = "AND unidadRemitente = {$dependencia}";
+        }
+
+
+        $oficios = $this->m_oficios->obt_oficios($year, $opciones);
         $respuesta = array();
         $i = 0;
 
@@ -308,7 +317,8 @@ class Oficios extends CI_Controller
             $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
-            $tabla = "<a class='fa fa-eye fa-2x text-warning' href='oficios/seguimiento/{$t->id}'></a>";
+            $tabla = "<a class='fa fa-eye fa-2x text-warning' 
+                    href='oficios/seguimiento/{$t->id}'></a>";
 
             $respuesta[$i] = array(
                 'consecutivo' => $t->consecutivo,

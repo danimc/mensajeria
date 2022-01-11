@@ -38,9 +38,13 @@ $(function() {
                 <a href="<?php echo base_url() ?>oficios/nuevaCaptura">
                     <div class="card bg-info">
                         <div class="card-body">
-                            <h2 class="text-white">Capturar Oficio <i class="ti-list float-right"></i></h2>
-                            <div class="text-white mt-1"><i class="ti-stats-up mr-1"></i><small> Capture Nuevo
-                                    Oficio</small></div>
+                            <h2 class="text-white">
+                                Capturar Oficio <i class="ti-list float-right"></i>
+                            </h2>
+                            <div class="text-white mt-1">
+                                <i class="ti-stats-up mr-1"></i>
+                                <small> Capture Nuevo Oficio</small>
+                            </div>
                         </div>
                         <div class="progress mb-2 widget-dark-progress">
                             <div class="progress-bar" role="progressbar" style="width:100%; height:5px;"
@@ -59,13 +63,14 @@ $(function() {
                     </div>
                 </div>
 
-
                 <div class="ibox-body">
                     <div class="table-responsive row ">
                         <div class="flexbox mb-4">
                             <div class="form-group">
-                                <label class="col-form-label "><b>Año:</b></label>
-                                <select class="form-control" name="year" id="year">
+                                <input type="hidden" id="validador" value="<?=$this->input->get('val')?>">
+                                <label class="col-form-label "><b>Año:</b>
+                                </label>
+                                <select class="form-control col" name="year" id="year">
 
                                     <?php foreach ($years as $y) { ?>
                                     <option> <?php echo $y->year ?></option>
@@ -147,9 +152,11 @@ $(function() {
 
     function obt_oficios(year) {
 
+        const validador = $("#validador").val();
+
         $('#datatable').DataTable({
             ajax: {
-                url: '<?php echo base_url() ?>oficios/obt_oficios?anio=' + year,
+                url: `<?php echo base_url() ?>oficios/obt_oficios?anio=${year}&val=${validador}`,
                 dataSrc: ''
             },
             dom: 'Bfrtip',

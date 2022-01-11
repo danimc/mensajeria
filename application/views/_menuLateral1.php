@@ -19,10 +19,20 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
                     <span class="nav-label">Control de Oficios</span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
                     <li>
-                        <a href="<?php echo base_url(); ?>oficios/nuevaCaptura"><i class="sidebar-item-icon ti-plus"></i> <span>Nuevo Oficio</span></a>
+                        <a href="<?php echo base_url(); ?>oficios/nuevaCaptura"><i
+                                class="sidebar-item-icon ti-plus"></i> <span>Nuevo Oficio</span></a>
                     </li>
                     <li>
-                        <a href="<?php echo base_url(); ?>oficios"><i class="sidebar-item-icon fa ti-files"></i> <span>Libro Oficios</span></a>
+                        <a href="<?php echo base_url(); ?>oficios"><i class="sidebar-item-icon fa ti-files"></i>
+                            <span>Libro Oficios</span></a>
+                    </li>
+                    <li>
+                        <?php if ($this->m_seguridad->acceso_modulo(1)) {
+                            ?>                        
+                        <a href="<?php echo base_url(); ?>oficios?val=all"><i class="sidebar-item-icon fa ti-files"></i>
+                            <span>Todos los Oficios</span>
+                        </a>
+                        <?php }?>
                     </li>
                 </ul>
             </li>
