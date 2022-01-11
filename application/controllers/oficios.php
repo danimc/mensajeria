@@ -307,7 +307,6 @@ class Oficios extends CI_Controller
             $opciones = "AND unidadRemitente = {$dependencia}";
         }
 
-
         $oficios = $this->m_oficios->obt_oficios($year, $opciones);
         $respuesta = array();
         $i = 0;
@@ -317,7 +316,7 @@ class Oficios extends CI_Controller
             $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
-            $tabla = "<a class='fa fa-eye fa-2x text-warning' 
+            $tabla = "<a class='fa fa-eye fa-2x text-warning'
                     href='oficios/seguimiento/{$t->id}'></a>";
 
             $respuesta[$i] = array(
@@ -389,7 +388,30 @@ class Oficios extends CI_Controller
         if ($campo === 'estatus') {
             $movimiento = 2;
         }
+
+        if ($campo === 'estatus' && $value == 4) {
+            $original = $this->m_mensajeria->obtPDF($id);
+
+            if (!$original->ruta) {
+                echo json_encode([
+                    'error' => true,
+                    'mensaje' => "Debe subir el Oficio Original para las copias de conocimiento",
+                ]);
+                return;
+            }
+        }
+
         if ($campo === 'estatus' && $value == 6) {
+            $original = $this->m_mensajeria->obtPDF($id);
+
+            if (!$original->ruta) {
+                echo json_encode([
+                    'error' => true,
+                    'mensaje' => "Debe subir el Oficio Original para las copias de conocimiento",
+                ]);
+                return;
+            }
+
             $this->verificaMensajeria($id);
         }
 

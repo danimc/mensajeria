@@ -46,21 +46,20 @@ $("#btnEditar").on("click", () => {
 $("#btnEnviarFirma").on("click", () => {
 	let campo = "estatus";
 	let valor = 2;
-  
+
 	actualizaOficio(pk, campo, valor);
 });
 
 $("#btnOficioFirmado").on("click", () => {
 	let campo = "estatus";
 	let valor = 3;
-  
+
 	actualizaOficio(pk, campo, valor);
 });
 
 $("#btnAmensajeria").on("click", () => {
 	let campo = "estatus";
 	let valor = 4;
- 
 
 	actualizaOficio(pk, campo, valor);
 });
@@ -68,7 +67,6 @@ $("#btnAmensajeria").on("click", () => {
 $("#btnAcuseRecibido").on("click", () => {
 	let campo = "estatus";
 	let valor = 7;
-  
 
 	actualizaOficio(pk, campo, valor);
 });
@@ -76,7 +74,7 @@ $("#btnAcuseRecibido").on("click", () => {
 $("#btnMarcarPendiete").on("click", () => {
 	let campo = "estatus";
 	let valor = 9;
- 
+
 	actualizaOficio(pk, campo, valor);
 });
 
@@ -102,7 +100,7 @@ const obtEstatusOficio = () => {
 		beforeSend: () => {},
 		success: (resp) => {
 			botonera(resp.estatus);
-            lblEstatus(resp.color, resp.icon, resp.est);
+			lblEstatus(resp.color, resp.icon, resp.est);
 			obtHistorial();
 
 			estatusGlobal = resp.estatus;
@@ -110,9 +108,8 @@ const obtEstatusOficio = () => {
 	});
 };
 
-
 /**
- * 
+ *
  * @param estatus Actualiza los botones que aparecen en la interfaz
  */
 const botonera = (estatus: number) => {
@@ -122,20 +119,17 @@ const botonera = (estatus: number) => {
 
 	if (estatus >= 2 && estatus != 8) {
 		$("#btnAcciones").removeClass("hidden");
-        $("#btnEnviarFirma").addClass('hidden');
-		
+		$("#btnEnviarFirma").addClass("hidden");
 	}
 
-	if(estatus == 8){
+	if (estatus == 8) {
 		$("#btnAcciones").addClass("hidden");
 	}
-
 };
 
 const actualizaOficio = (pk: number, campo: string, valor: any) => {
-
-	if(campo === "estatus" && valor == estatusGlobal){
-		sendAlert(true, 'Selecciono el estatus actual del Oficio');
+	if (campo === "estatus" && valor == estatusGlobal) {
+		sendAlert(true, "Selecciono el estatus actual del Oficio");
 		return 0;
 	}
 
@@ -145,7 +139,6 @@ const actualizaOficio = (pk: number, campo: string, valor: any) => {
 		value: valor,
 	};
 
-
 	$.ajax({
 		type: "POST",
 		dataType: "JSON",
@@ -153,14 +146,18 @@ const actualizaOficio = (pk: number, campo: string, valor: any) => {
 		data,
 		beforeSend: () => {},
 		success: (resp) => {
+			if (resp.error) {
+				alertify.alert("ATENCION!", resp.mensaje, function () {
+					alertify.warning("NO SE ENVIÓ A MENSAJERÍA");
+				});
+			}
 			obtEstatusOficio();
 		},
 	});
 };
 
 const obtHistorial = () => {
-
-	const data = {id : pk};
+	const data = { id: pk };
 
 	$.ajax({
 		type: "GET",
@@ -170,18 +167,13 @@ const obtHistorial = () => {
 		beforeSend: () => {},
 		success: (resp) => {
 			$("#historial").html(resp);
-
 		},
-	});	
-}
-
-
+	});
+};
 
 (() => {
 	obtEstatusOficio();
-//	obtHistorial();
-
-
+	//	obtHistorial();
 
 	/*
     $("#pdf").fileinput({

@@ -11,20 +11,22 @@
 
         <div class="row">
             <div class="col mb-4">
-                <a href="<?= base_url("oficios/nuevaCaptura") ?>">
+                <a href="<?=base_url("oficios/nuevaCaptura")?>">
                     <div class="card btn-success">
                         <div class="card-body">
                             <h2 class="text-white">Nuevo Oficio<i class=" ti-files float-right"></i></h2>
-                            <div class="text-white mt-1"><i class="ti-stats-up mr-1"></i><small>Registre un nuevo Oficio</small></div>
+                            <div class="text-white mt-1"><i class="ti-stats-up mr-1"></i><small>Registre un nuevo
+                                    Oficio</small></div>
                         </div>
                         <div class="progress mb-2 widget-dark-progress">
-                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </a>
             </div>
             <div class="col mb-4">
-                <a href="<?= base_url() ?>oficios">
+                <a href="<?=base_url()?>oficios">
                     <div class="card btn-danger">
                         <div class="card-body">
                             <h2 class="text-white">Libro Oficios<i class=" ti-files float-right"></i></h2>
@@ -32,64 +34,70 @@
                                     emitidos</small></div>
                         </div>
                         <div class="progress mb-2 widget-dark-progress">
-                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </a>
             </div>
 
             <?
-            if ($this->session->userdata('dependencia') == 2) { ?>
-                <div class="col mb-4">
-                    <a href="<?= base_url() ?>Inicio/paraFirma">
-                        <div class="card btn-primary">
-                            <div class="card-body">
-                                <h2 class="text-white">Notificar Firmados<i class=" ti-check float-right"></i></h2>
-                                <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Valide los Oficios Firmados</small></div>
-                            </div>
-                            <div class="progress mb-2 widget-dark-progress">
-                                <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+if ($this->session->userdata('dependencia') == 2) {?>
+            <div class="col mb-4">
+                <a href="<?=base_url()?>Inicio/paraFirma">
+                    <div class="card btn-primary">
+                        <div class="card-body">
+                            <h2 class="text-white">Notificar Firmados<i class=" ti-check float-right"></i></h2>
+                            <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Valide los Oficios
+                                    Firmados</small></div>
                         </div>
-                    </a>
-                </div>
-            <? } ?>
+                        <div class="progress mb-2 widget-dark-progress">
+                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <?}?>
 
             <!-- mensajeria -->
             <?
-            if ($this->session->userdata('dependencia') == 20) { ?>
-                <div class="col mb-4">
-                    <a href="<?= base_url() ?>Inicio/mensajeria">
-                        <div class="card btn-pink">
-                            <div class="card-body">
-                                <h2 class="text-white">Panel Mensajería<i class=" ti-car float-right"></i></h2>
-                                <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Para envío</small></div>
-                            </div>
-                            <div class="progress mb-2 widget-dark-progress">
-                                <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+if ($this->session->userdata('dependencia') == 20) {?>
+            <div class="col mb-4">
+                <a href="<?=base_url()?>Inicio/mensajeria">
+                    <div class="card btn-pink">
+                        <div class="card-body">
+                            <h2 class="text-white">Panel Mensajería<i class=" ti-car float-right"></i></h2>
+                            <div class="text-white mt-1"><i class=" ti-check  mr-1"></i><small>Para envío</small></div>
                         </div>
-                    </a>
-                </div>
-            <? } ?>
+                        <div class="progress mb-2 widget-dark-progress">
+                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <?}?>
 
-                  <!-- mensajeria -->
-                  <?
-            if ($this->session->userdata('dependencia') == 1) { ?>
-                <div class="col mb-4">
-                    <a href="<?= base_url() ?>Inicio/reportes">
-                        <div class="card btn-warning">
-                            <div class="card-body">
-                                <h2 class="text-white">Reportes<i class=" ti-bar-chart-alt float-right"></i></h2>
-                                <div class="text-white mt-1"><i class=" ti-view-grid mr-1"></i><small>Revise los oficios pendientes </small></div>
-                            </div>
-                            <div class="progress mb-2 widget-dark-progress">
-                                <div class="progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+            <!-- mensajeria -->
+            <?
+if ($this->m_seguridad->acceso_modulo(2)) {?>
+            <div class="col mb-4">
+                <a href="<?=base_url()?>Inicio/reportes">
+                    <div class="card btn-warning">
+                        <div class="card-body">
+                            <h2 class="text-white">Reportes<i class=" ti-bar-chart-alt float-right"></i></h2>
+                            <div class="text-white mt-1"><i class=" ti-view-grid mr-1"></i><small>Revise los oficios
+                                    pendientes </small></div>
                         </div>
-                    </a>
-                </div>
-            <? } ?>
+                        <div class="progress mb-2 widget-dark-progress">
+                            <div class="progress-bar" role="progressbar" style="width:100%; height:5px;"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <?}?>
 
 
 
@@ -152,61 +160,61 @@
 
 
     <script>
-        const url = `${window.location.origin}/bases/Inicio/`;
-        const dependencia = <?php echo $usuario->depId ?>;
-        let capa = document.getElementById("capa");
+    const url = `${window.location.origin}/bases/Inicio/`;
+    const dependencia = <?php echo $usuario->depId ?>;
+    let capa = document.getElementById("capa");
 
 
 
-        (() => {
-            obt_pendientes()
-            setInterval('obt_pendientes()', 50000);
+    (() => {
+        obt_pendientes()
+        setInterval('obt_pendientes()', 50000);
 
-        })();
+    })();
 
 
-        function obt_pendientes() {
-            const data = {
-                dep: dependencia
-            }
+    function obt_pendientes() {
+        const data = {
+            dep: dependencia
+        }
 
-            $.ajax({
-                type: "GET",
-                dataType: 'JSON',
-                url: `${url}obtOficiosPendientes`,
-                data,
-                success: (resp) => {
-                    if (resp.error) {
-                        alert("algo salio mal");
-                        return 0;
-                    }
-                    actualiza_tabla_pendientes(resp.result);
-
+        $.ajax({
+            type: "GET",
+            dataType: 'JSON',
+            url: `${url}obtOficiosPendientes`,
+            data,
+            success: (resp) => {
+                if (resp.error) {
+                    alert("algo salio mal");
+                    return 0;
                 }
-            });
-        }
+                actualiza_tabla_pendientes(resp.result);
 
-        function actualiza_tabla_pendientes(datos) {
-            capa.innerHTML = ''; //limpia la lista
+            }
+        });
+    }
 
-            document.getElementById("contadorPendientes").innerHTML = `${datos.length}`;
+    function actualiza_tabla_pendientes(datos) {
+        capa.innerHTML = ''; //limpia la lista
 
-            datos.forEach((val, idx, ) => {
-                let li = document.createElement("li");
-                li.classList.add("media");
-                li.innerHTML = tarjetaPendiente(val);
-                capa.appendChild(li);
+        document.getElementById("contadorPendientes").innerHTML = `${datos.length}`;
 
-            });
+        datos.forEach((val, idx, ) => {
+            let li = document.createElement("li");
+            li.classList.add("media");
+            li.innerHTML = tarjetaPendiente(val);
+            capa.appendChild(li);
+
+        });
 
 
-        }
+    }
 
-        const tarjetaPendiente = (datos) => {
+    const tarjetaPendiente = (datos) => {
 
-            const urlSeguimiento = `${window.location.origin}/bases/oficios/seguimiento/${datos.id}`;
+        const urlSeguimiento = `${window.location.origin}/bases/oficios/seguimiento/${datos.id}`;
 
-            let tarjeta = ` <div class="media-body d-flex">
+        let tarjeta = ` <div class="media-body d-flex">
                         <div class="flex-1">
                             <h5 class="media-heading">
                                 <a href="${urlSeguimiento}">
@@ -215,14 +223,14 @@
                                 <span id="badge"></span>
                             </h5>
                             <p class="font-13 text-light mb-1">
-                                Para: 
+                                Para:
                                 <b>${datos.destinatario} </b><br>
                                 Dependencia: <b>${datos.nombreDependencia} </b><br>
 
                                 Asunto: <b>${datos.redaccion}</b>
                             </p>
                             <div class="d-flex align-items-center font-13">
-                                Remitente: &nbsp; 
+                                Remitente: &nbsp;
                                 <a class="mr-2 text-success" data-toggle="tooltip" title="Usuario Asignado"
                                     href="javascript:;">
                                      ${datos.capturista} - ${datos.remitente}
@@ -234,13 +242,13 @@
 
                         <div class="text-right" style="width:100px;">
                             <a href="${urlSeguimiento}">
-                                <span class="btn badge btn-${datos.color} badge-pill mb-2">                                    
+                                <span class="btn badge btn-${datos.color} badge-pill mb-2">
                                     <i class="${datos.icon}"></i> ${datos.est}
                                 </span>
                             </a>
                         </div>
                     </div>`;
 
-            return tarjeta;
-        }
+        return tarjeta;
+    }
     </script>

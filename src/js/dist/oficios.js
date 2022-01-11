@@ -89,7 +89,7 @@ const botonera = (estatus) => {
     }
     if (estatus >= 2 && estatus != 8) {
         $("#btnAcciones").removeClass("hidden");
-        $("#btnEnviarFirma").addClass('hidden');
+        $("#btnEnviarFirma").addClass("hidden");
     }
     if (estatus == 8) {
         $("#btnAcciones").addClass("hidden");
@@ -97,7 +97,7 @@ const botonera = (estatus) => {
 };
 const actualizaOficio = (pk, campo, valor) => {
     if (campo === "estatus" && valor == estatusGlobal) {
-        sendAlert(true, 'Selecciono el estatus actual del Oficio');
+        sendAlert(true, "Selecciono el estatus actual del Oficio");
         return 0;
     }
     const data = {
@@ -112,6 +112,11 @@ const actualizaOficio = (pk, campo, valor) => {
         data,
         beforeSend: () => { },
         success: (resp) => {
+            if (resp.error) {
+                alertify.alert("ATENCION!", resp.mensaje, function () {
+                    alertify.warning("NO SE ENVIÓ A MENSAJERÍA");
+                });
+            }
             obtEstatusOficio();
         },
     });
