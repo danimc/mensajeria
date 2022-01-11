@@ -1,16 +1,16 @@
-<?php if (isset($_GET['nOficio'])) { ?>
+<?php if (isset($_GET['nOficio'])) {?>
 
-    <script>
-        $(function() {
-            alertify
-                .alert(
-                    "<h3><B><i class='fa fa-check' style='color: green;' ></i> <?php echo $_GET['nOficio'] ?></B></h3> Guardado con exito ",
-                    function() {
+<script>
+$(function() {
+    alertify
+        .alert(
+            "<h3><B><i class='fa fa-check' style='color: green;' ></i> <?php echo $_GET['nOficio'] ?></B></h3> Guardado con exito ",
+            function() {
 
-                    });
-        })
-    </script>
-<?php } ?>
+            });
+})
+</script>
+<?php }?>
 
 
 <div class="content-wrapper">
@@ -42,7 +42,8 @@
 
                         <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
 
-                            <table class="table table-bordered table-striped table-hover dataTable no-footer dtr-inline" id="datatable" role="grid" aria-describedby="datatable_info">
+                            <table class="table table-bordered table-striped table-hover dataTable no-footer dtr-inline"
+                                id="datatable" role="grid" aria-describedby="datatable_info">
 
                                 <thead class="thead-default thead-lg">
                                     <tr role="row">
@@ -77,135 +78,140 @@
 
 
     <script>
-        const idioma = {
-            "sProcessing": "Procesando...",
-            "sLengthMenu": "Mostrar _MENU_ registros",
-            "sZeroRecords": "No se encontraron resultados",
-            "sEmptyTable": "Ningún dato disponible en esta tabla",
-            "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando _START_ al _END_ de _TOTAL_ registros",
-            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix": "",
-            "sSearch": "Filtrar por:",
-            "sUrl": "",
-            "sInfoThousands": ",",
-            "sLoadingRecords": "Cargando...",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast": "Último",
-                "sNext": "Siguiente",
-                "sPrevious": "Anterior"
-            },
-            "oAria": {
-                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-            },
-            buttons: {
-                copyTitle: 'Los datos fueron copiados',
-                copyInfo: {
-                    _: 'Copiados %d filas al portapapeles',
-                    1: 'Copiado 1 fila al portapapeles',
-                }
+    const idioma = {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando _START_ al _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando _START_ al _END_ de _TOTAL_ registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Filtrar por:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        buttons: {
+            copyTitle: 'Los datos fueron copiados',
+            copyInfo: {
+                _: 'Copiados %d filas al portapapeles',
+                1: 'Copiado 1 fila al portapapeles',
             }
-        };
-
-        function obt_oficios() {
-
-            $('#datatable').DataTable({
-                ajax: {
-                    url: '<?php echo base_url() ?>Inicio/obtOficiosMensajeria?anio=',
-                    dataSrc: ''
-                },
-                dom: 'Bfrtip',
-                buttons: [{
-                        extend: 'excelHtml5',
-
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        orientation: 'landscape',
-                    },
-                    {
-                        extend: 'print',
-
-                    }
-
-                ],
-
-                columns: [{
-                        data: 'consecutivo'
-                    },
-                    {
-                        data: 'oficio'
-                    },
-                    {
-                        data: 'dRemitente'
-                    },
-                    {
-                        data: 'estatus'
-
-                    },
-                    {
-                        data: 'destinatario'
-                    },
-                    {
-                        data: 'dependencia'
-                    },
-                    {
-                        data: 'fecha_cap'
-                    },
-                    {
-                        data: 'ruta'
-                    },
-                    {
-                        data: 'acciones'
-                    }
-
-                ],
-                "deferRender": true,
-                "language": idioma,
-                stateSave: true,
-                responsive: true
-            });
-
         }
+    };
+
+    function obt_oficios() {
+
+        $('#datatable').DataTable({
+            ajax: {
+                url: '<?php echo base_url() ?>Inicio/obtOficiosMensajeria?anio=',
+                dataSrc: ''
+            },
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'excelHtml5',
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                },
+                {
+                    extend: 'print',
+
+                }
+
+            ],
+
+            columns: [{
+                    data: 'consecutivo'
+                },
+                {
+                    data: 'oficio'
+                },
+                {
+                    data: 'dRemitente'
+                },
+                {
+                    data: 'estatus'
+
+                },
+                {
+                    data: 'destinatario'
+                },
+                {
+                    data: 'dependencia'
+                },
+                {
+                    data: 'fecha_cap'
+                },
+                {
+                    data: 'ruta'
+                },
+                {
+                    data: 'acciones'
+                }
+
+            ],
+            "deferRender": true,
+            "language": idioma,
+            stateSave: true,
+            responsive: true
+        });
+
+    }
     </script>
 
     <script>
-        $(function() {
-            $("#year").val(<?php echo date('Y') ?>);
-            obt_oficios(<?php echo date('Y') ?>);
+    $(function() {
+        $("#year").val(<?php echo date('Y') ?>);
+        obt_oficios(<?php echo date('Y') ?>);
 
 
-        });
+    });
 
-        $("#year").change(function() {
-            anio = $("#year").val();
-            $("#datatable").dataTable().fnDestroy();
-            obt_oficios(anio);
-            $("#etiquetaAnual").html(anio);
+    $("#year").change(function() {
+        anio = $("#year").val();
+        $("#datatable").dataTable().fnDestroy();
+        obt_oficios(anio);
+        $("#etiquetaAnual").html(anio);
 
-        });
+    });
 
-        const cambiarEstatus = (id, estatus) => {
+    const cambiarEstatus = (id, estatus) => {
 
-            data = {
-                pk: id,
-                name: 'estatus',
-                value: estatus
-            };
+        data = {
+            pk: id,
+            name: 'estatus',
+            value: estatus
+        };
 
-            $.ajax({
-                type: "POST",
-                dataType: 'JSON',
-                url: '<?php echo base_url() ?>oficios/editarOficio',
-                data,
-                beforeSend: () => {},
-                success: (resp) => {
-                    $("#datatable").dataTable().fnDestroy();
-                    obt_oficios();
+        $.ajax({
+            type: "POST",
+            dataType: 'JSON',
+            url: '<?php echo base_url() ?>oficios/editarOficio',
+            data,
+            beforeSend: () => {},
+            success: (resp) => {
+                if (resp.error) {
+                    alertify.alert("ATENCION!", resp.mensaje, function() {
+                        alertify.warning("NO SE PUEDE MARCAR COMO ENTREGADO");
+                    });
                 }
-            });
+                $("#datatable").dataTable().fnDestroy();
+                obt_oficios();
+            }
+        });
 
-        }
+    }
     </script>

@@ -399,8 +399,9 @@ class Oficios extends CI_Controller
 
         if ($campo === 'estatus' && $value == 4) {
             $original = $this->m_mensajeria->obtPDF($id);
+            $copias = $this->m_mensajeria->obtCopiasConocimiento($id);
 
-            if (!$original->ruta) {
+            if (!$original->ruta && sizeof($copias) != 0) {
                 echo json_encode([
                     'error' => true,
                     'mensaje' => "Debe subir el Oficio Original para las copias de conocimiento",
@@ -411,8 +412,9 @@ class Oficios extends CI_Controller
 
         if ($campo === 'estatus' && $value == 6) {
             $original = $this->m_mensajeria->obtPDF($id);
+            $copias = $this->m_mensajeria->obtCopiasConocimiento($id);
 
-            if (!$original->ruta) {
+            if (!$original->ruta && sizeof($copias) != 0) {
                 echo json_encode([
                     'error' => true,
                     'mensaje' => "Debe subir el Oficio Original para las copias de conocimiento",
