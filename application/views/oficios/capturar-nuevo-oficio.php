@@ -79,7 +79,7 @@
                                 <div class="col-sm-12 form-group">
                                     <div class="row">
                                         <label class=" col-form-label col-sm-2">Cargo:</label>
-                                        <input required type="text" class="form-control col-sm-9  " name="cargo"
+                                        <input type="text" class="form-control col-sm-9  " name="cargo"
                                             id="cargo">
                                     </div>
                                 </div>

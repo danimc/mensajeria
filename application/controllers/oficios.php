@@ -139,12 +139,20 @@ class Oficios extends CI_Controller
             if ($idOficio != '') {
                 $this->_revisaCopias($idOficio);
                 $this->_agregaHistorial($idOficio, 1);
+
+                if (isset($_POST['destinatario'])) {
+                    $datos = array(
+                        'responsable' => $_POST['destinatario'],
+                        'cargo' => $_POST['cargo'],
+                    );
+
+                    $this->m_oficios->actualizaDestinatario($dependencia, $datos);
+                }
+
                 redirect(base_url() . "oficios?nOficio={$nOficio}&id={$idOficio}");
             }
-        } else {
-            $mensaje = 0;
-            echo $mensaje;
         }
+
     }
 
     /**

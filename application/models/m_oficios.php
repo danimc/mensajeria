@@ -403,6 +403,12 @@ class m_oficios extends CI_Model
         $this->db->insert('Tb_Oficios', $this);
     }
 
+    function actualizaDestinatario($dependencia, $datos)
+    {
+        $this->db->where('id', $dependencia);
+        $this->db->update('b_dependencias', $datos);
+    }
+
     /**
      * Regresa responsable y cargo de la dependencia enviada como parametro
      * 
