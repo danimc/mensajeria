@@ -9,7 +9,7 @@ $(function() {
                  <?php echo $_GET['nOficio'] ?>
                  </b> Guardado con exito</h3> <p/>           
                  
-                 <button class="btn btn-primary" id="btnFirma" onclick="marcaAfirma(<?=$_GET['id']?>)">Mandar a Firma</button>`,
+                 <button class="btn btn-primary" id="btnFirma" onclick="marcaAfirma(<?= $_GET['id'] ?>)">Mandar a Firma</button>`,
             function() {
 
             });
@@ -163,7 +163,6 @@ $(function() {
                 },
                 {
                     extend: 'print',
-
                 }
 
             ],
@@ -215,7 +214,7 @@ $(function() {
     });
 
     $("#year").change(function() {
-       let anio = $("#year").val();
+        let anio = $("#year").val();
         $("#datatable").dataTable().fnDestroy();
         obt_oficios(anio);
         $("#etiquetaAnual").html(anio);
@@ -224,8 +223,8 @@ $(function() {
 
 
     const marcaAfirma = (id) => {
-       let anio = $("#year").val();
-       let btn = $("#btnFirma");
+        let anio = $("#year").val();
+        let btn = $("#btnFirma");
         console.log(id);
 
         data = {
