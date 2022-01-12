@@ -83,12 +83,13 @@ $(function() {
                         <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
 
                             <table class="table table-bordered table-striped table-hover dataTable no-footer dtr-inline"
-                                id="datatable" role="grid" aria-describedby="datatable_info">
+                                id="datatable" role="grid" aria-describedby="datatable_info" style="font-size: 12px;">
 
                                 <thead class="thead-default thead-lg">
                                     <tr role="row">
-                                        <th>CONS.</th>
+                                        <th>#</th>
                                         <th>SOLICITA</th>
+                                        <th>CAPTURISTA</th>
                                         <th>OFICIO</th>
                                         <th>DESTINATARIO</th>
                                         <th>DEPENDENCIA</th>
@@ -179,6 +180,9 @@ $(function() {
                 },
                 {
                     data: 'dRemitente'
+                },
+                {
+                    data: 'capturista'
                 },
                 {
                     data: 'oficio'

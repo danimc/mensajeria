@@ -330,6 +330,7 @@ class Oficios extends CI_Controller
             $respuesta[$i] = array(
                 'consecutivo' => $t->consecutivo,
                 'oficio' => $t->oficio,
+                'capturista' => $t->usuario,
                 'destinatario' => $t->destinatario,
                 'dependencia' => $t->nombreDependencia,
                 'fecha_cap' => $fecha,

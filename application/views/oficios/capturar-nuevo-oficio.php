@@ -24,6 +24,7 @@
                         </div>
                         <div class="ibox-body">
                             <div class="row">
+                                <!--
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <label class="col-form-label col-sm-2">Numero de Oficio:</label>
@@ -36,7 +37,7 @@
                                             <span class="input-group-addon">/<?php echo date('Y') ?></span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
 
                                 <div class="col-sm-12 form-group">
                                     <div class="row">
@@ -130,7 +131,7 @@
 
 <script>
 $(function() {
-    setInterval('actualizarCons()', 5000);
+   // setInterval('actualizarCons()', 5000);
 
     $('#summernote').summernote({
         height: 100

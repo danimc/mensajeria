@@ -221,6 +221,7 @@ class Inicio extends CI_Controller
                 'consecutivo'    => $t->consecutivo,
                 'oficio'         => $t->oficio,
                 'destinatario'   => $t->destinatario,
+                'capturista'     => $t->usuario,
                 'dependencia'    => $t->nombreDependencia,
                 'fecha_cap'      => $fecha,
                 'asunto'         => $t->redaccion,

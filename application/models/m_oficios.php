@@ -169,6 +169,7 @@ class m_oficios extends CI_Model
                 consecutivo,
                 oficio,
                 folio,
+                u.usuario,
                 oficioRecibido,
                 destinatario,
                 redaccion,
@@ -189,6 +190,7 @@ class m_oficios extends CI_Model
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
+                LEFT JOIN usuario u ON Tb_Oficios.capturista = u.codigo
             WHERE oficio like '%/{$year}'
             {$condiciones}
             ORDER BY consecutivo ASC";
@@ -211,6 +213,7 @@ class m_oficios extends CI_Model
                 oficio,
                 folio,
                 oficioRecibido,
+                u.usuario,
                 destinatario,
                 redaccion,
                 fecha_realizado,
@@ -230,6 +233,7 @@ class m_oficios extends CI_Model
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
+                LEFT JOIN usuario u ON Tb_Oficios.capturista = u.codigo
             WHERE Tb_Oficios.estatus = 2";
 
         return $this->db->query($qry)->result();
@@ -251,6 +255,7 @@ class m_oficios extends CI_Model
                 folio,
                 oficioRecibido,
                 destinatario,
+                u.usuario,
                 redaccion,
                 fecha_realizado,
                 servicio,
@@ -269,6 +274,7 @@ class m_oficios extends CI_Model
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
+                LEFT JOIN usuario u ON Tb_Oficios.capturista = u.codigo
             WHERE Tb_Oficios.estatus > 3
             AND Tb_Oficios.estatus < 7";
 
