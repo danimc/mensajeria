@@ -54,6 +54,7 @@ class m_mensajeria extends CI_Model
                 ,d.correo
                 ,fecha_envio
                 ,hora_envio
+                ,correoEspecial
                 FROM crm.Tb_CopiasConocimiento
                 LEFT JOIN b_dependencias d ON d.id = receptor 
                 WHERE oficio = $folio";

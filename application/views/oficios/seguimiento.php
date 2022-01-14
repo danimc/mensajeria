@@ -19,18 +19,21 @@
             title="Asociar a un ticket de Servicio"><i class="fas fa-ticket-alt"></i> Asociar Ticket
         </a>-->
 
-        <a href="#" class="btn btn-primary hidden" id="btnEnviarFirma" title="Subir Acuse y cambiar estatus a 'Entregado'">
+        <a href="#" class="btn btn-primary hidden" id="btnEnviarFirma"
+            title="Subir Acuse y cambiar estatus a 'Entregado'">
             <i class="fa fa-pencil "></i>
             Mandar a Firma
         </a>
 
 
 
-        <button class="btn btn-pink dropdown-toggle dropdown-arrow hidden" data-toggle="dropdown" aria-expanded="false" id="btnAcciones">
+        <button class="btn btn-pink dropdown-toggle dropdown-arrow hidden" data-toggle="dropdown" aria-expanded="false"
+            id="btnAcciones">
             <i class="fa fa-gear"></i>
             Cambiar estado del oficio
         </button>
-        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <div class="dropdown-menu" x-placement="bottom-start"
+            style="position: absolute; transform: translate3d(0px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
             <h6 class="dropdown-header">Estatus de oficio</h6>
             <a class="dropdown-item" href="javascript:;" id="btnOficioFirmado">Firmado</a>
             <a class="dropdown-item" href="javascript:;" id="btnAmensajeria">Enviado a mensajería</a>
@@ -65,44 +68,50 @@
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Fecha de captura</div>
                             <div class="col-6"> <b>
-                                    <?php echo $this->m_oficios->fechaText($oficio->fechaOficio)  ?> </b>
+                                    <?php echo $this->m_oficios->fechaText($oficio->fechaOficio) ?> </b>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Tipo de Oficio:</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-tipo" data-name="tipo" data-type="select" data-title="Edite el tipo de oficio"> <?php echo $oficio->tipo ?> </a>
+                                <a href="javascript:;" class="bt-tipo" data-name="tipo" data-type="select"
+                                    data-title="Edite el tipo de oficio"> <?php echo $oficio->tipo ?> </a>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Dependencia:</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-dependencia" data-name="nombreDependencia" data-type="select" data-title="Modifique la Dependencia">
+                                <a href="javascript:;" class="bt-dependencia" data-name="nombreDependencia"
+                                    data-type="select" data-title="Modifique la Dependencia">
                                     <?php echo $oficio->dependencia ?> </a>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Destinatario:</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-destinatario" data-name="destinatario" data-type="text" data-title="Edite el Destinatario"> <?php echo $oficio->destinatario ?></a>
+                                <a href="javascript:;" class="bt-destinatario" data-name="destinatario" data-type="text"
+                                    data-title="Edite el Destinatario"> <?php echo $oficio->destinatario ?></a>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Cargo:</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-cargo" data-name="cargo" data-type="text" data-title="Edite el cargo del destinatario"> <?php echo $oficio->cargo ?></a>
+                                <a href="javascript:;" class="bt-cargo" data-name="cargo" data-type="text"
+                                    data-title="Edite el cargo del destinatario"> <?php echo $oficio->cargo ?></a>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Oficio Recibido: </div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-recibido" data-name="oficioRecibido" data-type="text" data-title="Ingrese el oficio Recibido"> <?php echo $oficio->oficioRecibido ?></a>
+                                <a href="javascript:;" class="bt-recibido" data-name="oficioRecibido" data-type="text"
+                                    data-title="Ingrese el oficio Recibido"> <?php echo $oficio->oficioRecibido ?></a>
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Folio :</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-folio" data-name="folio" data-type="number" data-title="Ingrese el Folio"> <?php echo $oficio->folio ?></a>
+                                <a href="javascript:;" class="bt-folio" data-name="folio" data-type="number"
+                                    data-title="Ingrese el Folio"> <?php echo $oficio->folio ?></a>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -114,55 +123,63 @@
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Redacción :</div>
                             <div class="col-6">
-                                <a href="javascript:;" class="bt-redaccion" data-name="redaccion" data-type="wysihtml5" data-title="Edite la redaccion del oficio"> <?php echo $oficio->redaccion ?></a>
+                                <a href="javascript:;" class="bt-redaccion" data-name="redaccion" data-type="wysihtml5"
+                                    data-title="Edite la redaccion del oficio"> <?php echo $oficio->redaccion ?></a>
                             </div>
                         </div>
 
                     </div>
                 </div>
 
-                <? if ($copias) { ?>
-                    <div class="ibox">
-                        <div class="ibox-head bg-primary-100 ">
-                            <div class="ibox-title">COPIAS DE CONOCIMIENTO:</div>
+                <?if ($copias) {?>
+                <div class="ibox">
+                    <div class="ibox-head bg-primary-100 ">
+                        <div class="ibox-title">COPIAS DE CONOCIMIENTO:</div>
 
-                            <? if ($oficio->original == '') { ?>
+                        <?if ($oficio->original == '') {?>
 
 
-                                <span id="originalFaltante" class="pull-right ">
-                                    <i class="fa fa-exclamation-triangle text-warning"></i>
-                                    Falta Original
-                                    <a href="#" class="btn btn-sm btn-warning " data-toggle="modal" data-target="#subirOriginal" title="Subir El oficio para enviar como Copia de conocimiento">
-                                        <i class="fa fa-upload "></i>
-                                    </a>
-                                </span>
-                            <? } else { ?>
-                                <span id="originalFaltante" class="pull-right ">
-                                    <i class="fa fa-check text-success"></i>
-                                    Original Cargado
-                                    <a href="<?php echo base_url() ?>documents/originals/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf" target="_blank" class="btn btn-sm btn-danger" title="Ver Oficio Original">
-                                        <i class="fa fa-file "></i>
-                                    </a>
-                                </span>
-                            <? } ?>
+                        <span id="originalFaltante" class="pull-right ">
+                            <i class="fa fa-exclamation-triangle text-warning"></i>
+                            Falta Original
+                            <a href="#" class="btn btn-sm btn-warning " data-toggle="modal" data-target="#subirOriginal"
+                                title="Subir El oficio para enviar como Copia de conocimiento">
+                                <i class="fa fa-upload "></i>
+                            </a>
+                        </span>
+                        <?} else {?>
+                        <span id="originalFaltante" class="pull-right ">
+                            <i class="fa fa-check text-success"></i>
+                            Original Cargado
+                            <a href="<?php echo base_url() ?>documents/originals/<?=$oficio->year?>/<?php echo $oficio->consecutivo ?>.pdf"
+                                target="_blank" class="btn btn-sm btn-danger" title="Ver Oficio Original">
+                                <i class="fa fa-file "></i>
+                            </a>
+                        </span>
+                        <?}?>
 
-                        </div>
-                        <div class="ibox-body">
-                            <? foreach ($copias as $copia) { ?>
-                                <div class="row mb-2">
-                                    <div class="col-9"> <b> <?= $copia->nombre ?> </b> </div>
-                                    <? if (isset($copia->fecha_envio)) {
-                                        $fecha = $this->m_mensajeria->fecha_text_f($copia->fecha_envio) ?>
-                                        <div class="col-3 text-muted" data-toggle="tooltip" title="Fecha de Envio: <?= $fecha ?>">
-                                            Enviado</div>
-                                    <? } ?>
-                                </div>
-                                <hr>
-                            <? } ?>
-
-                        </div>
                     </div>
-                <? } ?>
+                    <div class="ibox-body">
+                        <?foreach ($copias as $copia) {?>
+                        <div class="row mb-2">
+                            <div class="col-9">
+                                <b> <?=$copia->nombre?> </b>
+                                <p><small > <?=$copia->correo?></small></p>
+                                <b> <?=$copia->correoEspecial?> <b>
+
+                            </div>
+                            <?if (isset($copia->fecha_envio)) {
+    $fecha = $this->m_mensajeria->fecha_text_f($copia->fecha_envio)?>
+                            <div class="col-3 text-muted" data-toggle="tooltip" title="Fecha de Envio: <?=$fecha?>">
+                                Enviado</div>
+                            <?}?>
+                        </div>
+                        <hr>
+                        <?}?>
+
+                    </div>
+                </div>
+                <?}?>
 
                 <div class="ibox">
                     <div class="ibox-head bg-pink-100">
@@ -179,7 +196,9 @@
                 <div class="ibox">
                     <div class="ibox-head">
                         <div class="ibox-title">
-                            <a href="#" class="btn btn-success hidden " data-toggle="modal" data-target="#modificarOficio" title="Subir Acuse y cambiar estatus a 'Entregado'" id="btnSubirAcuse">
+                            <a href="#" class="btn btn-success hidden " data-toggle="modal"
+                                data-target="#modificarOficio" title="Subir Acuse y cambiar estatus a 'Entregado'"
+                                id="btnSubirAcuse">
                                 <i class="fa fa-upload"></i> Subir Acuse
                             </a>
                         </div>
@@ -190,48 +209,51 @@
                         </div>
                     </div>
                     <div class="ibox-body">
-                        <?php if (isset($pdf[1])) { ?>
+                        <?php if (isset($pdf[1])) {?>
 
-                            <div class="text-center centered" style="max-width:600px;">
-                                <div class="btn-group">
-                                    <a class="btn btn-secondary" target="_blank" href="<?php echo base_url() ?>documents/acuses/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf">
-                                        <span class="d-none d-md-inline">Descargar</span>
-                                    </a>
-                                    <button class="btn btn-secondary" id="prev"><i class="fa fa-long-arrow-left"></i>
-                                        <span class="d-none d-md-inline">Anterior</span>
-                                    </button>
-                                    <button class="btn btn-secondary" id="next">
-                                        <span class="d-none d-md-inline">Siguiente</span> <i class="fa fa-long-arrow-right"></i></button>
+                        <div class="text-center centered" style="max-width:600px;">
+                            <div class="btn-group">
+                                <a class="btn btn-secondary" target="_blank"
+                                    href="<?php echo base_url() ?>documents/acuses/<?=$oficio->year?>/<?php echo $oficio->consecutivo ?>.pdf">
+                                    <span class="d-none d-md-inline">Descargar</span>
+                                </a>
+                                <button class="btn btn-secondary" id="prev"><i class="fa fa-long-arrow-left"></i>
+                                    <span class="d-none d-md-inline">Anterior</span>
+                                </button>
+                                <button class="btn btn-secondary" id="next">
+                                    <span class="d-none d-md-inline">Siguiente</span> <i
+                                        class="fa fa-long-arrow-right"></i></button>
 
-                                    <span class="btn-label-out">Página:</span>
-                                    <div class="input-group" style="width:auto;">
-                                        <input class="form-control" id="page_num" style="max-width:50px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-outline-default" id="page_count">/ 1</button>
-                                        </div>
+                                <span class="btn-label-out">Página:</span>
+                                <div class="input-group" style="width:auto;">
+                                    <input class="form-control" id="page_num" style="max-width:50px;">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-outline-default" id="page_count">/ 1</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center">
-                                <?php
-                                if (isset($pdf[1]) && $pdf[1] == "pdf") { ?>
-                                    <canvas class="pdfcanvas" id="the-canvas"></canvas>
-                                <?php } else { ?>
-                                    <img src="<?php echo base_url() ?>documents/acuses/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf" alt="Oficio">
-                                <?php }
-                                ?>
-                            </div>
+                        </div>
+                        <div class="text-center">
+                            <?php
+if (isset($pdf[1]) && $pdf[1] == "pdf") {?>
+                            <canvas class="pdfcanvas" id="the-canvas"></canvas>
+                            <?php } else {?>
+                            <img src="<?php echo base_url() ?>documents/acuses/<?=$oficio->year?>/<?php echo $oficio->consecutivo ?>.pdf"
+                                alt="Oficio">
+                            <?php }
+    ?>
+                        </div>
 
-                        <?php } else { ?>
+                        <?php } else {?>
 
-                            <a href="#" data-toggle="modal" data-target="#modificarOficio" title="Subir Oficio">
-                                <h1 class="text-secondary text-center"><i class="fa fa-upload fa-3x"></i></h1>
-                            </a>
-                            <br>
-                            <h2 class="text-secondary text-center">Aún no se ha subido el acuse de este oficio</h2>
+                        <a href="#" data-toggle="modal" data-target="#modificarOficio" title="Subir Oficio">
+                            <h1 class="text-secondary text-center"><i class="fa fa-upload fa-3x"></i></h1>
+                        </a>
+                        <br>
+                        <h2 class="text-secondary text-center">Aún no se ha subido el acuse de este oficio</h2>
 
 
-                        <?php } ?>
+                        <?php }?>
                     </div>
                 </div>
             </div>
@@ -239,12 +261,12 @@
         </div>
 
         <script>
-            $(function() {
-                let pdf = window.location.origin +
-                    '/bases/documents/acuses/<?= $oficio->year ?>/<?php echo $oficio->consecutivo ?>.pdf';
-                console.log(pdf);
-                ver_pdf(pdf);
-            })
+        $(function() {
+            let pdf = window.location.origin +
+                '/bases/documents/acuses/<?=$oficio->year?>/<?php echo $oficio->consecutivo ?>.pdf';
+            console.log(pdf);
+            ver_pdf(pdf);
+        })
         </script>
 
 
