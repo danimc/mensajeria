@@ -96,7 +96,7 @@
         }
     };
 
-    function obt_oficios() {
+    function obtOficios() {
 
         $('#datatable').DataTable({
             ajax: {
@@ -160,7 +160,7 @@
     <script>
     $(function() {
         $("#year").val(<?php echo date('Y') ?>);
-        obt_oficios();
+        obtOficios();
 
 
     });
@@ -168,7 +168,7 @@
     $("#year").change(function() {
         anio = $("#year").val();
         $("#datatable").dataTable().fnDestroy();
-        obt_oficios(anio);
+        obtOficios(anio);
         $("#etiquetaAnual").html(anio);
 
     });

@@ -302,7 +302,7 @@ class Oficios extends CI_Controller
      *
      * @return Json Tabla de datos
      */
-    public function obt_oficios()
+    public function obtOficios()
     {
         header('Content-Type: application/json');
         $year = $this->input->get('anio');
@@ -315,13 +315,13 @@ class Oficios extends CI_Controller
             $opciones = "AND unidadRemitente = {$dependencia}";
         }
 
-        $oficios = $this->m_oficios->obt_oficios($year, $opciones);
+        $oficios = $this->m_oficios->obtOficios($year, $opciones);
         $respuesta = array();
         $i = 0;
 
         foreach ($oficios as $t) {
             $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
-            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est, $t->id);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
             $tabla = "<a class='fa fa-eye fa-2x text-warning'
@@ -527,6 +527,7 @@ class Oficios extends CI_Controller
 
             $nuevoPdf = array(
                 'pdfOriginal' => $pdf,
+                'estatus'     => 4
             );
             $this->m_oficios->subir_oficio($nuevoPdf, $id);
 

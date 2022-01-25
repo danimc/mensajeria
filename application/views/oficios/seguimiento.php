@@ -98,7 +98,7 @@
                                 <a href="javascript:;" class="bt-cargo" data-name="cargo" data-type="text"
                                     data-title="Edite el cargo del destinatario"> <?php echo $oficio->cargo ?></a>
                             </div>
-                        </div>                     
+                        </div>
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Oficio Recibido: </div>
                             <div class="col-6">
@@ -123,7 +123,8 @@
                             <div class="col-6 text-muted">Exp:</div>
                             <div class="col-6">
                                 <a href="javascript:;" class="bt-exp" data-name="exp" data-type="text"
-                                    data-title="Edite el cargo del destinatario"> <?php echo $oficio->exp ?></a>
+                                    data-title="Edite el cargo del destinatario"> <?php echo $oficio->exp ?>
+                                </a>
                             </div>
                         </div>
                         <div class="row mb-2">

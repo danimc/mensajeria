@@ -2,24 +2,19 @@
 
 class m_oficios extends CI_Model
 {
-
-    function __construct()
-    {
-        parent::__construct();
-    }
     /**
      * Ingresa un nuevo registro a la base de Libro Oficios
-     * 
+     *
      * @param array $oficio arreglo de datos a dar de alta
-     * 
+     *
      * @return void
      */
-    function capturarOficio($oficio)
+    public function capturarOficio($oficio)
     {
         $this->db->insert("Tb_Oficios", $oficio);
     }
 
-    function obt_datosOficio($idIncidente)
+    public function obt_datosOficio($idIncidente)
     {
         $this->db->where('id', $idIncidente);
         return $this->db->get('Tb_Oficios')->row();
@@ -27,10 +22,10 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa el numeral maximio del oficio por año en curso
-     * 
+     *
      * @return int numero de oficio actual
      */
-    function obtMaxConsecutivo()
+    public function obtMaxConsecutivo()
     {
         $year = date('Y');
         $qry = "";
@@ -42,7 +37,7 @@ class m_oficios extends CI_Model
         return $this->db->query($qry)->row();
     }
 
-    function verifica_nuevoOficio($oficio)
+    public function verifica_nuevoOficio($oficio)
     {
         $this->db->where('consecutivo', $oficio);
         $this->db->where('year', date('Y'));
@@ -52,12 +47,12 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa los oficios pendientes del area
-     * 
+     *
      * @param int $area identificador del area
-     * 
+     *
      * @return array oficios pendientes del area
      */
-    function obtOficiosPendientes($opciones)
+    public function obtOficiosPendientes($opciones)
     {
 
         $qry = "";
@@ -89,10 +84,9 @@ class m_oficios extends CI_Model
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
                 LEFT JOIN usuario us ON capturista = codigo
             WHERE Tb_Oficios.estatus != 8
-            AND   Tb_Oficios.estatus != 10  
+            AND   Tb_Oficios.estatus != 10
             {$opciones}
             ";
-
 
         return $this->db->query($qry)->result();
     }
@@ -100,11 +94,11 @@ class m_oficios extends CI_Model
     /**
      * Obtienen los registros de los oficios
      */
-    function obtLibroOficios()
+    public function obtLibroOficios()
     {
         $qry = "";
 
-        $qry = "SELECT 
+        $qry = "SELECT
                 id,
                 consecutivo,
                 fecha_realizado,
@@ -120,10 +114,10 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa una lista con los años en los hay registros de oficios
-     * 
+     *
      * @return result
      */
-    function obtAniosRegistrados()
+    public function obtAniosRegistrados()
     {
         $qry = '';
 
@@ -132,36 +126,41 @@ class m_oficios extends CI_Model
                 GROUP BY year
                 ORDER BY year DESC ";
 
-        return $this->db->query($qry)->result();;
+        return $this->db->query($qry)->result();
     }
 
     /**
      * Regresa todas las depenedencias externas Registradas en la BD
      */
-    function obtDependenciasExternas()
+    public function obtDependenciasExternas()
     {
         return $this->db->get('b_dependencias')->result();
     }
 
     /**
      * Edita campos individuales del oficio
-     * 
+     *
      * @param int    $id    Identificador del oficio
      * @param string $campo nombre del campo a modificar
-     * @param any    $value Nuevo valor a ingresar 
-     * 
+     * @param any    $value Nuevo valor a ingresar
+     *
      * @return void
      */
-    function editarOficio($id, $campo, $value)
+    public function editarOficio($id, $campo, $value)
     {
         $this->db->where('id', $id);
         $this->db->set($campo, $value);
         $this->db->update('Tb_Oficios', $this);
     }
 
-
-
-    function obt_oficios($year, $condiciones)
+    /**
+     * Retorna los oficios de las areas y el año seleccionado
+     *
+     * @param int $year
+     * @param string $condiciones
+     * @return object
+     */
+    public function obtOficios($year, $condiciones)
     {
         $qry = "";
 
@@ -200,10 +199,10 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa los oficios para la lista de firmados
-     * 
+     *
      * @return array
      */
-    function obtOficiosFirma()
+    public function obtOficiosFirma()
     {
 
         $qry = "";
@@ -241,10 +240,10 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa los oficios para la lista de Mensajeria
-     * 
+     *
      * @return array
      */
-    function obtOficiosMensajeria()
+    public function obtOficiosMensajeria()
     {
 
         $qry = "";
@@ -281,7 +280,7 @@ class m_oficios extends CI_Model
         return $this->db->query($qry)->result();
     }
 
-    function obtOficiosOficialia()
+    public function obtOficiosOficialia()
     {
         // $year = date('Y');
         $qry = "";
@@ -316,14 +315,14 @@ class m_oficios extends CI_Model
         return $this->db->query($qry)->result();
     }
 
-    function obt_oficio($oficio)
+    public function obt_oficio($oficio)
     {
         $qry = "";
-        $qry = "SELECT 
+        $qry = "SELECT
                 Tb_Oficios.id,
                 consecutivo,
                 Tb_Oficios.oficio,
-                if(Tb_Oficios.folio != '', Tb_Oficios.folio, '---') as folio,           
+                if(Tb_Oficios.folio != '', Tb_Oficios.folio, '---') as folio,
                 concat(fecha_realizado, ' ', hora_realizado ) as fechaOficio,
                 destinatario,
                 nombreDependencia as dependencia,
@@ -346,7 +345,7 @@ class m_oficios extends CI_Model
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia
                 LEFT JOIN Tb_Cat_EstatusOficios est ON est.id = Tb_Oficios.estatus
-              
+
                 WHERE Tb_Oficios.id = {$oficio}";
 
         return $this->db->query($qry)->row();
@@ -354,12 +353,12 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa el año en que fue capturado un Oficio
-     * 
+     *
      * @param int $id Identificador del oficio a revisar
-     * 
+     *
      * @return row año de captura
      */
-    function obtYear($id)
+    public function obtYear($id)
     {
         $this->db->where("id", $id);
 
@@ -370,47 +369,45 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa desde la Bd los tipos de oficio
-     * 
+     *
      * @return array
      */
-    function obtTipoOficios()
+    public function obtTipoOficios()
     {
         return $this->db->get('Tb_Cat_TipoOficio')->result();
     }
 
     /**
      * Regresa la lista de estatus de los oficios
-     * 
+     *
      * @return array estatus
      */
-    function obtEstatusOficio()
+    public function obtEstatusOficio()
     {
         return $this->db->get('Tb_Cat_EstatusOficios')->result();
     }
 
     /**
      * Guarda en la Bd que se cargo el Acuse
-     * 
+     *
      * @param object $oficio objeto de campos a actualizar
      * @param int    $id     identificador del oficio
-     * 
+     *
      * @return void
      */
-    function subir_oficio($oficio, $id)
+    public function subir_oficio($oficio, $id)
     {
         $this->db->where('id', $id);
         $this->db->set($oficio);
         $this->db->update('Tb_Oficios');
     }
 
-
-
-    function capturar_consecutivo()
+    public function capturar_consecutivo()
     {
         $this->db->insert('Tb_Oficios', $this);
     }
 
-    function actualizaDestinatario($dependencia, $datos)
+    public function actualizaDestinatario($dependencia, $datos)
     {
         $this->db->where('id', $dependencia);
         $this->db->update('b_dependencias', $datos);
@@ -418,30 +415,30 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa responsable y cargo de la dependencia enviada como parametro
-     * 
+     *
      * @param int $id id de la dependencia
-     * 
+     *
      * @return row datos de la dependencia
      */
-    function obtDatosDependencia($id)
+    public function obtDatosDependencia($id)
     {
         $this->db->where('id', $id);
-        return  $this->db->get('b_dependencias')->row();
+        return $this->db->get('b_dependencias')->row();
     }
 
-    function obt_tipoOficios()
+    public function obt_tipoOficios()
     {
         return $this->db->get('Tb_Cat_TipoOficio')->result();
     }
 
     /**
      * Regresa todos los movimeintos de un Oficio
-     * 
+     *
      * @param int $id Identificador del Oficios
-     * 
+     *
      * @return array arreglo de objetos de movimientos
      */
-    function obtHistorialOficios($id)
+    public function obtHistorialOficios($id)
     {
         $qry = "";
 
@@ -465,28 +462,27 @@ class m_oficios extends CI_Model
         return $this->db->query($qry)->result();
     }
 
-
     /**
      * Agrega a la BD un nuevo movimiento en un oficio
-     * 
+     *
      * @param object $movimiento array con los datos del movimiento
-     * 
+     *
      * @return void
      */
-    function agregaHistorial($movimiento)
+    public function agregaHistorial($movimiento)
     {
         $this->db->insert("h_Oficios", $movimiento);
     }
 
     /**
      * acorta la cadena de un texto
-     * 
+     *
      * @param string $cadena cadena a acortar
      * @param int    $limite cantidad de caracteres
-     * 
+     *
      * @return string
      */
-    function limitar_cadena($cadena, $limite)
+    public function limitar_cadena($cadena, $limite)
     {
         // Si la longitud es mayor que el límite...
         if (strlen($cadena) > $limite) {
@@ -500,34 +496,33 @@ class m_oficios extends CI_Model
 
     /**
      * Genera el Html del estatus
-     * 
+     *
      * @param $estatus datos del estatus
-     * 
+     *
      * @return html
      */
-    function estatus($color, $icono, $label)
+    public function estatus($color, $icono, $label, $id)
     {
+        $URL = base_url();
 
-        $esta = " <span class='btn badge btn-{$color} badge-pill mb-2'>                                    
-                     <i class='{$icono}'></i> {$label}
-                </span>";
+        $esta = "
+        <a href='{$URL}oficios/seguimiento/{$id}'
+            class='btn badge btn-{$color} badge-pill mb-2'>
+                <i class='{$icono}'></i> {$label}
+        </a>";
 
         return $esta;
 
     }
 
-
-
-
     //FECHAS
-
 
     /**
      * Regresa la fecha actual del servidor MX
-     * 
+     *
      * @return date fecha actual
      */
-    function fechaActual()
+    public function fechaActual()
     {
         date_default_timezone_set("America/Mexico_City");
         $fecha = date("Y-m-d");
@@ -536,10 +531,10 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa la hora actual del servidor MX
-     * 
+     *
      * @return time Hora actual
      */
-    function horaActual()
+    public function horaActual()
     {
         date_default_timezone_set("America/Mexico_City");
         $hora = date("H:i:s");
@@ -548,25 +543,24 @@ class m_oficios extends CI_Model
 
     /**
      * Regresa la fecha y hora actual del servidor
-     * 
+     *
      * @return datetime
      */
-    function fechahoraActual()
+    public function fechahoraActual()
     {
         date_default_timezone_set("America/Mexico_City");
         $fecha = date("Y-m-d h:i:s");
         return $fecha;
     }
 
-
     /**
      * Regresa la fecha Formateada
-     * 
+     *
      * @param date $datetime fecha en formato unix
-     * 
+     *
      * @return string Fecha en formato largo
      */
-    function fechaText($datetime)
+    public function fechaText($datetime)
     {
         if ($datetime == "0000-00-00 00:00:00") {
             return "Fecha indefinida";
@@ -610,13 +604,13 @@ class m_oficios extends CI_Model
     }
 
     /**
-     * Regresa solo la fecha formateada 
-     * 
+     * Regresa solo la fecha formateada
+     *
      * @param date|string $date fecha a formatear
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    function soloFechaText($date)
+    public function soloFechaText($date)
     {
         if ($date == "0000-00-00") {
             return "Fecha indefinida";
@@ -648,7 +642,6 @@ class m_oficios extends CI_Model
             } else if ($fecha[1] == 12) {
                 $mes = 'diciembre';
             }
-
 
             $fecha2 = $fecha[2] . " " . $mes . " " . $fecha[0];
             return $fecha2;

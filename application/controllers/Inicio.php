@@ -164,7 +164,7 @@ class Inicio extends CI_Controller
 
         foreach ($oficios as $t) {
             $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
-            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est, $t->id);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
             $tabla = "<button class='btn btn-success' onclick='marcaFirmado({$t->id})'> Marcar firmado </button>";
@@ -205,7 +205,7 @@ class Inicio extends CI_Controller
         foreach ($oficios as $t) {
             $acciones = '';
             $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
-            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est, $t->id);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
             $ruta = "<button class='btn btn-sm btn-pink' onclick='cambiarEstatus({$t->id},5)'> <i class='fa fa-car'></i> </button>";
@@ -255,7 +255,7 @@ class Inicio extends CI_Controller
 
         foreach ($oficios as $t) {
             $fecha = $this->m_oficios->soloFechaText($t->fecha_realizado);
-            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est);
+            $estatus = $this->m_oficios->estatus($t->color, $t->icon, $t->est, $t->id);
             // $redaccion = $this->m_oficios->limitar_cadena($t->redaccion, 15);
 
             $tabla = "<a class='fa fa-eye fa-2x text-warning' href='".base_url()."oficios/seguimiento/{$t->id}'></a>";

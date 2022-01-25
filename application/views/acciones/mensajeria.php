@@ -111,7 +111,7 @@ $(function() {
         }
     };
 
-    function obt_oficios() {
+    function obtOficios() {
 
         $('#datatable').DataTable({
             ajax: {
@@ -179,7 +179,7 @@ $(function() {
     <script>
     $(function() {
         $("#year").val(<?php echo date('Y') ?>);
-        obt_oficios(<?php echo date('Y') ?>);
+        obtOficios(<?php echo date('Y') ?>);
 
 
     });
@@ -187,7 +187,7 @@ $(function() {
     $("#year").change(function() {
         anio = $("#year").val();
         $("#datatable").dataTable().fnDestroy();
-        obt_oficios(anio);
+        obtOficios(anio);
         $("#etiquetaAnual").html(anio);
 
     });
@@ -213,7 +213,7 @@ $(function() {
                     });
                 }
                 $("#datatable").dataTable().fnDestroy();
-                obt_oficios();
+                obtOficios();
             }
         });
 

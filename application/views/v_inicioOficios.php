@@ -95,8 +95,8 @@ $(function() {
                                         <th>DEPENDENCIA</th>
                                         <th>FECHA CAPTURA</th>
                                         <th>ASUNTO</th>
-                                        <th>ESTATUS</th>
-                                        <th></th>
+                                        <th>EXP</th>
+                                        <th align="center">ESTATUS</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -151,13 +151,13 @@ $(function() {
         }
     };
 
-    function obt_oficios(year) {
+    function obtOficios(year) {
 
         const validador = $("#validador").val();
 
         $('#datatable').DataTable({
             ajax: {
-                url: `<?php echo base_url() ?>oficios/obt_oficios?anio=${year}&val=${validador}`,
+                url: `<?php echo base_url() ?>oficios/obtOficios?anio=${year}&val=${validador}`,
                 dataSrc: ''
             },
             dom: 'Bfrtip',
@@ -199,12 +199,11 @@ $(function() {
                 {
                     data: 'asunto'
                 },
-
                 {
-                    data: 'estatus'
+                    data: 'exp'
                 },
                 {
-                    data: 'acciones'
+                    data: 'estatus'
                 }
             ],
             "deferRender": true,
@@ -219,7 +218,7 @@ $(function() {
     <script>
     $(function() {
         $("#year").val(<?php echo date('Y') ?>);
-        obt_oficios(<?php echo date('Y') ?>);
+        obtOficios(<?php echo date('Y') ?>);
 
 
     });
@@ -227,7 +226,7 @@ $(function() {
     $("#year").change(function() {
         let anio = $("#year").val();
         $("#datatable").dataTable().fnDestroy();
-        obt_oficios(anio);
+        obtOficios(anio);
         $("#etiquetaAnual").html(anio);
 
     });
@@ -252,7 +251,7 @@ $(function() {
             beforeSend: () => {},
             success: (resp) => {
                 $("#datatable").dataTable().fnDestroy();
-                obt_oficios(anio);
+                obtOficios(anio);
 
                 btn.addClass('btn-success disabled');
                 btn.html(`<i class="fa fa-check-circle"></i> HECHO`);
