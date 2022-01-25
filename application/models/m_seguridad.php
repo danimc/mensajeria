@@ -63,7 +63,7 @@ class m_seguridad extends CI_Model
     public function log_general($controlador, $funcion, $objeto)
     {
 
-        $this->sistema = 5; //sistema 5 = Control de Oficios
+        $this->sistema = 2; //sistema 2 = Control de Oficios
         $this->controlador = $controlador;
         $this->funcion = $funcion;
         $this->objeto = $objeto;

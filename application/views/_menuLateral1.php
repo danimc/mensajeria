@@ -28,7 +28,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
                     </li>
                     <li>
                         <?php if ($this->m_seguridad->acceso_modulo(1)) {
-                            ?>                        
+                            ?>
                         <a href="<?php echo base_url(); ?>oficios?val=all"><i class="sidebar-item-icon fa ti-files"></i>
                             <span>Todos los Oficios</span>
                         </a>
@@ -42,7 +42,8 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
             <!--                     <a href="javascript:;"><i class="ti-announcement"></i></a>
                     <a href="calendar.html"><i class="ti-calendar"></i></a>
                     <a href="javascript:;"><i class="ti-comments"></i></a> -->
-            <a href="<?= base_url() ?>index.php?/acceso/logout" title="Cerrar Sesion"><i class="ti-power-off"></i></a>
+            <a href="<?= base_url() ?>acceso/logout" data-toggle="tooltip" title="Cerrar Sesion"><i class="ti-power-off"></i></a>
+            <a href="/" data-toggle="tooltip" title="Menú Principal"><i class="  ti-view-grid  "></i></a>
         </div>
     </div>
 </nav>

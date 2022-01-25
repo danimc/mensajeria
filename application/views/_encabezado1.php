@@ -26,7 +26,7 @@ $usuario = $this->m_usuario->obt_usuario($codigo);
     <link href="<?php echo base_url()?>src/assets/vendors/jvectormap/jquery-jvectormap-2.0.3.css" rel="stylesheet" />
     <link href="<?php echo base_url()?>src/assets/vendors/dataTables/datatables.min.css" rel="stylesheet" />
     <link href="<?=base_url()?>src/assets/vendors/editable/bs-editable.css" rel="stylesheet" />
-    
+
 
     <!-- THEME STYLES-->
     <link href="<?php echo base_url()?>src/assets/css/main.min.css?v1" rel="stylesheet" />
@@ -131,12 +131,12 @@ if($this->m_seguridad->acceso_sistema() == 0) {
                                 </div>
                             </div>
                             <div class="admin-menu-features">
-                                <a class="admin-features-item"
-                                    href="http://148.202.169.71/helpdesk/usuario/perfil"><i class="ti-user"></i>
+                                <a class="admin-features-item" href="http://148.202.169.71/helpdesk/usuario/perfil"><i
+                                        class="ti-user"></i>
                                     <span>PERFIL</span>
                                 </a>
-                                <a class="admin-features-item" href="javascript:;"><i class="ti-settings"></i>
-                                    <span>AJUSTES</span>
+                                <a class="admin-features-item" href="/"><i class=" ti-view-grid "></i>
+                                    <span>Menú Principal</span>
                                 </a>
                                 <a class="admin-features-item" href="<?php echo base_url()?>index.php?/acceso/logout"><i
                                         class="ti-shift-right"></i>

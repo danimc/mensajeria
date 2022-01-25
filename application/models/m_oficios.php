@@ -340,7 +340,8 @@ class m_oficios extends CI_Model
                 est.color,
                 est.icon,
                 YEAR(fecha_realizado) as year,
-                pdfOriginal as original
+                pdfOriginal as original,
+                exp
                 FROM Tb_Oficios
                 LEFT JOIN Tb_Cat_TipoOficio t ON t.id = Tb_Oficios.tipo
                 LEFT JOIN dependencias d ON  Tb_Oficios.unidadRemitente = d.id_dependencia

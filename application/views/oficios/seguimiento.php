@@ -19,8 +19,7 @@
             title="Asociar a un ticket de Servicio"><i class="fas fa-ticket-alt"></i> Asociar Ticket
         </a>-->
 
-        <a href="#" class="btn btn-primary hidden" id="btnEnviarFirma"
-            title="Subir Acuse y cambiar estatus a 'Entregado'">
+        <a href="#" class="btn btn-primary hidden" id="btnEnviarFirma" title="">
             <i class="fa fa-pencil "></i>
             Mandar a Firma
         </a>
@@ -42,10 +41,10 @@
             <a class="dropdown-item" href="javascript:;" id="btnMarcarPendiete">Marcar como pendiente</a>
         </div>
 
-
-
-
-
+        <a href="#" class="btn btn-blue" id="btnEnviarFirma" data-toggle="tooltip" title="Nueva copia de conocimiento">
+            <i class="fa fa-plus "></i>
+            Copia de conocimiento
+        </a>
         <a href="#" data-toggle="modal" data-target="#frmModificarOficio" class="btn btn-danger disabled pull-right">
             <i class="fa fa-times-circle"></i>
             CANCELAR OFICIO
@@ -99,7 +98,7 @@
                                 <a href="javascript:;" class="bt-cargo" data-name="cargo" data-type="text"
                                     data-title="Edite el cargo del destinatario"> <?php echo $oficio->cargo ?></a>
                             </div>
-                        </div>
+                        </div>                     
                         <div class="row mb-2">
                             <div class="col-6 text-muted">Oficio Recibido: </div>
                             <div class="col-6">
@@ -118,6 +117,13 @@
                             <div class="col-6 text-muted">Estatus :</div>
                             <div class="col-6">
                                 <span id="lblEstatus"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6 text-muted">Exp:</div>
+                            <div class="col-6">
+                                <a href="javascript:;" class="bt-exp" data-name="exp" data-type="text"
+                                    data-title="Edite el cargo del destinatario"> <?php echo $oficio->exp ?></a>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -147,12 +153,14 @@
                                 <i class="fa fa-upload "></i>
                             </a>
                         </span>
-                        <?} else {?>
+                        <?} else {
+                            $ruta = base_url()."documents/originals/{$oficio->year}/{$oficio->consecutivo}.pdf";
+                            ?>
                         <span id="originalFaltante" class="pull-right ">
                             <i class="fa fa-check text-success"></i>
                             Original Cargado
-                            <a href="<?php echo base_url() ?>documents/originals/<?=$oficio->year?>/<?php echo $oficio->consecutivo ?>.pdf"
-                                target="_blank" class="btn btn-sm btn-danger" title="Ver Oficio Original">
+                            <a href="<?php echo $ruta ?>" target="_blank" class="btn btn-sm btn-danger"
+                                title="Ver Oficio Original">
                                 <i class="fa fa-file "></i>
                             </a>
                         </span>
@@ -164,12 +172,12 @@
                         <div class="row mb-2">
                             <div class="col-9">
                                 <b> <?=$copia->nombre?> </b>
-                                <p><small > <?=$copia->correo?></small></p>
-                                <b> <?=$copia->correoEspecial?> <b>
+                                <p><small> <?=$copia->correo?></small></p>
+                                <b> <?=$copia->correoEspecial?> </b>
 
                             </div>
                             <?if (isset($copia->fecha_envio)) {
-    $fecha = $this->m_mensajeria->fecha_text_f($copia->fecha_envio)?>
+                                $fecha = $this->m_mensajeria->fecha_text_f($copia->fecha_envio)?>
                             <div class="col-3 text-muted" data-toggle="tooltip" title="Fecha de Envio: <?=$fecha?>">
                                 Enviado</div>
                             <?}?>
@@ -235,7 +243,7 @@
                         </div>
                         <div class="text-center">
                             <?php
-if (isset($pdf[1]) && $pdf[1] == "pdf") {?>
+                            if (isset($pdf[1]) && $pdf[1] == "pdf") {?>
                             <canvas class="pdfcanvas" id="the-canvas"></canvas>
                             <?php } else {?>
                             <img src="<?php echo base_url() ?>documents/acuses/<?=$oficio->year?>/<?php echo $oficio->consecutivo ?>.pdf"
