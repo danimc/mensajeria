@@ -168,31 +168,6 @@ class Mensajeria extends CI_Controller
 
     }
 
-    function asignar_usuario()
-    {
-
-        if($_POST['antAsignado'] == '') {
-            $estatus = 2; 
-        }else{
-            $estatus = 7;
-        }
-        $notificacion = 2;
-        $codigo = $this->session->userdata("codigo");    
-        $ingeniero = $_POST['ingeniero'];
-        $folio = $_POST['folio'];
-        $fecha= $this->m_mensajeria->fecha_actual();
-        $hora= $this->m_mensajeria->hora_actual();
-        $usr = $this->m_usuario->obt_usuario($codigo);
-
-        $this->m_mensajeria->asignar_usuario($folio, $ingeniero, $fecha, $hora, $estatus);
-        $this->m_mensajeria->h_asignar_usuario($folio, $ingeniero, $fecha, $hora, $estatus);
-        
-
-        $msg = '<div class="alert alert-success"><p><i class="fa fa-check"></i>Se ha Asignado con Exito</p></div>';
-
-           echo json_encode($msg);
-    }
-
     function validar_recibido()
     {
         $oficio = 37;  //$_POST['folio']; 37
@@ -301,32 +276,7 @@ class Mensajeria extends CI_Controller
         redirect('ticket/seguimiento/'. $folio .'/#chat');
     }
 
-    function correo()
-    {
-        
-        $this->load->library('email');
-
-        $config['protocol'] = 'smtp';
-        $this->email->initialize($config);
-        $this->email->from('incidenciasoag@gmail.com', 'Mensajeria OAG');
-        //$this->email->to($infoCorreo->correo);
-        $this->email->to('luis.mora@redudg.udg.mx');
-        //$this->email->cc('xochitl.ferrer@redudg.udg.mx');
-        //$this->email->bcc('them@their-example.com');
-
-        $this->email->subject('Envio de Copia de Oficio | Mensajeria OAG');
-        $this->email->message('Hola bb');
-        //$this->email->attach($pdf);
-        $this->email->set_mailtype('html');
-        $this->email->send();
-
-        echo $this->email->print_debugger();
-
-
-        
-
-    }
-
+ 
 
     function correo_copias_enviadas()
     {
