@@ -30,7 +30,7 @@ class m_correos extends CI_Model
         //$msg = $this->load->view('correos/c_nuevoTicket', $datos, true);
 
         $this->load->library('email');
-        $this->email->from('mensajeriaoag@redudg.udg.mx', 'Mensajeria OAG');
+        $this->email->from('mensajeriaoag@redudg.udg.mx', 'Mensajería OAG');
 
         $this->email->to($correos);
         //$this->email->cc('xochitl.ferrer@redudg.udg.mx');
