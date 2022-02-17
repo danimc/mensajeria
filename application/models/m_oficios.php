@@ -402,6 +402,29 @@ class m_oficios extends CI_Model
         $this->db->update('Tb_Oficios');
     }
 
+    /**
+     * Verifica si las copias ya fueron enviadas
+     *
+     * @param int $id identificador del oficio
+     *
+     * @return boolean
+     */
+    public function verificaEnvioCopias($id)
+    {
+        $copias = $this->m_mensajeria->obtCopiasConocimiento($id);
+
+        if (sizeof($copias) == 0) {
+            return 0;
+        }
+
+        //si hay fecha de envio marcada, regresa falso
+        if ($copias[0]->fecha_envio) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function capturar_consecutivo()
     {
         $this->db->insert('Tb_Oficios', $this);

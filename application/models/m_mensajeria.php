@@ -5,64 +5,57 @@ class m_mensajeria extends CI_Model
 
     /**
      * Guarda los registros de cada copia en la Bd
-     * @param object $copias registro a almacenar 
-     * 
+     * @param object $copias registro a almacenar
+     *
      * @return void
      */
-    function guardarCopias($copias)
+    public function guardarCopias($copias)
     {
         $this->db->insert("Tb_CopiasConocimiento", $copias);
     }
 
-    function obt_centros()
+    public function obt_centros()
     {
         return $this->db->get('b_dependencias')->result();
     }
 
-    function obt_asignados()
-    {
-
-        $this->db->where("rol", 1);
-        return $this->db->get("usuario")->result();
-    }
-
-    function verifica_oficio($oficio)
-    {
-        $this->db->where("oficio", $oficio);
-        return $this->db->get("m_delivery")->num_rows();
-    }
-
-    function obt_abreviatura($codigo)
+    public function obt_abreviatura($codigo)
     {
         $qry = '';
 
-        $qry = "SELECT abreviatura,id_dependencia FROM crm.dependencias   
+        $qry = "SELECT abreviatura,id_dependencia FROM crm.dependencias
                 INNER JOIN usuario
-                where 
+                where
                 usuario.dependencia = id_dependencia
                 and codigo = '$codigo'";
 
         return $this->db->query($qry)->row();
     }
 
-    function obtCopiasConocimiento($folio)
+    /**
+     * Regresa los datos de las areas marcadas para copia en el oficio
+     *
+     * @param int $folio identificador del oficio a revisar
+     * @return object
+     */
+    public function obtCopiasConocimiento($folio)
     {
         $qry = '';
 
-        $qry = "SELECT 
+        $qry = "SELECT
                 d.nombre
                 ,d.correo
                 ,fecha_envio
                 ,hora_envio
                 ,correoEspecial
                 FROM crm.Tb_CopiasConocimiento
-                LEFT JOIN b_dependencias d ON d.id = receptor 
+                LEFT JOIN b_dependencias d ON d.id = receptor
                 WHERE oficio = $folio";
 
         return $this->db->query($qry)->result();
     }
 
-    function estatus()
+    public function estatus()
     {
         $this->db->where('id !=', 2);
         $this->db->where('id !=', 5);
@@ -70,342 +63,90 @@ class m_mensajeria extends CI_Model
         return $this->db->get("situacion_ticket")->result();
     }
 
-    function nueva_mensajeria($delivery)
+    public function copias_enviadas($folio)
     {
-        $this->db->insert("m_delivery", $delivery);
-    }
-
-
-
-    function seguimiento_ticket($folio)
-    {
-        $qry = "";
-
-        $qry = "SELECT 
-                d.id_delivery as folio,
-                d.oficio,
-                us.nombre_completo,
-                dep.nombre_dependencia,
-                r.nombre as receptor,
-                d.estatus,
-                d.dir_oficio as pdf,
-                d.fecha_alta,
-                d.hora_alta
-                FROM crm.m_delivery d
-                LEFT JOIN  usuario us on us.codigo = d.usr_envia
-                LEFT JOIN dependencias dep on dep.id_dependencia = d.dependencia
-                LEFT JOIN b_dependencias r on r.id = d.receptor
-                WHERE d.id_delivery = '$folio'";
-
-        return $this->db->query($qry)->row();
-    }
-
-    function obt_seguimiento($folio)
-    {
-        $qry = "SELECT 
-        h_ticket.id
-        ,cat.categoria
-        ,situ.situacion
-        ,usuario.usuario
-        ,asignado.usuario asignado
-        ,mensaje
-        ,fecha
-        ,hora
-        FROM h_ticket
-        LEFT JOIN categoria_ticket cat ON cat.id_cat = h_ticket.categoria
-        LEFT JOIN situacion_ticket situ ON situ.id = h_ticket.estatus
-        LEFT JOIN usuario ON usuario.codigo = h_ticket.usr
-        LEFT JOIN usuario asignado ON asignado.codigo = h_ticket.asignado
-        WHERE folio = '$folio'";
-
-        return $this->db->query($qry)->result();
-    }
-
-
-
-    function asignar_usuario($folio, $ingeniero, $fecha, $hora, $estatus)
-    {
-        $this->db->set('usr_asignado', $ingeniero);
-        $this->db->set('fecha_asignado', $fecha);
-        $this->db->set('hora_asignado', $hora);
-        $this->db->set('estatus', $estatus);
-        $this->db->where('folio', $folio);
-        $this->db->update('ticket');
-    }
-
-    function cambiar_categoria($folio, $categoria)
-    {
-        $this->db->set('categoria', $categoria);
-        $this->db->where('folio', $folio);
-        $this->db->update('m_delivery');
-    }
-
-    function cambiar_estatus($folio, $estatus)
-    {
-        $this->db->set('estatus', $estatus);
-        $this->db->where('id_delivery', $folio);
-        $this->db->update('m_delivery');
-    }
-
-    function cerrar_ticket($folio, $fecha, $hora)
-    {
-        $this->db->set('estatus', 5);
-        $this->db->set('fecha_cierre', $fecha);
-        $this->db->set('hora_cierre', $hora);
-        $this->db->where('folio', $folio);
-        $this->db->update('ticket');
-    }
-
-    function h_asignar_usuario($folio, $ingeniero, $fecha, $hora, $estatus)
-    {
-        $this->folio = $folio;
-        $this->usr = $this->session->userdata("codigo");
-        $this->estatus = $estatus;
-        $this->asignado = $ingeniero;
-        $this->fecha = $fecha;
-        $this->hora = $hora;
-
-        $this->db->insert('h_ticket', $this);
-    }
-
-    function h_cambiar_categoria($folio, $categoria, $fecha, $hora)
-    {
-        $this->folio = $folio;
-        $this->usr = $this->session->userdata("codigo");
-        $this->fecha = $fecha;
-        $this->hora = $hora;
-        $this->categoria = $categoria;
-
-        $this->db->insert('h_ticket', $this);
-    }
-
-    function h_cambiar_estatus($folio, $estatus, $fecha, $hora)
-    {
-        $this->folio = $folio;
-        $this->usr = $this->session->userdata("codigo");
-        $this->fecha = $fecha;
-        $this->hora = $hora;
-        $this->estatus = $estatus;
-
-        $this->db->insert('h_ticket', $this);
-    }
-
-    function h_cerrar_ticket($folio, $usr, $fecha, $hora)
-    {
-        $this->folio = $folio;
-        $this->usr = $usr;
-        $this->fecha = $fecha;
-        $this->hora = $hora;
-        $this->estatus = 5;
-
-        $this->db->insert('h_ticket', $this);
-    }
-
-    function copias_enviadas($folio)
-    {
-        $this->fecha_envio  = $this->fecha_actual();
-        $this->hora_envio   = $this->hora_actual();
+        $this->fecha_envio = $this->fecha_actual();
+        $this->hora_envio = $this->hora_actual();
 
         $this->db->where('oficio', $folio);
         $this->db->update('Tb_CopiasConocimiento', $this);
     }
 
-    function obtPDF($oficio)
+    public function obtPDF($oficio)
     {
         $this->db->select('pdfOriginal as ruta, YEAR(fecha_realizado) as year');
         $this->db->where('id', $oficio);
         return $this->db->get('Tb_Oficios')->row();
     }
 
-    function correosCopias($id)
+    /**
+     * Regresa un arreglo de los correos para Copia de conocimiento
+     *
+     * Genera un Array especial para el envio de correos de copia de conocimeinto
+     * separados por coma, para ello se necesita enviar el id del oficio
+     *
+     * @param int $id identificador del numero de oficio
+     *
+     * @return array  arreglo con los correos a enviar la copia, separados por coma
+     */
+    public function correosCopias($id)
     {
         $copias = $this->m_mensajeria->obtCopiasConocimiento($id);
 
         $correos = "";
         $n = sizeof($copias);
         $i = 0;
-        
-        foreach($copias as $c){
+
+        foreach ($copias as $c) {
             $correos .= " {$c->correo}";
-            if($i < 2 ) {
+            if ($i < 2) {
                 $correos .= ",";
             }
             $i++;
         }
 
-       return $correos;
+        return $correos;
     }
-
-    function notificacion()
-    {
-    }
-
-    function mensaje($folio, $mensaje, $fecha, $hora)
-    {
-        $this->folio = $folio;
-        $this->usr = $this->session->userdata("codigo");
-        $this->mensaje = $mensaje;
-        $this->fecha = $fecha;
-        $this->hora =  $hora;
-
-        $this->db->insert('h_ticket', $this);
-    }
-
-    /* function noti_alta($reportante, $usuarioIncidente, $idIncidente, $notificacion)
-    {
-        $this->generador = $reportante;
-        $this->ticket = $idIncidente;
-        $this->receptor = $usuarioIncidente;
-        $this->tipo = $notificacion;
-        $this->vistoR = 1;
-
-        $this->db->insert('crm.notificaciones', $this);
-
-    }*/
 
     //***********************TABLAS **********************
 
-    function lista_mensajes_administrador()
-    {
-        $qry = '';
-        $qry = "SELECT 
-                d.id_delivery as folio,
-                d.oficio,
-                us.usuario,
-                dep.nombre_dependencia,
-                r.nombre as receptor,
-                d.estatus,
-                d.dir_oficio as pdf,
-                d.fecha_alta,
-                d.hora_alta
-                FROM crm.m_delivery d
-                LEFT JOIN  usuario us on us.codigo = d.usr_envia
-                LEFT JOIN dependencias dep on dep.id_dependencia = d.dependencia
-                LEFT JOIN b_dependencias r on r.id = d.receptor
-                ORDER BY folio DESC";
+    //******************************** FECHAS **********************************************/
 
-        return $this->db->query($qry)->result();
-    }
-
-    function lista_tickets_administrador_cerrados()
-    {
-        $qry = '';
-        $qry = "SELECT 
-                folio
-                ,fecha_inicio
-                ,hora_inicio
-                ,us.usuario
-                ,titulo
-                ,categoria_ticket.categoria
-                ,est.id as id_situacion
-                ,est.situacion
-                ,fecha_asignado
-                ,hora_asignado
-                ,asignado.usuario usr_asignado
-                ,ticket.estatus
-                from ticket
-                LEFT JOIN  usuario us on us.codigo = ticket.usr_incidente
-                LEFT JOIN categoria_ticket on categoria_ticket.id_cat = ticket.categoria
-                LEFT JOIN situacion_ticket est on est.id = ticket.estatus
-                LEFT JOIN usuario asignado on ticket.usr_asignado = asignado.codigo
-                WHERE est.id = 5
-                ORDER BY folio DESC";
-
-        return $this->db->query($qry)->result();
-    }
-
-    function lista_tickets_administrador_abiertos()
-    {
-        $qry = '';
-        $qry = "SELECT 
-                folio
-                ,fecha_inicio
-                ,hora_inicio
-                ,us.usuario
-                ,titulo
-                ,categoria_ticket.categoria
-                ,est.id as id_situacion
-                ,est.situacion
-                ,fecha_asignado
-                ,hora_asignado
-                ,prioridad
-                ,asignado.usuario usr_asignado
-                ,ticket.estatus
-                from ticket
-                LEFT JOIN  usuario us on us.codigo = ticket.usr_incidente
-                LEFT JOIN categoria_ticket on categoria_ticket.id_cat = ticket.categoria
-                LEFT JOIN situacion_ticket est on est.id = ticket.estatus
-                LEFT JOIN usuario asignado on ticket.usr_asignado = asignado.codigo
-                WHERE est.id != 5
-                ORDER BY folio DESC";
-
-        return $this->db->query($qry)->result();
-    }
-
-    function lista_tickets_usuario($codigo)
-    {
-        $qry = '';
-        $qry = "SELECT 
-                folio
-                ,fecha_inicio
-                ,hora_inicio
-                ,us.usuario
-                ,titulo
-                ,categoria_ticket.categoria
-                ,est.id as id_situacion
-                ,est.situacion
-                ,fecha_asignado
-                ,hora_asignado
-                ,asignado.usuario usr_asignado
-                ,ticket.estatus
-                from ticket
-                LEFT JOIN  usuario us on us.codigo = ticket.usr_incidente
-                LEFT JOIN categoria_ticket on categoria_ticket.id_cat = ticket.categoria
-                LEFT JOIN situacion_ticket est on est.id = ticket.estatus
-                LEFT JOIN usuario asignado on ticket.usr_asignado = asignado.codigo
-                WHERE usr_incidente = '$codigo'
-                ORDER BY folio DESC";
-
-        return $this->db->query($qry)->result();
-    }
-
-    //******************************** FECHAS **********************************************/   
-
-    function fecha_a_sql($date)
+    public function fecha_a_sql($date)
     {
         $fecha = explode("/", $date);
         $fecha_sql = $fecha['2'] . "-" . $fecha['0'] . "-" . $fecha['1'];
         return $fecha_sql;
     }
 
-    function fecha_a_form($date)
+    public function fecha_a_form($date)
     {
         $fecha = explode("-", $date);
         $fecha_sql = $fecha['1'] . "/" . $fecha['2'] . "/" . $fecha['0'];
         return $fecha_sql;
     }
 
-    function fecha_actual()
+    public function fecha_actual()
     {
         date_default_timezone_set("America/Mexico_City");
         $fecha = date("Y-m-d");
         return $fecha;
     }
 
-    function hora_actual()
+    public function hora_actual()
     {
         date_default_timezone_set("America/Mexico_City");
         $hora = date("H:i:s");
         return $hora;
     }
-    function fechahora_actual()
+    public function fechahora_actual()
     {
         date_default_timezone_get("America/Mexico_City");
         $fecha = date("Y-m-d h:i:s");
         return $fecha;
     }
 
-    function fecha_text($datetime)
+    public function fecha_text($datetime)
     {
         if ($datetime == "0000-00-00 00:00:00") {
             return "Fecha indefinida";
@@ -448,7 +189,7 @@ class m_mensajeria extends CI_Model
         }
     }
 
-    function fecha_text_f($datetime)
+    public function fecha_text_f($datetime)
     {
         if ($datetime == "0000-00-00") {
             return "Fecha indefinida";
@@ -481,13 +222,12 @@ class m_mensajeria extends CI_Model
                 $mes = 'diciembre';
             }
 
-
             $fecha2 = $fecha[2] . " " . $mes . " " . $fecha[0];
             return $fecha2;
         }
     }
 
-    function hora_fecha_text($dia)
+    public function hora_fecha_text($dia)
     {
         $dia2 = explode(" ", $dia);
 
@@ -526,7 +266,7 @@ class m_mensajeria extends CI_Model
         return $fecha2;
     }
 
-    function etiqueta($estatus)
+    public function etiqueta($estatus)
     {
         if ($estatus == 1) {
             $esta = ' <span data-toggle="modal" data-target="#modalStatus" class="btn badge btn-primary badge-pill mb-2"><i class="fa fa-ticket"></i> Registrado </span>';
@@ -558,80 +298,4 @@ class m_mensajeria extends CI_Model
         }
     }
 
-    function asignados($id)
-    {
-        if ($id == '') {
-            $asig = '<button class="btn btn-xs btn-default" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Asignar</button>';
-        } else {
-            $asig = '<button class="btn btn-xs btn-default" data-toggle="modal" data-target="#myModal" title="Reasignar Ingeniero"><i class="fa fa-exchange "></i> </button>';
-        }
-
-        return $asig;
-    }
-
-    function timeline($mensaje, $fecha)
-    {
-        if ($fecha != 1) {
-            $fecha = $this->m_ticket->hora_fecha_text($mensaje->fecha);
-?>
-            <li class="time-label">
-                <span class="bg-red">
-                    <?= $fecha ?>
-                </span>
-            </li>
-        <?
-
-        } else {
-        }
-        if (isset($mensaje->mensaje)) {
-        ?>
-            <li>
-                <i class="fa fa-comment bg-purple"></i>
-                <div class="timeline-item bg-default ">
-                    <span class="time"><i class="fa fa-clock-o"></i> <?= $mensaje->hora ?></span>
-                    <h3 class="timeline-header btn-default"><a href="">Mensaje:</a> <b> <?= $mensaje->usuario ?></b> Dice: </h3>
-                    <div class="timeline-body bg-gray ">
-                        <?= $mensaje->mensaje ?>
-                    </div>
-                </div>
-            </li>
-        <? }
-
-        if (isset($mensaje->categoria)) {
-        ?>
-            <li>
-                <!-- timeline icon -->
-                <i class="fa fa-tags bg-orange"></i>
-                <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> <?= $mensaje->hora ?></span>
-
-                    <h3 class="timeline-header"><a href="#">Cambio de Categoria:</a> <b> <?= $mensaje->usuario ?></b> Cambio la categoria a <b><?= $mensaje->categoria ?> </b>
-                </div>
-            </li>
-
-            <? }
-        if (isset($mensaje->situacion)) {
-            if (isset($mensaje->asignado)) {
-            ?>
-                <li>
-                    <i class="fa fa-user bg-blue"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"> </i> <?= $mensaje->hora ?></span>
-                        <h3 class="timeline-header"><a href="#">El ticket ha sido Asignado a: <?= $mensaje->asignado ?> </a></h3>
-                    </div>
-                </li>
-            <? } else {
-            ?>
-                <li>
-                    <!-- timeline icon -->
-                    <i class="fa fa-info-circle bg-green"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> <?= $mensaje->hora ?></span>
-
-                        <h3 class="timeline-header"><a href="#">Cambio de Estatus</a> <b> <?= $mensaje->usuario ?></b> Cambio es estatus del incidente a <b> <?= $mensaje->situacion ?> </b> </h3>
-                    </div>
-                </li>
-<?      }
-        }
-    }
 }

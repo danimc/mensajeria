@@ -376,6 +376,12 @@ class Oficios extends CI_Controller
         }
     }
 
+
+    function pruebaEnvios()
+    {
+        $this->m_oficios->verificaEnvioCopias(361);
+    }
+
     /**
      * Edita campos individualmente de un oficio
      *
@@ -444,9 +450,15 @@ class Oficios extends CI_Controller
         echo json_encode($id);
     }
 
+    /**
+     * Verifica que exista el original y lo envia
+     *
+     * @param int $id identificador del oficio
+     * 
+     * @return void
+     */
     public function verificaMensajeria($id)
     {
-
         //verifica que este cargado el original
         $oficio = $this->m_mensajeria->obtPDF($id);
 
@@ -461,7 +473,7 @@ class Oficios extends CI_Controller
     }
 
     /**
-     * Sube el Oficio a la Carpeta correspondiente
+     * Sube el acuse del oficio a la Carpeta correspondiente
      *
      * @param int $id          Identificador del oficio
      * @param int $consecutivo Numero consecutivo que sera el nombre del oficio
@@ -490,6 +502,10 @@ class Oficios extends CI_Controller
                 'hora_entrega' => $this->m_oficios->horaActual(),
             );
             $this->m_oficios->subir_oficio($nuevoPdf, $id);
+
+            if ($this->m_oficios->verificaEnvioCopias($id)) {
+                $this->verificaMensajeria($id);
+            }
 
             $seguimiento = array(
                 'oficio' => $id,
@@ -527,7 +543,7 @@ class Oficios extends CI_Controller
 
             $nuevoPdf = array(
                 'pdfOriginal' => $pdf,
-                'estatus'     => 4
+                'estatus' => 4,
             );
             $this->m_oficios->subir_oficio($nuevoPdf, $id);
 
