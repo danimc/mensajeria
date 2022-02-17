@@ -376,8 +376,7 @@ class Oficios extends CI_Controller
         }
     }
 
-
-    function pruebaEnvios()
+    public function pruebaEnvios()
     {
         $this->m_oficios->verificaEnvioCopias(361);
     }
@@ -454,21 +453,28 @@ class Oficios extends CI_Controller
      * Verifica que exista el original y lo envia
      *
      * @param int $id identificador del oficio
-     * 
+     *
      * @return void
      */
     public function verificaMensajeria($id)
     {
         //verifica que este cargado el original
+        $rutaPdf = false;
+
         $oficio = $this->m_mensajeria->obtPDF($id);
 
         if ($oficio->ruta) {
             $rutaPdf = "documents/originals/{$oficio->year}/{$oficio->ruta}";
+        } elseif ($oficio->acuse) {
+            $rutaPdf = "documents/acuses/{$oficio->year}/{$oficio->acuse}";
+        }
 
+        if ($rutaPdf) {
             //Envia los correos
             @$this->m_correos->correo_enviar_copias($id, $rutaPdf);
             //Actualiza en la BD el envio
             $this->m_mensajeria->copias_enviadas($id);
+
         }
     }
 

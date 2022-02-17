@@ -74,7 +74,7 @@ class m_mensajeria extends CI_Model
 
     public function obtPDF($oficio)
     {
-        $this->db->select('pdfOriginal as ruta, YEAR(fecha_realizado) as year');
+        $this->db->select('pdfOriginal as ruta, pdf as acuse, YEAR(fecha_realizado) as year');
         $this->db->where('id', $oficio);
         return $this->db->get('Tb_Oficios')->row();
     }
